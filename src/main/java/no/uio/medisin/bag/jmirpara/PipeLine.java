@@ -4,7 +4,6 @@ package no.uio.medisin.bag.jmirpara;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import static no.uio.medisin.bag.jmirpara.JmiCMD.logger;
-import static no.uio.medisin.bag.jmirpara.JmiCMD.yaml;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -24,13 +23,13 @@ import static no.uio.medisin.bag.jmirpara.JmiCMD.yaml;
  */
 public class PipeLine {
     
-//    static Logger logger = LogManager.getRootLogger();    
+    static Logger logger = LogManager.getRootLogger();    
 
     
     private static final String[] knownModels = new String[] {"m", "p", "v", "o", "animal", "plant", "virus", "overall" };
     private static final String[] knownTests = new String[] {"svm", "hairpin", };
 
-    private static MiRParaPaths miRParaPaths = new MiRParaPaths();
+    private MiRParaConfiguation miRParaConfig;
     private String configFilename;
 
         
@@ -62,7 +61,7 @@ public class PipeLine {
     private String test;
 
     public PipeLine() {  
-        
+        miRParaConfig = new MiRParaConfiguation();
     }
 
     /**
@@ -100,6 +99,14 @@ public class PipeLine {
 
     }
     
+    /**
+     * 
+     * why is there a second run method?
+     * which one should we use?
+     * s.r. 9/3/2015
+     * 
+     * @throws IOException 
+     */
     public void run2() throws IOException{
         initialize();
         ReadFile rf=new ReadFile(filename);
@@ -116,7 +123,7 @@ public class PipeLine {
             int n=(length-window)/step+1; //num of window, num of step = n-1
             if(n<1) n=1;
             if(length-((n-1)*step+window)>19) n+=1;
-            int end=0,start=this.start-1;
+            int end=0, start=this.start-1;
             for(int i=0;i<n;i++){
                 
                 if(start>=length) break;
@@ -366,7 +373,7 @@ public class PipeLine {
     }
 
     /**
-     * should call the method first
+     * check we have everything we need before we start doing anything heavy
      * @throws IOException
      */
     private void initialize() throws IOException{
@@ -374,15 +381,16 @@ public class PipeLine {
         //setWorkingDir(PathSet.getWorkingDir());
         //load RNAFold library
         //in JAR package
-        ReadConfigurationFile();
+        miRParaConfig.ReadConfigurationFile(configFilename);
         
-        logger.info("installation folder is " + miRParaPaths.getInstallationFolder());
-        logger.info("model folder is " + Paths.get(miRParaPaths.getInstallationFolder(), miRParaPaths.getModelFolder()));
+        logger.info("installation folder is " + miRParaConfig.getInstallationFolder());
+        logger.info("model folder is " + Paths.get(miRParaConfig.getInstallationFolder(), miRParaConfig.getModelFolder()));
 
         packageDir=PathSet.getPackageDir();
         
         PathSet.setLibDir(packageDir+"/lib");
-        File mirbaseData=new File(PathSet.getPackageDir()+"/data/mirbase.dat");
+        File mirbaseData=new File(miRParaConfig.getMirbaseDataFile());
+        
         //in NetBeans
 //        packageDir="/home/wb/Desktop/program/jmi2_v13";
 //        PathSet.setLibDir("/home/wb/Desktop/program/jmi2_v13/lib");
@@ -390,8 +398,9 @@ public class PipeLine {
         
         //load SVM model
         String modelName=packageDir+"/models/"+getModel()+"_"+getLevel()+".model";
+
 //        System.out.println(modelName);
-        SVMToolKit.loadModel(modelName);
+        SVMToolKit.loadModel(miRParaConfig.getPathToModelData());
 
         //load miRBase data
         Output.loadMirBaseData(mirbaseData);       
@@ -403,31 +412,6 @@ public class PipeLine {
         @throws FileNotFoundException
     */
     
-    public void ReadConfigurationFile(){
-        try{
-            
-            HashMap mirparaOptions = (HashMap) yaml.load(new FileInputStream(new File(getConfigFilename())));
-            
-            HashMap modelsOptions = (HashMap) mirparaOptions.get("model");
-            miRParaPaths.setModelFolder((String) modelsOptions.get("folder"));
-
-            HashMap pathsOptions = (HashMap) mirparaOptions.get("paths");
-            miRParaPaths.setInstallationFolder((String) pathsOptions.get("installation_folder"));
- 
-            
-            HashMap rnafoldOptions = (HashMap) mirparaOptions.get("rnafold");
-            miRParaPaths.setRnaFoldFolder((String) rnafoldOptions.get("folder"));
-            miRParaPaths.setRnaFoldDll((String) rnafoldOptions.get("dll"));
-            
-            HashMap dataOptions = (HashMap) mirparaOptions.get("data");
-            miRParaPaths.setDataFolder((String) dataOptions.get("folder"));
-            miRParaPaths.setMirbaseDataFile((String) dataOptions.get("data_file"));
-            
-        }
-        catch(FileNotFoundException e){
-            logger.fatal("Configuration file " + getConfigFilename() + " not found");
-        }
-    }
             
     public void print(String s){
         System.out.print(s);

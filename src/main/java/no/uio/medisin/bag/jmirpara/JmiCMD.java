@@ -5,10 +5,7 @@
 
 package no.uio.medisin.bag.jmirpara;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
 
 import org.apache.commons.cli.BasicParser;
@@ -20,7 +17,7 @@ import org.apache.commons.cli.ParseException;
 
 
 import org.apache.logging.log4j.LogManager;
-import org.yaml.snakeyaml.Yaml;
+
 
 /**
  *
@@ -29,13 +26,17 @@ import org.yaml.snakeyaml.Yaml;
 public class JmiCMD {
 
     static Options options = new Options();   
-    static Yaml yaml = new Yaml();
+    
 
     private static String test=null;
     private static double version=4.0;
     private static String configFile;
+    
 
     static Logger logger = LogManager.getRootLogger();    
+    
+    
+    
     
     public JmiCMD() {
         
@@ -53,15 +54,19 @@ public class JmiCMD {
         
     }
     
+    
+    
+    
     public static void main(String[] args) throws IOException {
         long start = System.currentTimeMillis();
         
         printBanner();
         
-        PipeLine pl=new PipeLine();
-
-        //readArguments(args,pl);
+        
+        
+        PipeLine pl = new PipeLine();
         parseArguments(args, pl);
+
         if(test.equals("svm")){
             logger.info("\n\n\nSVM TEST");
             logger.info(new String(new char[80]).replace("\0", "x"));
@@ -186,8 +191,10 @@ public class JmiCMD {
                 if (cmd.hasOption("f")){
                     configFile = cmd.getOptionValue("f");
                     logger.info("Configuration file is " + configFile);
-                    p.setConfigFilename(cmd.getOptionValue("f"));
+                    p.setConfigFilename(configFile);
                 }
+                else
+                    throw new ParseException("no configuration file was specified") ;
 
         } catch (ParseException e) {
 
@@ -211,62 +218,6 @@ public class JmiCMD {
         
     }
             
-    private static void readArguments(String[] argv, PipeLine p){
-        int i;
-        if(argv.length==0) exit_with_help();
-        for(i=0;i<argv.length;i++){
-            if (argv[i].charAt(0) != '-')	break;
-            if(++i>=argv.length && !(argv[i-1].equals("-h"))){
-                System.out.println("arguments error!");
-                exit_with_error();
-            }
-            switch(argv[i-1].charAt(1)){
-                case 'm': p.setModel(argv[i]);	break;
-		case 'l': p.setLevel(Integer.parseInt(argv[i]));	break;
-                case 's': p.setStep(Integer.parseInt(argv[i]));  break;
-                case 'w': p.setWindow(Integer.parseInt(argv[i])); break;
-                case 'd': p.setDistance(Integer.parseInt(argv[i])); break;
-                case 'c': p.setCutoff(Double.parseDouble(argv[i])); break;
-                case 'h': exit_with_help();
-		default:
-			System.err.println("unknown option");
-			exit_with_error();
-            }
-	}
-        if(!(p.getModel().equals("animal") || p.getModel().equals("plant")
-                || p.getModel().equals("virus") || p.getModel().equals("overall"))){
-            System.err.println("unknow taxonomy!");
-            exit_with_error();
-        }
-        if(p.getLevel()<0){
-            System.err.println("level should be greater than 0");
-            exit_with_error();
-        }
-        if(p.getWindow()<0){
-            System.err.println("window should not be less than 0");
-            exit_with_error();
-        }
-        if(p.getStep()<0){
-            System.err.println("step should not be less than 0");
-            exit_with_error();
-        }
-        if(p.getDistance()<0){
-            System.err.println("distance should not be less than 0");
-            exit_with_error();
-        }
-        if(p.getCutoff()<0 || p.getCutoff()>1){
-            System.err.println("cutoff should be a value between 0 to 1");
-            exit_with_error();
-        }
-        // determine filenames, at least two filenames
-        if(i>=argv.length){
-            System.err.println("lack input file!");
-            exit_with_error();
-        }
-        p.setFilename(new File(argv[i]));
-        if(i<argv.length-1)
-            p.setWorkingDir(argv[i+1]);
-    }
 
 }
 
