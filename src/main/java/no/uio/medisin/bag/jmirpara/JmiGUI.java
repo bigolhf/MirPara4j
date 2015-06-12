@@ -322,7 +322,7 @@ public class JmiGUI extends JFrame implements ActionListener{
             final Thread scanT=new Thread(){
                 public void run(){                  
                     try {
-                        pl.run2();
+                        pl.predictMiRNAsInInputSequences();
                     } catch (IOException ex) {
                         Logger.getLogger(JmiGUI.class.getName()).log(Level.SEVERE, null, ex);
                     }

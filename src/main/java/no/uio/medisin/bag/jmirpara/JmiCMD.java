@@ -30,7 +30,7 @@ public class JmiCMD {
     static Options options = new Options();   
     
 
-    private static String test=null;
+    private static String test="";
     //private static double version=4.0;
     private static String configFile;
     

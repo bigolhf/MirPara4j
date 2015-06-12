@@ -7,7 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * this class include methods to parse the features of pri-miRNA,pre-miRNA and miRNA.
+ * Class to parse the sequence and structure of a pri-miRNA, pre-miRNA and miRNA
+ * class include methods to parse the features of pri-miRNA,pre-miRNA and miRNA.
  * the order of parsing:
  * parsePrimiRNA();
  * maturateMiRNA();
@@ -261,7 +262,10 @@ public class MiGenesis {
 
     /**
      * parse the hairpin structure of a pri-miRNA
+     * 
      * @param priRNA
+     * @returns boolean
+     * 
      */
     public boolean parsePriStr(PriMiRNA priRNA){
         
@@ -299,8 +303,10 @@ public class MiGenesis {
     /**
      * transform bracket-dot notation string structure to text plot and
      * store index of the bases on the plot
+     * 
      * @param priRNA
      * @return
+     * 
      */
     public int[] str2Plot(PriMiRNA priRNA) {
         StringBuilder pril1=new StringBuilder();
@@ -359,16 +365,17 @@ public class MiGenesis {
     }
 
     /**
-     * reverse a string
+     * reverse string
+     * 
      * @param String str
      * @return String reverse str
      */
-    public String reverse(String str) {
-        StringBuilder reStr = new StringBuilder();
-        for (int i = str.length() - 1; i >= 0; i--) {
-            reStr.append(str.charAt(i));
+    public String reverse(String strIn) {
+        StringBuilder strReversed = new StringBuilder();
+        for (int i = strIn.length() - 1; i >= 0; i--) {
+            strReversed.append(strIn.charAt(i));
         }
-        return reStr.toString();
+        return strReversed.toString();
     }
 
     /**
@@ -420,6 +427,10 @@ public class MiGenesis {
     public float contentNT(String seq, char nt){       
         return (float)numOfNT(seq,nt)/seq.length();
     }
+    
+    
+    
+    
     private int numOfNT(String seq, char nt){
         char[] cs=seq.toCharArray();
         int n=0;
@@ -681,7 +692,7 @@ public class MiGenesis {
     public float preMFE(String priStr, String preSeq, int start) {
         int end = start + preSeq.length();
         String preStr = priStr.substring(start, end);
-        return MfeFold.cal(preSeq, preStr);
+        return MfeFoldRNA.fold(preSeq, preStr);
     }
 
     /**

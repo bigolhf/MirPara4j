@@ -17,53 +17,59 @@ import java.util.ArrayList;
  * load the input file
  * @author weibo
  */
-public class ReadFile {
+public class ReadFastaFile {
 
-    private File fname;
+    private File fastaFilename;
     private String format;
-    private BufferedReader br;
-    private ArrayList<SimSeq> seqs;
+    private BufferedReader brFA;
+    private ArrayList<SimpleSeq> seqs;
     private double progress=0;
     private String title;
-    private StringBuilder s;
 
-    public ReadFile(File fname) throws FileNotFoundException, IOException{
-        this.fname=fname;
-        br = new BufferedReader(new FileReader(fname));
-        title = br.readLine();
+    
+    
+    /**
+     * read query sequences in FASTA format
+     * 
+     * @param fname : query sequence filename
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public ReadFastaFile(File fname) throws FileNotFoundException, IOException{
+        this.fastaFilename=fname;
+        brFA = new BufferedReader(new FileReader(fname));
+        title = brFA.readLine();
         if(title.substring(0, 1).equals(">") == false){
             throw new java.io.IOException("bad FASTA format on first line\n");
         }
         title=title.substring(1, title.length());
     }
-//    public ReadFile(File fname) throws IOException{
-//        this.fname=fname;
-//        readFastaFile();
-//    }
-    public ReadFile(String fname){
-        this.fname=new File(fname);
-    }
-    public ReadFile(File fname,String format){
-        this.fname=fname;
-        this.format=format;
-    }
     
+    
+    
+    
+    /**
+     * check whether there are any more entries in the FASTA file
+     * @return 
+     */
     public boolean hasSeq(){
-        if(br==null) return false;
-        else return true;
+        
+        if(brFA==null) return false;
+        return true;
+        
     }
     
-    public SimSeq getOneSeq() throws IOException{
-        SimSeq seq=null;
+    public SimpleSeq getOneSeq() throws IOException{
+        SimpleSeq seq=null;
         String line = "";
         StringBuilder s = new StringBuilder();
 
         
-        line=br.readLine();
+        line=brFA.readLine();
         while(line!=null){
             if(line.startsWith(">")==true){
                 
-                seq=new SimSeq(title,s.toString());
+                seq=new SimpleSeq(title,s.toString());
                 seq.setName(title);
                 
                 title=line.substring(1, line.length());
@@ -73,15 +79,15 @@ public class ReadFile {
             else{
                 line=line.replaceAll("\\s+", "").replace('T', 'u').toUpperCase();
                 s.append(line);
-                line=br.readLine();
+                line=brFA.readLine();
             }
         }
         if(line==null){
-            br.close();
-            br=null;
+            brFA.close();
+            brFA=null;
         }
         if(s!=null){
-            seq=new SimSeq(title,s.toString());
+            seq=new SimpleSeq(title,s.toString());
             seq.setName(title);
         }
         System.out.println("Loaded sequence "+title);
@@ -95,25 +101,25 @@ public class ReadFile {
     * @throws java.io.IOException
     */
     public void readFastaFile() throws java.io.IOException{
-        System.out.print("Start loading data "+fname.getName()+" ...");
-        long totalSize=fname.length();
+        System.out.print("Start loading data "+fastaFilename.getName()+" ...");
+        long totalSize=fastaFilename.length();
         long readedSize=0;
         
-        seqs=new ArrayList<SimSeq>();
+        seqs=new ArrayList<SimpleSeq>();
 
-        br = new BufferedReader(new FileReader(fname));
+        brFA = new BufferedReader(new FileReader(fastaFilename));
         String line = "";
         String title = "";
         StringBuilder seq = new StringBuilder();
 
-        title = br.readLine();
+        title = brFA.readLine();
         readedSize+=title.length()+1;
         if(title.substring(0, 1).equals(">") == false){
             throw new java.io.IOException("bad FASTA format on first line\n");
         }
         title = title.substring(1, title.length());
 
-        while((line = br.readLine()) != null){
+        while((line = brFA.readLine()) != null){
             readedSize+=line.length()+1;
             if(line.startsWith(">")==true){
                 line = line.substring(1, line.length());
@@ -131,11 +137,11 @@ public class ReadFile {
        }
        System.out.println();
        addSequence(title,seq.toString());
-       br.close();
+       brFA.close();
     }
 
     private void addSequence(String title, String seq) {
-        SimSeq entry=new SimSeq(title,seq);
+        SimpleSeq entry=new SimpleSeq(title,seq);
         entry.setName(title);
         getSeqs().add(entry);
         /**********debug***********************/
@@ -147,7 +153,7 @@ public class ReadFile {
      * store the sequences from file as SimSeq
      * @return ArrayList<SimSeq>: the seqs
      */
-    public ArrayList<SimSeq> getSeqs() {
+    public ArrayList<SimpleSeq> getSeqs() {
         return seqs;
     }
 

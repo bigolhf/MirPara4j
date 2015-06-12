@@ -55,8 +55,8 @@ public class PipeLine {
     
 
 
-    private ArrayList<SimSeq> seqList;
-    private ArrayList<SimSeq> segList;
+    private ArrayList<SimpleSeq> seqList;
+    private ArrayList<SimpleSeq> segList;
     private ArrayList<PriMiRNA> priList;
     private String[] last;
     private ArrayList<HashMap> featureList;
@@ -66,27 +66,29 @@ public class PipeLine {
 
     
     /**
-     * constructor
+     * class constructor
      * 
      */
     public PipeLine() {  
         miRParaConfig = new MiRParaConfiguation();
     }
 
+    
+    
     /**
      * predict the miRNAs in a set of input sequences
      * 
      * @throws IOException
      */
-    public void predictMiRNAsInInputSequences() throws IOException{
+    public void oldRun() throws IOException{
         
         initialize();
 
-        loadData(new File(getInputFilename()));
+        loadFastaSequenceData(new File(getInputFilename()));
 
-        for(SimSeq seq : seqList){
+        for(SimpleSeq seq : seqList){
 
-            print("Begin to extract possible pri-miRNAs from sequence "+seq.getId()+"...");
+            logger.info("Begin to extract possible pri-miRNAs from sequence "+seq.getId()+"...");
             findPrimiRNA(seq);
             seq.setSeq(null); //free space
             print("\n"+priList.size()+" putative pri-miRNAs are found\n");
@@ -98,9 +100,9 @@ public class PipeLine {
                 findMiRNA(pri);
                 priList.set(i, null); //free space
                 i++;
-                print(Output.decimal(i*100.0/priList.size())+"%"+Output.backspace(Output.decimal(i*100.0/priList.size())+"%"));                
+                logger.info(Output.decimal(i*100.0/priList.size())+"%"+Output.backspace(Output.decimal(i*100.0/priList.size())+"%"));                
             }
-            print("\n"+trueList.size()+" miRNA candidates are found\n");
+            logger.info("\n"+trueList.size()+" miRNA candidates are found\n");
 
 
             reportResult(seq);
@@ -118,68 +120,85 @@ public class PipeLine {
      * 
      * @throws IOException 
      */
-    public void run2() throws IOException{
+    public void predictMiRNAsInInputSequences() throws IOException{
         initialize();
-        ReadFile rf=new ReadFile(getInputFilename());
+        ReadFastaFile rf = new ReadFastaFile(new File(getInputFilename()));
         while(rf.hasSeq()){
-            SimSeq seq=rf.getOneSeq();  //each seq
+            SimpleSeq seq = rf.getOneSeq();  //each seq
             setOutfileName(workingDir, new File(getInputFilename()), seq.getId());
-            trueList=new ArrayList<HashMap>();
-            last=new String[0];
-            recordResults(seq);
-            this.append=true;
-            int numOfMiRNA=0;
-            print("Begin to scan possible miRNAs from sequence "+seq.getId()+"...\n");
-            int length=seq.getLength();
+//            trueList=new ArrayList<HashMap>();
+            trueList = new ArrayList<>();
+            last = new String[0];
+            serializeResults(seq);
+            this.append = true;
+            int totalNumOfMiRNA=0;
+            logger.info("scanning for miRNAs in sequence " + seq.getId() + "...\n");
+            int length = seq.getLength();
             int n=(length-window)/step+1; //num of window, num of step = n-1
             if(n<1) n=1;
-            if(length-((n-1)*step+window)>19) n+=1;
+            if(length-((n-1)*step+window)>19) n+=1;  // I think this must be to stop scanning fragments that are closer together than one miRNA
             int end=0, start=this.start-1;
+            logger.info("will scan " + n + " fragments");
             for(int i=0;i<n;i++){
                 
                 if(start>=length) break;
-                end=start+window;
-                if(end>length) end=length;
-                String id=seq.getName()+"_"+(start+1)+"-"+end;
+                end = start+window;
+                if(end>length) end = length;
+                String id=seq.getName() + "_" + (start+1) + "-" + end;
                 String subseq=seq.getSeq().substring(start,end);
-                print("scan region "+(start+1)+"-"+end+"...");
-                SimSeq frag=new SimSeq(id,subseq);  //each frag
-                frag.setStart(start+1);// count from 1
-                frag.setEnd(end); //count from 1
+                
+                logger.info(".. scan region " + (start+1) + "-" + end + "...");
+                SimpleSeq frag = new SimpleSeq(id,subseq);  //each frag
+                frag.setStart(start+1); // we count from 1
+                frag.setEnd(end); 
                 frag.setName(seq.getId());
                 
-                SLScaner sl=new SLScaner();
-                ArrayList<PriMiRNA> pris=sl.scanSLoopFrom(frag);
+                StemLoopScanner sl = new StemLoopScanner();
+                ArrayList<PriMiRNA> pris = sl.scanStemLoopFrom(frag);
                 noRepeat(pris);
-                print(pris.size()+" pri-miRNA are found...");
-                int before=trueList.size();
+                logger.info(pris.size() + ".. pri-miRNA were found...");
+                int before = trueList.size();
                 for(PriMiRNA pri : pris){
                     findMiRNA(pri);                
                 }
-                int add=trueList.size()-before;
-                print("generate "+add+" miRNA...");
+                int add = trueList.size() - before;
+                if (add == 0)
+                    logger.info(".. didn't find any miRNAs");
+                else
+                    if(add == 1)
+                        logger.info(".. found 1 miRNA ...");
+                    else
+                        logger.info(".. found " + add + " miRNAs...");
+                    
                 //output the results in time to avoid memory leak
                 if(trueList.size()>100){
-                    numOfMiRNA+=trueList.size();
-                    recordResults(seq);
+                    totalNumOfMiRNA+=trueList.size();
+                    serializeResults(seq);
                     trueList=new ArrayList<HashMap>();
                 }
-                progress=Double.parseDouble(Output.decimal((i+1)*100.0/n));
+                progress = Double.parseDouble(Output.decimal((i+1)*100.0/n));
 //                print(Output.decimal((i+1)*100.0/n)+"%"+Output.backspace(Output.decimal((i+1)*100.0/n)+"%"));
                 print(Output.decimal((i+1)*100.0/n)+"%\n");
-                start+=step;
+                start+= step;
             }
-            print("\n");
+            logger.info("\n");
            
-            recordResults(seq);
-            numOfMiRNA+=trueList.size();
+            serializeResults(seq);
+            totalNumOfMiRNA+= trueList.size();
             
-            print(numOfMiRNA+" miRNA candidates are found\n\n");
+
+            if (totalNumOfMiRNA == 0)
+                logger.info("didn't find any miRNAs");
+            else
+                if(totalNumOfMiRNA == 1)
+                    logger.info("found a total of 1 miRNA candidate ...");
+                else
+                    logger.info("found a total of " + totalNumOfMiRNA + " miRNAs candidates...");
             
             this.append=false;
 
         }
-        print("Analysis complete. \n<Results are written to folder "+(workingDir.getCanonicalPath())+"\n");
+        logger.info("Analysis complete. \n<Results are written to folder <" + (workingDir.getCanonicalPath()) + ">\n");
     }
     
     
@@ -236,7 +255,7 @@ public class PipeLine {
                 String[] entry=line.split("\t");
 
                 PriMiRNA pri=new PriMiRNA(entry[0],entry[1]);
-                if(SLScaner.hasTwoLoop(pri)){
+                if(StemLoopScanner.hasTwoLoop(pri)){
                    logger.info("W1: "+entry[0]+" is not a hairpin structure!");
                     continue;
                 }
@@ -298,23 +317,47 @@ public class PipeLine {
     }
 
 
-    private void loadData(File fn) throws IOException{
+    /**
+     * Load query sequences in FASTA format
+     * 
+     * @param fn
+     * @throws IOException 
+     */
+    private void loadFastaSequenceData(File fn) throws IOException{
         
-        seqList=new ReadFile(fn).getSeqs();
+        seqList=new ReadFastaFile(fn).getSeqs();
     }
 
-    private void findPrimiRNA(SimSeq seq){
-        SLScaner sl=new SLScaner(seq);
+    
+    
+    /**
+     * search for pri-miRNA in specified Simple Sequence
+     * 
+     * @param seq 
+     */
+    private void findPrimiRNA(SimpleSeq seq){
+        
+        StemLoopScanner sl = new StemLoopScanner(seq);
+        
         sl.setWindow(window);
         sl.setStep(step);
         sl.setDistance(distance);
         sl.slidingWindow();
         sl.scanStemLoop();
         sl.noRepeat();
-        priList=sl.getPriList();
-        sl=null; // free space
+        
+        priList = sl.getPriList();
+        
+        sl=null; // free space : sr: is this necessary?
     }
 
+    
+    /**
+     * search for miRNA in specified pri-miRNA
+     * 
+     * @param priRNA
+     * @throws IOException 
+     */
     private void findMiRNA(PriMiRNA priRNA) throws IOException{ 
         MiGenesis mg=new MiGenesis(priRNA);
         try{
@@ -363,30 +406,51 @@ public class PipeLine {
         return Boolean.parseBoolean(result);
     }
     
+    
+    
+    /**
+     * set output file name based on folder, input file and sequence name
+     * 
+     * @param dir
+     * @param infile
+     * @param seqname 
+     */
     public void setOutfileName(File dir, File infile, String seqname){
-        dir.mkdirs();
-        String basename=infile.getName().replaceAll("\\.\\w+", "");
+
+        String basename = infile.getName().replaceAll("\\.\\w+", "");
 //        if(dir.endsWith("/"))  dir=dir.substring(dir.length()-1);
         setOutputFolder(dir+"/"+basename+"_"+seqname);
         results.add(getOutputFolder());
         Output.fname=getOutputFolder();
     }
 
+    
+    
     /**
      * output
      * @param seq
      * @throws IOException
      */
-    public void reportResult(SimSeq seq) throws IOException{
+    public void reportResult(SimpleSeq seq) throws IOException{
         Output.detail(trueList,seq,append);
         Output.overall(trueList,seq,append);
 //        Output.distribution(trueList,seq);
 
     }
     
-    public void recordResults(SimSeq seq) throws IOException {
+    
+    
+    /**
+     * output prediction results for specified sequence
+     * 
+     * @param seq
+     * @throws IOException 
+     */
+    public void serializeResults(SimpleSeq seq) throws IOException {
+        
         Output.detail(trueList,seq,append);
         Output.overall(trueList,seq,append);
+        
     }
 
     /**

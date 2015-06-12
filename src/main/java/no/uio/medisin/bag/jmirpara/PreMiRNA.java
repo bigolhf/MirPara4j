@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author weibo
  */
-public class PreMiRNA extends SimRNA{
+public class PreMiRNA extends SimpleRNASequence{
 
     public PreMiRNA(){
         super();

@@ -8,7 +8,7 @@ import java.util.HashMap;
  *
  * @author weibo
  */
-public class PriMiRNA extends SimRNA{
+public class PriMiRNA extends SimpleRNASequence{
 
     public PriMiRNA() {
         super();

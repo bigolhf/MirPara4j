@@ -7,48 +7,75 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * this class can find hairpins from a long sequence.
- * the order of calling motheds after instantiated:
+ * this class finds hairpins from a long sequence.
+ * the order of calling methods after instantiated:
  * slidingWindow();
  * scanStemLoop();
  * noRepeat();
  * @author weibo
  */
-public class SLScaner {
+public class StemLoopScanner {
 
     private int window=500;
     private int step=250;
     private int start=1;
-    private SimSeq sequence;
-    private int distance=60;
-    private ArrayList<SimSeq> segList;
-    private ArrayList<PriMiRNA> priList;
+    private int distance = 60;
+
+    private SimpleSeq sequence;
+    
+    private ArrayList<SimpleSeq> fragmentList;
+    private ArrayList<PriMiRNA> primiRNAList;
 
 //    private static String regSL="([\\(\\.]*\\()(\\.+)(\\)[\\)\\.]*)";
     private static String regSL="(\\.*\\([\\.\\(]*\\()(\\.+)(\\)[\\.\\)]*\\)\\.*)";
-    private static Pattern pattern=Pattern.compile(regSL);
+    private static Pattern pattern = Pattern.compile(regSL);
     private Matcher m;
 
-    public SLScaner(){
+    
+    /**
+     * Empty Class Constructor
+     */
+    public StemLoopScanner(){
 
     }
-    public SLScaner(SimSeq seq){
-        sequence=seq;
+    
+    
+    
+    /**
+     * Class constructor from input sequence
+     * 
+     * @param seq 
+     */
+    public StemLoopScanner(SimpleSeq seq){
+        sequence = seq;
     }
-    public SLScaner(SimSeq seq, int window, int step, int distance){
-        this.sequence=seq;
-        this.window=window;
-        this.step=step;
-        this.distance=distance;
+    
+    
+    
+    /**
+     * Class constructor from subsequence of input sequence
+     * 
+     * @param seq
+     * @param window
+     * @param step
+     * @param distance 
+     */
+    public StemLoopScanner(SimpleSeq seq, int window, int step, int distance){
+        
+        this.sequence = seq;
+        this.window = window;
+        this.step = step;
+        this.distance = distance;
     }
     
 
     /**
-     * slide window with given step size to generate a serial of segments
-     * before calling, one may set the slding window,step and start
+     * 
+     * slide window with given step size to generate a serial of segments for testing.
+     * before calling, one may set the sliding window size, step increment and start position
      */
     public void slidingWindow(){
-        segList=new ArrayList<SimSeq>();
+        fragmentList=new ArrayList<SimpleSeq>();
         int length=sequence.getLength();
         int n=(length-window)/step;
         if(n<0) n=0;
@@ -57,38 +84,41 @@ public class SLScaner {
         for(int i=0;i<=n;i++){
             
             if(start>=length) break;
-            end=start+window;
+            end = start + window;
             if(end>length) end=length;
-            String id=sequence.getName()+"_"+(start+1)+"-"+end;
-            String subseq=sequence.getSeq().substring(start,end);
+            String id = sequence.getName() + "_" + (start+1) + "-"+end;
+            String subseq = sequence.getSeq().substring(start,end);
 
-            SimSeq frag=new SimSeq(id,subseq);
+            SimpleSeq frag = new SimpleSeq(id,subseq);
             frag.setStart(start+1);// count from 1
             frag.setEnd(end); //count from 1
             frag.setName(sequence.getId());
-            segList.add(frag);
-            start+=step;
+            fragmentList.add(frag);
+            start+= step;
+            
         }
         
     }
     
 
     /**
-     * generate possible pri-miRNAs from all the segments
+     * generate candidate pri-miRNAs from all the segments
      */
     public void scanStemLoop(){
-        priList=new ArrayList<PriMiRNA>();
+        primiRNAList=new ArrayList<PriMiRNA>();
+        
         int i=1;
-        for(SimSeq seg : segList){
-            priList.addAll(scanSLoopFrom(seg));
-            System.out.print(Output.decimal(i*100.0/segList.size())+"%"+Output.backspace(Output.decimal(i*100.0/segList.size())+"%"));
+        for(SimpleSeq seg : fragmentList){
+            primiRNAList.addAll(scanStemLoopFrom(seg));
+            System.out.print(Output.decimal(i*100.0/fragmentList.size())+"%"+Output.backspace(Output.decimal(i*100.0/fragmentList.size())+"%"));
             i++;
         }
 //        segList=null; // release seglist space
     }
     
-    public ArrayList<PriMiRNA> scanSLoopFrom(SimSeq seq){
-        SimRNA rna=new SimRNA(seq);
+    
+    public ArrayList<PriMiRNA> scanStemLoopFrom(SimpleSeq seq){
+        SimpleRNASequence rna = new SimpleRNASequence(seq);
         foldRNA(rna);
         return extractHairpin(rna);
     }
@@ -97,9 +127,9 @@ public class SLScaner {
      * fold a rna sequence
      * @param rna
      */
-    public static void foldRNA(SimRNA rna){
-        rna.setEnergy(MfeFold.cal(rna.getSeq(),rna.getStr()));
-        rna.setStr(MfeFold.getStructure());
+    public static void foldRNA(SimpleRNASequence rna){
+        rna.setEnergy(MfeFoldRNA.fold(rna.getSeq(), rna.getStr()));
+        rna.setStr(MfeFoldRNA.getStructure());
 
 //        jmipara.MfeFold mf=new jmipara.MfeFold();
 //        mf.setSequence(rna.getSeq());
@@ -114,7 +144,7 @@ public class SLScaner {
      * setCutOff() can change the minimal length of the hairpin
      * @param rna
      */
-    public ArrayList<PriMiRNA> extractHairpin(SimRNA rna){
+    public ArrayList<PriMiRNA> extractHairpin(SimpleRNASequence rna){
         
         ArrayList<PriMiRNA> pris=new ArrayList<PriMiRNA>();
         
@@ -180,10 +210,10 @@ public class SLScaner {
      */
     public void noRepeat(){
         HashMap map=new HashMap();
-        for(PriMiRNA pri:priList)
+        for(PriMiRNA pri:primiRNAList)
             map.put(pri.getId(), pri);
 
-        priList=new ArrayList<PriMiRNA>(map.values());
+        primiRNAList=new ArrayList<PriMiRNA>(map.values());
     }
 
     /**
@@ -234,7 +264,7 @@ public class SLScaner {
      * @param String seq: sequence to be tested
      * @return boolean; if have two or more return true, or false
      */
-    public static boolean hasTwoLoop(SimRNA rna){
+    public static boolean hasTwoLoop(SimpleRNASequence rna){
         foldRNA(rna);
         int end5=rna.getStr().lastIndexOf("(");
         int start3=rna.getStr().indexOf(")");
@@ -289,14 +319,14 @@ public class SLScaner {
     /**
      * @return the sequence
      */
-    public SimSeq getSequence() {
+    public SimpleSeq getSequence() {
         return sequence;
     }
 
     /**
      * @param sequence the sequence to set
      */
-    public void setSequence(SimSeq sequence) {
+    public void setSequence(SimpleSeq sequence) {
         this.sequence = sequence;
     }
 
@@ -318,28 +348,28 @@ public class SLScaner {
      * @return the priList
      */
     public ArrayList<PriMiRNA> getPriList() {
-        return priList;
+        return primiRNAList;
     }
 
     /**
      * @param priList the priList to set
      */
     public void setPriList(ArrayList<PriMiRNA> priList) {
-        this.priList = priList;
+        this.primiRNAList = priList;
     }
 
     /**
      * @return the segList
      */
-    public ArrayList<SimSeq> getSegList() {
-        return segList;
+    public ArrayList<SimpleSeq> getSegList() {
+        return fragmentList;
     }
 
     /**
      * @param segList the segList to set
      */
-    public void setSegList(ArrayList<SimSeq> segList) {
-        this.segList = segList;
+    public void setSegList(ArrayList<SimpleSeq> segList) {
+        this.fragmentList = segList;
     }
 
 

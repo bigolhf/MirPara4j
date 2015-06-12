@@ -16,8 +16,8 @@ import java.util.ArrayList;
  */
 public class InputData {
 
-    private ArrayList<SimRNA> seqs;
-    private ArrayList<SimRNA> segs;
+    private ArrayList<SimpleRNASequence> seqs;
+    private ArrayList<SimpleRNASequence> segs;
     
     public ArrayList load(String fname) throws IOException{
         readFastaFile(fname);
@@ -32,7 +32,7 @@ public class InputData {
     */
     private void readFastaFile(String fname) throws java.io.IOException{
 
-        seqs=new ArrayList<SimRNA>();
+        seqs=new ArrayList<SimpleRNASequence>();
 
         BufferedReader br = new BufferedReader(new FileReader(fname));
         String line = "";
@@ -62,7 +62,7 @@ public class InputData {
     }
 
     private void addSequence(String title, String seq) {
-        SimRNA entry=new SimRNA(title,seq);
+        SimpleRNASequence entry=new SimpleRNASequence(title,seq);
         entry.setName(title);
         seqs.add(entry);
         /**********debug***********************/
@@ -74,8 +74,8 @@ public class InputData {
      * cut a sequence into a series of fragments
      * with specified window and step size
      */
-    public ArrayList<SimRNA> slide(int window, int step, SimRNA seq){
-        segs=new ArrayList<SimRNA>();
+    public ArrayList<SimpleRNASequence> slide(int window, int step, SimpleRNASequence seq){
+        segs=new ArrayList<SimpleRNASequence>();
         int length=seq.getLength();
         int n=(length-window)/step;
         if(n<0) n=0;
@@ -89,7 +89,7 @@ public class InputData {
             String id=seq.getName()+"_"+(start+1)+"-"+end;
             String subseq=seq.getSeq().substring(start,end);
 
-            SimRNA frag=new SimRNA(id,subseq);
+            SimpleRNASequence frag=new SimpleRNASequence(id,subseq);
             frag.setStart(start+1);// count from 1
             frag.setEnd(end); //count from 1
             frag.setName(seq.getName());

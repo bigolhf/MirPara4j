@@ -31,9 +31,9 @@ public class ParaToolKit {
 //        }
 //    }
 //
-    public static void foldRNA(SimRNA rna){
-        rna.setEnergy(MfeFold.cal(rna.getSeq(),rna.getStr()));
-        rna.setStr(MfeFold.getStructure());
+    public static void foldRNA(SimpleRNASequence rna){
+        rna.setEnergy(MfeFoldRNA.fold(rna.getSeq(),rna.getStr()));
+        rna.setStr(MfeFoldRNA.getStructure());
     }
 //
 //    public static ArrayList<PriMiRNA> extractHairpin(SimRNA rna, int threshold){

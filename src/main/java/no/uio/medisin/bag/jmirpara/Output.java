@@ -29,21 +29,29 @@ public class Output {
     public static int fpos;
     public static int lpos;
 
-    public static void overall(ArrayList<HashMap> res, SimSeq seq, boolean a) throws IOException{
+    /**
+     * 
+     * @param res
+     * @param seq
+     * @param appendData
+     * 
+     * @throws IOException 
+     */
+    public static void overall(ArrayList<HashMap> res, SimpleSeq seq, boolean appendData) throws IOException{
         
-        BufferedWriter ov;
-        if(a==false){
-            ov=new BufferedWriter(new FileWriter(fname+".tab"));
-            ov.write(seq.getId()+"\n");
-            ov.write(seq.getLength()+"\n");
-            ov.write("pri_id\tpri_start\tpri_end\tpri_seq\tpri_str\tmir_id\tmir_start\tmir_size\tmir_seq\tmir_strand\thit\n");
+        BufferedWriter bwOverallTabbedData;
+        if(appendData==false){
+            bwOverallTabbedData=new BufferedWriter(new FileWriter(fname + ".tab"));
+            bwOverallTabbedData.write(seq.getId() + "\n");
+            bwOverallTabbedData.write(seq.getLength() + "\n");
+            bwOverallTabbedData.write("pri_id\tpri_start\tpri_end\tpri_seq\tpri_str\tmir_id\tmir_start\tmir_size\tmir_seq\tmir_strand\thit\n");
         }
         else{
-            ov=new BufferedWriter(new FileWriter(fname+".tab",true));
+            bwOverallTabbedData = new BufferedWriter(new FileWriter(fname+".tab",true));
         }
         sortList(res);
         for(HashMap re:res){
-            StringBuilder entry=new StringBuilder();
+            StringBuilder entry = new StringBuilder();
             entry.append(re.get("priRNA_id")).append("\t").append(re.get("priRNA_start")).append("\t");
             entry.append(re.get("priRNA_end")).append("\t").append(re.get("priRNA_sequence")).append("\t");
             entry.append(re.get("priRNA_structure")).append("\t").append(re.get("miRNA_id")).append("\t");
@@ -51,9 +59,9 @@ public class Output {
             entry.append(re.get("miRNA_sequence")).append("\t").append(re.get("strand")).append("\t");
             String hit=blastMirBase(re.get("miRNA_sequence").toString());
             entry.append(hit).append("\n");
-            ov.write(entry.toString());
+            bwOverallTabbedData.write(entry.toString());
         }
-        ov.close();
+        bwOverallTabbedData.close();
     }
     
 
@@ -63,12 +71,12 @@ public class Output {
      * @param seq
      * @throws IOException
      */
-    public static void distribution(ArrayList<HashMap> resultList, SimSeq seq) throws IOException{
+    public static void distribution(ArrayList<HashMap> resultList, SimpleSeq seq) throws IOException{
         
-        int seqW=1500,seqH=10,x0=5,y0=50,mirH=5;
-        BufferedWriter di=new BufferedWriter(new FileWriter(fname+".html"));
+        int seqW=1500, seqH=10, x0=5, y0=50, mirH=5;
+        BufferedWriter bwLocationDataHtml = new BufferedWriter(new FileWriter(fname + ".html"));
 
-        di.write("<html>\n"
+        bwLocationDataHtml.write("<html>\n"
                 + "<head>\n"
                 + "<title>JmiPara 2.0 miRNA results</title>\n"
                 + "<style type=\"text/css\">\n"
@@ -151,67 +159,74 @@ public class Output {
 
             String hit=blastMirBase(mir.get("miRNA_sequence").toString());
             if(hit.equals(""))
-                di.write("<a href=#><div title=\""+title+"\" class=\"mir\" style=\"top:"+top+"px;left:"+left+"px;width:"+mirW+"px;background:"+color+"\"></div></a>\n");
+                bwLocationDataHtml.write("<a href=#><div title=\""+title+"\" class=\"mir\" style=\"top:"+top+"px;left:"+left+"px;width:"+mirW+"px;background:"+color+"\"></div></a>\n");
             else
-                di.write("<a href=#><div title=\""+title+"<p>hits to miRBase entris:<br>"+hit+"\" class=\"mir\" style=\"top:"+top+"px;left:"+left+"px;width:"+mirW+"px;background:#1d0\"></div></a>\n");
+                bwLocationDataHtml.write("<a href=#><div title=\""+title+"<p>hits to miRBase entris:<br>"+hit+"\" class=\"mir\" style=\"top:"+top+"px;left:"+left+"px;width:"+mirW+"px;background:#1d0\"></div></a>\n");
         }
 
 
-        di.write("</body></html>");
-        di.close();
+        bwLocationDataHtml.write("</body></html>");
+        bwLocationDataHtml.close();
     }
 
    /**
     * detail feature values of miRNAs
+    * 
     * @param resultList
+    * @param seq : current Query Sequence
+    * @param appendRecord: append this data to the current file
+    * 
     * @throws IOException
     */
-    public static void detail(ArrayList<HashMap> resultList, SimSeq seq, boolean a) throws IOException{
+    public static void detail(ArrayList<HashMap> resultList, SimpleSeq seq, boolean appendRecord) throws IOException{
         
-        BufferedWriter de;
-        BufferedWriter in;
-        File txt=new File(fname+".txt");
-        String str="";
-        if(a==false){
-            de=new BufferedWriter(new FileWriter(txt));
-            str="JmiPara-2.0 miRNA Scan Report\n\n";
-            de.write(str);
-            in=new BufferedWriter(new FileWriter(fname+".ind"));
-            fpos=str.length();
-            lpos=0;
+        BufferedWriter bwTxtReportFile;
+        BufferedWriter bwIndReportFile;
+        File txtReportFile = new File(fname + ".txt");
+        String str = "";
+        
+        if(appendRecord == false){
+            bwTxtReportFile = new BufferedWriter(new FileWriter(txtReportFile, appendRecord));
+            str = "miRPara4j Scan Report\n\n";
+            bwTxtReportFile.write(str);
+            bwIndReportFile = new BufferedWriter(new FileWriter(fname + ".ind", appendRecord));
+            fpos = str.length();
+            lpos = 0;
         }
         else{
-            de=new BufferedWriter(new FileWriter(fname+".txt",true));
-            in=new BufferedWriter(new FileWriter(fname+".ind",true));
+            bwTxtReportFile = new BufferedWriter(new FileWriter(fname + ".txt", appendRecord));
+            bwIndReportFile = new BufferedWriter(new FileWriter(fname + ".ind", appendRecord));
         }
-        String[] paraList=ModelSet.model("all");
+        
+        
+        String[] paraList = ModelSet.model("all");
         sortList(resultList);
         for(HashMap result : resultList){
-            in.write(lpos+"\t"+(fpos+1));
-            str=repeat("=",30)+"> "+result.get("miRNA_id")+" <"+repeat("=",30)+"\n\n";
-            de.write(str);
-            fpos+=str.length();
-            str=result.get("plot").toString()+"\n\n";
-            de.write(str);
-            fpos+=str.length();
-            str="probability="+result.get("probability")+"\n\n";
-            de.write(str);
-            fpos+=str.length();
+            bwIndReportFile.write(lpos+"\t"+(fpos+1));
+            str = repeat("=",30)+"> " + result.get("miRNA_id") + " <" + repeat("=",30) + "\n\n";
+            bwTxtReportFile.write(str);
+            fpos+= str.length();
+            str = result.get("plot").toString()+"\n\n";
+            bwTxtReportFile.write(str);
+            fpos+= str.length();
+            str = "probability=" + result.get("probability") + "\n\n";
+            bwTxtReportFile.write(str);
+            fpos+= str.length();
             for(String para : paraList){
                 if(result.containsKey(para)){
-                    str=flush(para,30)+"\t\t"+result.get(para)+"\n";
-                    de.write(str);
-                    fpos+=str.length();
+                    str = flush(para,30)+"\t\t"+result.get(para)+"\n";
+                    bwTxtReportFile.write(str);
+                    fpos+= str.length();
                 }
             }
-            str="\n";
-            de.write(str);
-            fpos+=str.length();
-            lpos+=1;
-            in.write("\t"+fpos+"\n");
+            str = "\n";
+            bwTxtReportFile.write(str);
+            fpos+= str.length();
+            lpos+= 1;
+            bwIndReportFile.write("\t" + fpos + "\n");
         }
-        de.close();
-        in.close();
+        bwTxtReportFile.close();
+        bwIndReportFile.close();
     }
 
     /**

@@ -6,10 +6,12 @@
 package no.uio.medisin.bag.jmirpara;
 
 /**
- * a simple sequence object
+ * a simple sequence object that contains some basic functionality
+ * and stores basic sequence features
+ * 
  * @author weibo
  */
-public class SimSeq {
+public class SimpleSeq {
     private String id="";
     private String seq="";
     private int length=0;
@@ -18,13 +20,26 @@ public class SimSeq {
     private String name="";
 
 
-    public SimSeq(){
+    /**
+     * Empty Class Constructor
+     */
+    public SimpleSeq(){
 
     }
-    public SimSeq(String id,String seq){
+    
+    
+    /**
+     * Constructor 
+     * 
+     * @param id
+     * @param seq 
+     */
+    public SimpleSeq(String id,String seq){
+        
         this.id=id;
         this.seq=seq;
         this.length=seq.length();
+        
     }
 
     /**
@@ -35,7 +50,7 @@ public class SimSeq {
     }
 
     /**
-     * @param id the id to set
+     * @param id 
      */
     public void setId(String id) {
         this.id = id;
@@ -49,63 +64,63 @@ public class SimSeq {
     }
 
     /**
-     * @param seq the seq to set
+     * @param seq 
      */
     public void setSeq(String seq) {
         this.seq = seq;
     }
 
     /**
-     * @return the length
+     * @return length
      */
     public int getLength() {
         return length;
     }
 
     /**
-     * @param length the length to set
+     * @param length 
      */
     public void setLength(int length) {
         this.length = length;
     }
 
     /**
-     * @return the start
+     * @return start
      */
     public int getStart() {
         return start;
     }
 
     /**
-     * @param start the start to set
+     * @param start
      */
     public void setStart(int start) {
         this.start = start;
     }
 
     /**
-     * @return the end
+     * @return end
      */
     public int getEnd() {
         return end;
     }
 
     /**
-     * @param end the end to set
+     * @param end
      */
     public void setEnd(int end) {
         this.end = end;
     }
 
     /**
-     * @return the name
+     * @return name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * @param name 
      */
     public void setName(String name) {
         this.name = name;

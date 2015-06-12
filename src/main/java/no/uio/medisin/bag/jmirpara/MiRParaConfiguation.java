@@ -53,11 +53,18 @@ public class MiRParaConfiguation {
     private double progress;
     private ArrayList<String> results=new ArrayList<String>();
     
-
+    /**
+     * empty class constructor
+     */
     public MiRParaConfiguation()
     {
     }
     
+    /**
+     * read configuration file in YAML format
+     * 
+     * @param configFile 
+     */
     public void ReadConfigurationFile(String configFile){
         try{            
             setConfigurationFile(configFile);

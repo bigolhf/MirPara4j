@@ -11,7 +11,7 @@ import java.util.HashMap;
  *
  * @author weibo
  */
-public class MatMiRNA extends SimRNA{
+public class MatMiRNA extends SimpleRNASequence{
 
     public MatMiRNA(){
         super();
