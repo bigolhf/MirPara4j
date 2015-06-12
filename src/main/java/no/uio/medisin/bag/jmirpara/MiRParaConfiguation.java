@@ -39,9 +39,7 @@ public class MiRParaConfiguation {
     
     private String pathToModelData = "";
     
-    private File filename;
-    private String outfile;
-    private double version=3.0;
+
     private int window=500;
     private int step=250;
     private int start=1;
@@ -80,7 +78,8 @@ public class MiRParaConfiguation {
             this.setMirbaseDataFile((String) dataOptions.get("data_file"));
             
             pathToMirbaseData = installationFolder + FileSeparator + this.getDataFolder() + FileSeparator + this.getMirbaseDataFile();
-            pathToModelData = installationFolder + FileSeparator + this.getModelFolder() + FileSeparator + this.getModel();
+            pathToModelData = installationFolder + FileSeparator + this.getModelFolder() + FileSeparator 
+              + this.getModel() + "_" + this.getLevel() + ".model";
             
         }
         catch(FileNotFoundException e){
@@ -88,6 +87,24 @@ public class MiRParaConfiguation {
         }
     }
     
+    /**
+     * summarize run parameters
+     * 
+     * @return String
+     */
+    public String reportParameters()
+    {
+        String summary = 
+            "window size :\t" + window + "\n"
+          + "step size   :\t" + step + "\n"
+          + "start       :\t" + start + "\n"
+          + "distance    :\t" + distance + "\n"
+          + "cutoff      :\t" + cutoff + "\n"
+          + "model       :\t" + model + "\n"
+          + "level       :\t" + level;
+        
+        return summary;
+    }
     
     /**
      * @return the installationFolder
@@ -220,6 +237,97 @@ public class MiRParaConfiguation {
      */
     public String getPathToLibrary() {
         return pathToLibrary;
+    }
+
+    /**
+     * @return the level
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * @param level the level to set
+     */
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    /**
+     * @return the pathToMirbaseData
+     */
+    public String getPathToMirbaseData() {
+        return pathToMirbaseData;
+    }
+
+    /**
+     * @return the window
+     */
+    public int getWindow() {
+        return window;
+    }
+
+    /**
+     * @param window the window to set
+     */
+    public void setWindow(int window) {
+        this.window = window;
+    }
+
+    /**
+     * @return the step
+     */
+    public int getStep() {
+        return step;
+    }
+
+    /**
+     * @param step the step to set
+     */
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    /**
+     * @return the start
+     */
+    public int getStart() {
+        return start;
+    }
+
+    /**
+     * @param start the start to set
+     */
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    /**
+     * @return the distance
+     */
+    public int getDistance() {
+        return distance;
+    }
+
+    /**
+     * @param distance the distance to set
+     */
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    /**
+     * @return the cutoff
+     */
+    public double getCutoff() {
+        return cutoff;
+    }
+
+    /**
+     * @param cutoff the cutoff to set
+     */
+    public void setCutoff(double cutoff) {
+        this.cutoff = cutoff;
     }
     
     

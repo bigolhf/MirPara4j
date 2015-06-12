@@ -74,7 +74,8 @@ public class JmiGUI extends JFrame implements ActionListener{
     
     public JmiGUI(){
         
-        title="JmiPara";
+        title="miRPara4j";
+        
         makeFormPanel();
         makeLogPanel();
         this.setLayout(new BorderLayout());
@@ -92,6 +93,7 @@ public class JmiGUI extends JFrame implements ActionListener{
     }
     
     private void makeFormPanel(){
+        
         formPanel=new JPanel();
         formPanel.setLayout(new BorderLayout(1,4));
         
@@ -178,6 +180,7 @@ public class JmiGUI extends JFrame implements ActionListener{
     }
     
     private void makeLogPanel(){
+        
         logPanel=new JPanel();
         logPanel.setLayout(new BorderLayout(1,4));
         logPanel.setPreferredSize(new Dimension(575,300));
@@ -204,8 +207,9 @@ public class JmiGUI extends JFrame implements ActionListener{
         
         System.setOut(new PrintStream(new TextAreaOutputStream(logArea),true));
         System.setErr(new PrintStream(new TextAreaOutputStream(logArea),true));
+        
         JmiCMD.printBanner();
-        JmiCMD.printUsage();
+        JmiCMD.print_help();
 
     }
     
@@ -245,7 +249,7 @@ public class JmiGUI extends JFrame implements ActionListener{
                 System.err.println("lack input file!");
                 return;
             }
-            pl.setFilename(infile);
+            pl.setInputFilename(infile.toString());
             this.outdir=new File(outdirF.getText());
             pl.setWorkingDir(outdir);
             this.model=(String)(modelCB.getSelectedItem());
@@ -371,7 +375,7 @@ public class JmiGUI extends JFrame implements ActionListener{
         }
         else if(ae.getSource()==helpButton){
             JmiCMD.printBanner();
-            JmiCMD.printUsage();
+            JmiCMD.print_help();
         }
         else if(ae.getSource()==clearButton){
             logArea.setText("");

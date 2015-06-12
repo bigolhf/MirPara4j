@@ -1098,3 +1098,886 @@ start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
 2015-05-09 16:05:00.003 [main] INFO   - cutoff set to 0.80
 2015-05-09 16:05:00.004 [main] INFO   - test set to 1
 2015-05-09 16:05:00.004 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-45-10 14:45:32.772 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-45-10 14:45:32.828 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-45-10 14:45:32.828 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-45-10 14:45:32.934 [main] TRACE  - parsing args
+2015-45-10 14:45:32.938 [main] INFO   - level set to 1
+2015-45-10 14:45:32.938 [main] INFO   - step set to 50
+2015-45-10 14:45:32.938 [main] INFO   - window set to 500
+2015-45-10 14:45:32.938 [main] INFO   - distance set to 60
+2015-45-10 14:45:32.938 [main] INFO   - cutoff set to 0.80
+2015-45-10 14:45:32.939 [main] INFO   - test set to 1
+2015-45-10 14:45:32.939 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-45-10 14:45:38.360 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-45-10 14:45:38.386 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-45-10 14:45:57.163 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-45-10 14:45:57.164 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-45-10 14:45:57.164 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-45-10 14:45:57.210 [main] TRACE  - parsing args
+2015-45-10 14:45:57.213 [main] INFO   - level set to 1
+2015-45-10 14:45:57.213 [main] INFO   - step set to 50
+2015-45-10 14:45:57.213 [main] INFO   - window set to 500
+2015-45-10 14:45:57.213 [main] INFO   - distance set to 60
+2015-45-10 14:45:57.214 [main] INFO   - cutoff set to 0.80
+2015-45-10 14:45:57.214 [main] INFO   - test set to 1
+2015-45-10 14:45:57.214 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-47-10 14:47:13.596 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-47-10 14:47:14.141 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-52-10 14:52:03.887 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-52-10 14:52:03.889 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-52-10 14:52:03.889 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-52-10 14:52:03.963 [main] TRACE  - parsing args
+2015-52-10 14:52:03.986 [main] INFO   - level set to 1
+2015-52-10 14:52:03.987 [main] INFO   - step set to 50
+2015-52-10 14:52:03.987 [main] INFO   - window set to 500
+2015-52-10 14:52:03.987 [main] INFO   - distance set to 60
+2015-52-10 14:52:03.987 [main] INFO   - cutoff set to 0.80
+2015-52-10 14:52:03.987 [main] INFO   - test set to 1
+2015-52-10 14:52:03.987 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-55-10 14:55:40.268 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-55-10 14:55:40.270 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-55-10 14:55:40.270 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-55-10 14:55:40.329 [main] TRACE  - parsing args
+2015-55-10 14:55:40.333 [main] INFO   - level set to 1
+2015-55-10 14:55:40.333 [main] INFO   - step set to 50
+2015-55-10 14:55:40.333 [main] INFO   - window set to 500
+2015-55-10 14:55:40.333 [main] INFO   - distance set to 60
+2015-55-10 14:55:40.333 [main] INFO   - cutoff set to 0.80
+2015-55-10 14:55:40.334 [main] INFO   - test set to 1
+2015-55-10 14:55:40.334 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-55-10 14:55:51.750 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-55-10 14:55:51.751 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-56-10 14:56:24.477 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-56-10 14:56:24.478 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-56-10 14:56:24.478 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-56-10 14:56:24.523 [main] TRACE  - parsing args
+2015-56-10 14:56:24.526 [main] INFO   - level set to 1
+2015-56-10 14:56:24.527 [main] INFO   - step set to 50
+2015-56-10 14:56:24.527 [main] INFO   - window set to 500
+2015-56-10 14:56:24.527 [main] INFO   - distance set to 60
+2015-56-10 14:56:24.527 [main] INFO   - cutoff set to 0.80
+2015-56-10 14:56:24.528 [main] INFO   - test set to 1
+2015-56-10 14:56:24.528 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-57-10 14:57:11.740 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-57-10 14:57:11.740 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-59-10 14:59:12.777 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-59-10 14:59:12.778 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-59-10 14:59:12.778 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-59-10 14:59:12.825 [main] TRACE  - parsing args
+2015-59-10 14:59:12.828 [main] INFO   - level set to 1
+2015-59-10 14:59:12.828 [main] INFO   - step set to 50
+2015-59-10 14:59:12.828 [main] INFO   - window set to 500
+2015-59-10 14:59:12.828 [main] INFO   - distance set to 60
+2015-59-10 14:59:12.828 [main] INFO   - cutoff set to 0.80
+2015-59-10 14:59:12.828 [main] INFO   - test set to 1
+2015-59-10 14:59:12.829 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-59-10 14:59:22.683 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-59-10 14:59:22.684 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-05-10 15:05:26.307 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-05-10 15:05:26.308 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-05-10 15:05:26.309 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-05-10 15:05:26.372 [main] TRACE  - parsing args
+2015-05-10 15:05:26.375 [main] INFO   - level set to 1
+2015-05-10 15:05:26.376 [main] INFO   - step set to 50
+2015-05-10 15:05:26.376 [main] INFO   - window set to 500
+2015-05-10 15:05:26.376 [main] INFO   - distance set to 60
+2015-05-10 15:05:26.376 [main] INFO   - cutoff set to 0.80
+2015-05-10 15:05:26.376 [main] INFO   - test set to 1
+2015-05-10 15:05:26.377 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-05-10 15:05:36.850 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-05-10 15:05:36.851 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-50-11 13:50:20.123 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-50-11 13:50:20.125 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-50-11 13:50:20.125 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-50-11 13:50:20.186 [main] TRACE  - parsing args
+2015-50-11 13:50:20.190 [main] INFO   - level set to 1
+2015-50-11 13:50:20.190 [main] INFO   - step set to 50
+2015-50-11 13:50:20.190 [main] INFO   - window set to 500
+2015-50-11 13:50:20.190 [main] INFO   - distance set to 60
+2015-50-11 13:50:20.190 [main] INFO   - cutoff set to 0.80
+2015-50-11 13:50:20.191 [main] INFO   - test set to 1
+2015-50-11 13:50:20.191 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-50-11 13:50:34.914 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-50-11 13:50:34.915 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-50-11 13:50:34.915 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-50-11 13:50:34.976 [main] TRACE  - parsing args
+2015-50-11 13:50:34.980 [main] INFO   - level set to 1
+2015-50-11 13:50:34.981 [main] INFO   - step set to 50
+2015-50-11 13:50:34.981 [main] INFO   - window set to 500
+2015-50-11 13:50:34.981 [main] INFO   - distance set to 60
+2015-50-11 13:50:34.981 [main] INFO   - cutoff set to 0.80
+2015-50-11 13:50:34.981 [main] INFO   - test set to 1
+2015-50-11 13:50:34.982 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-50-11 13:50:56.881 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-50-11 13:50:56.882 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-50-11 13:50:56.882 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-50-11 13:50:56.928 [main] TRACE  - parsing args
+2015-50-11 13:50:56.931 [main] INFO   - level set to 1
+2015-50-11 13:50:56.931 [main] INFO   - step set to 50
+2015-50-11 13:50:56.932 [main] INFO   - window set to 500
+2015-50-11 13:50:56.932 [main] INFO   - distance set to 60
+2015-50-11 13:50:56.932 [main] INFO   - cutoff set to 0.80
+2015-50-11 13:50:56.932 [main] INFO   - test set to 1
+2015-50-11 13:50:56.932 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-51-11 13:51:15.855 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-51-11 13:51:15.857 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-51-11 13:51:15.857 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-57-12 09:57:06.270 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-57-12 09:57:06.271 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-57-12 09:57:06.271 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-57-12 09:57:06.303 [main] TRACE  - parsing args
+2015-57-12 09:57:06.306 [main] INFO   - model set to overall
+2015-10-12 10:10:11.264 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-10-12 10:10:11.265 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-10-12 10:10:11.265 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-10-12 10:10:11.334 [main] TRACE  - parsing args
+2015-10-12 10:10:11.338 [main] FATAL  - Failed to parse command line properties
+org.apache.commons.cli.UnrecognizedOptionException: Unrecognized option: -r
+	at org.apache.commons.cli.Parser.processOption(Parser.java:363) ~[commons-cli-1.2.jar:1.2]
+	at org.apache.commons.cli.Parser.parse(Parser.java:199) ~[commons-cli-1.2.jar:1.2]
+	at org.apache.commons.cli.Parser.parse(Parser.java:85) ~[commons-cli-1.2.jar:1.2]
+	at no.uio.medisin.bag.jmirpara.JmiCMD.parseArguments(JmiCMD.java:149) [classes/:?]
+	at no.uio.medisin.bag.jmirpara.JmiCMD.main(JmiCMD.java:59) [classes/:?]
+2015-10-12 10:10:11.343 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-10-12 10:10:11.343 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-10-12 10:10:11.343 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-11-12 10:11:24.896 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-11-12 10:11:24.897 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-11-12 10:11:24.898 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-11-12 10:11:24.948 [main] TRACE  - parsing args
+2015-11-12 10:11:24.952 [main] FATAL  - Failed to parse command line properties
+org.apache.commons.cli.UnrecognizedOptionException: Unrecognized option: -f
+	at org.apache.commons.cli.Parser.processOption(Parser.java:363) ~[commons-cli-1.2.jar:1.2]
+	at org.apache.commons.cli.Parser.parse(Parser.java:199) ~[commons-cli-1.2.jar:1.2]
+	at org.apache.commons.cli.Parser.parse(Parser.java:85) ~[commons-cli-1.2.jar:1.2]
+	at no.uio.medisin.bag.jmirpara.JmiCMD.parseArguments(JmiCMD.java:149) [classes/:?]
+	at no.uio.medisin.bag.jmirpara.JmiCMD.main(JmiCMD.java:59) [classes/:?]
+2015-11-12 10:11:24.955 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-11-12 10:11:24.956 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-11-12 10:11:24.956 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-12-12 10:12:27.300 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-12-12 10:12:27.301 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-12-12 10:12:27.301 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-12-12 10:12:27.358 [main] TRACE  - parsing args
+2015-12-12 10:12:27.361 [main] INFO   - model set to overall
+2015-13-12 10:13:12.823 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-13-12 10:13:12.824 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-13-12 10:13:12.824 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-13-12 10:13:12.867 [main] TRACE  - parsing args
+2015-13-12 10:13:12.870 [main] INFO   - model set to overall
+2015-13-12 10:13:12.870 [main] INFO   - level set to 1
+2015-13-12 10:13:12.870 [main] INFO   - step set to 50
+2015-13-12 10:13:12.871 [main] INFO   - window set to 500
+2015-13-12 10:13:12.871 [main] INFO   - distance set to 60
+2015-13-12 10:13:12.871 [main] INFO   - test set to 1
+2015-17-12 10:17:41.728 [main] INFO   - input file set to src/main/test/demo.fas
+2015-17-12 10:17:50.695 [main] INFO   - output folder issrc/main/test/demo
+2015-18-12 10:18:08.675 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-18-12 10:18:08.677 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-18-12 10:18:08.677 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-18-12 10:18:08.723 [main] TRACE  - parsing args
+2015-18-12 10:18:08.726 [main] INFO   - model set to overall
+2015-18-12 10:18:08.727 [main] INFO   - level set to 1
+2015-18-12 10:18:08.727 [main] INFO   - step set to 50
+2015-18-12 10:18:08.727 [main] INFO   - window set to 500
+2015-18-12 10:18:08.727 [main] INFO   - distance set to 60
+2015-18-12 10:18:08.727 [main] INFO   - test set to 1
+2015-18-12 10:18:08.727 [main] INFO   - input file set to src/main/test/demo.fas
+2015-18-12 10:18:08.728 [main] INFO   - output folder issrc/main/test/demo
+2015-18-12 10:18:20.149 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-18-12 10:18:34.739 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-18-12 10:18:35.227 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-18-12 10:18:37.612 [main] INFO   - Configuration file is 0.80
+2015-25-12 10:25:12.631 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-25-12 10:25:12.632 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-25-12 10:25:12.632 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-25-12 10:25:12.689 [main] TRACE  - parsing args
+2015-25-12 10:25:12.692 [main] INFO   - model set to overall
+2015-25-12 10:25:12.692 [main] INFO   - level set to 1
+2015-25-12 10:25:12.692 [main] INFO   - step set to 50
+2015-25-12 10:25:12.692 [main] INFO   - window set to 500
+2015-25-12 10:25:12.692 [main] INFO   - distance set to 60
+2015-25-12 10:25:12.693 [main] INFO   - test set to 1
+2015-25-12 10:25:12.693 [main] INFO   - input file set to src/main/test/demo.fas
+2015-25-12 10:25:12.693 [main] INFO   - output folder issrc/main/test/demo
+2015-25-12 10:25:12.693 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-25-12 10:25:12.694 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-25-12 10:25:12.694 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-25-12 10:25:12.694 [main] INFO   - Configuration file is 0.80
+2015-25-12 10:25:30.074 [main] INFO   - create results folder </home/sr/NetBeansProjects/MirPara4j/src/main/test/demo>
+2015-25-12 10:25:51.384 [main] FATAL  - Configuration file 0.80 not found
+2015-25-12 10:25:51.385 [main] INFO   - installation folder is 
+2015-25-12 10:25:51.386 [main] INFO   - model folder is 
+2015-26-12 10:26:30.913 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-26-12 10:26:30.914 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-26-12 10:26:30.914 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-26-12 10:26:30.975 [main] TRACE  - parsing args
+2015-26-12 10:26:30.979 [main] INFO   - model set to overall
+2015-26-12 10:26:30.980 [main] INFO   - level set to 1
+2015-26-12 10:26:30.980 [main] INFO   - step set to 50
+2015-26-12 10:26:30.980 [main] INFO   - window set to 500
+2015-26-12 10:26:30.980 [main] INFO   - distance set to 60
+2015-26-12 10:26:30.981 [main] INFO   - test set to 1
+2015-26-12 10:26:30.981 [main] INFO   - input file set to src/main/test/demo.fas
+2015-26-12 10:26:30.981 [main] INFO   - output folder issrc/main/test/demo
+2015-26-12 10:26:30.981 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-26-12 10:26:30.981 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-26-12 10:26:30.982 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-26-12 10:26:30.982 [main] INFO   - Configuration file is 0.80
+2015-27-12 10:27:01.420 [main] FATAL  - Configuration file 0.80 not found
+2015-27-12 10:27:01.421 [main] INFO   - installation folder is 
+2015-27-12 10:27:01.423 [main] INFO   - model folder is 
+2015-27-12 10:27:08.708 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-27-12 10:27:08.709 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-27-12 10:27:08.709 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-27-12 10:27:08.755 [main] TRACE  - parsing args
+2015-27-12 10:27:08.759 [main] INFO   - model set to overall
+2015-27-12 10:27:08.759 [main] INFO   - level set to 1
+2015-27-12 10:27:08.760 [main] INFO   - step set to 50
+2015-27-12 10:27:08.760 [main] INFO   - window set to 500
+2015-27-12 10:27:08.761 [main] INFO   - distance set to 60
+2015-27-12 10:27:08.761 [main] INFO   - test set to 1
+2015-27-12 10:27:08.761 [main] INFO   - input file set to src/main/test/demo.fas
+2015-27-12 10:27:08.761 [main] INFO   - output folder issrc/main/test/demo
+2015-27-12 10:27:08.761 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-27-12 10:27:08.762 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-27-12 10:27:08.762 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-27-12 10:27:08.762 [main] INFO   - Configuration file is 0.80
+2015-27-12 10:27:15.976 [main] FATAL  - Configuration file 0.80 not found
+2015-27-12 10:27:39.458 [main] INFO   - installation folder is 
+2015-27-12 10:27:40.088 [main] INFO   - model folder is 
+2015-28-12 10:28:52.490 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-28-12 10:28:52.491 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-28-12 10:28:52.491 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-28-12 10:28:52.556 [main] TRACE  - parsing args
+2015-28-12 10:28:52.560 [main] INFO   - model set to overall
+2015-28-12 10:28:52.561 [main] INFO   - level set to 1
+2015-28-12 10:28:52.561 [main] INFO   - step set to 50
+2015-28-12 10:28:52.561 [main] INFO   - window set to 500
+2015-28-12 10:28:52.561 [main] INFO   - distance set to 60
+2015-28-12 10:28:52.561 [main] INFO   - test set to 1
+2015-28-12 10:28:52.562 [main] INFO   - input file set to src/main/test/demo.fas
+2015-28-12 10:28:52.562 [main] INFO   - output folder issrc/main/test/demo
+2015-28-12 10:28:52.562 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-28-12 10:28:52.562 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-28-12 10:28:52.562 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-28-12 10:28:52.563 [main] INFO   - Configuration file is 0.80
+2015-29-12 10:29:09.648 [main] FATAL  - Configuration file 0.80 not found
+2015-29-12 10:29:09.649 [main] INFO   - installation folder is 
+2015-29-12 10:29:09.649 [main] INFO   - model folder is 
+2015-29-12 10:29:16.691 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-29-12 10:29:16.692 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-29-12 10:29:16.692 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-29-12 10:29:16.738 [main] TRACE  - parsing args
+2015-29-12 10:29:16.742 [main] INFO   - model set to overall
+2015-29-12 10:29:16.742 [main] INFO   - level set to 1
+2015-29-12 10:29:16.743 [main] INFO   - step set to 50
+2015-29-12 10:29:16.743 [main] INFO   - window set to 500
+2015-29-12 10:29:16.743 [main] INFO   - distance set to 60
+2015-29-12 10:29:16.743 [main] INFO   - test set to 1
+2015-29-12 10:29:16.743 [main] INFO   - input file set to src/main/test/demo.fas
+2015-29-12 10:29:16.743 [main] INFO   - output folder issrc/main/test/demo
+2015-29-12 10:29:16.743 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-29-12 10:29:16.744 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-29-12 10:29:16.744 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-29-12 10:29:16.744 [main] INFO   - Configuration file is 0.80
+2015-29-12 10:29:49.731 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-29-12 10:29:49.733 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-29-12 10:29:49.733 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-29-12 10:29:49.792 [main] TRACE  - parsing args
+2015-29-12 10:29:49.796 [main] INFO   - model set to overall
+2015-29-12 10:29:49.797 [main] INFO   - level set to 1
+2015-29-12 10:29:49.797 [main] INFO   - step set to 50
+2015-29-12 10:29:49.798 [main] INFO   - window set to 500
+2015-29-12 10:29:49.798 [main] INFO   - distance set to 60
+2015-29-12 10:29:49.798 [main] INFO   - test set to 1
+2015-29-12 10:29:49.798 [main] INFO   - input file set to src/main/test/demo.fas
+2015-29-12 10:29:49.798 [main] INFO   - output folder issrc/main/test/demo
+2015-29-12 10:29:49.799 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-29-12 10:29:49.799 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-29-12 10:29:49.799 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-29-12 10:29:49.799 [main] INFO   - Configuration file is 0.80
+2015-32-12 10:32:23.810 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-32-12 10:32:23.811 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-32-12 10:32:23.811 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-32-12 10:32:23.871 [main] TRACE  - parsing args
+2015-32-12 10:32:23.875 [main] INFO   - model set to overall
+2015-32-12 10:32:23.875 [main] INFO   - level set to 1
+2015-32-12 10:32:23.875 [main] INFO   - step set to 50
+2015-32-12 10:32:23.875 [main] INFO   - window set to 500
+2015-32-12 10:32:23.876 [main] INFO   - distance set to 60
+2015-32-12 10:32:23.876 [main] INFO   - test set to 1
+2015-32-12 10:32:23.876 [main] INFO   - input file set to src/main/test/demo.fas
+2015-32-12 10:32:23.876 [main] INFO   - output folder issrc/main/test/demo
+2015-32-12 10:32:23.876 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-32-12 10:32:23.877 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-32-12 10:32:23.877 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-32-12 10:32:23.877 [main] INFO   - Configuration file is 0.80
+2015-32-12 10:32:23.877 [main] FATAL  - IO error
+java.io.IOException: configuration file <0.80> does not exist
+	at no.uio.medisin.bag.jmirpara.JmiCMD.parseArguments(JmiCMD.java:215) [classes/:?]
+	at no.uio.medisin.bag.jmirpara.JmiCMD.main(JmiCMD.java:59) [classes/:?]
+2015-32-12 10:32:27.918 [main] FATAL  - Configuration file 0.80 not found
+2015-32-12 10:32:27.918 [main] INFO   - installation folder is 
+2015-32-12 10:32:27.919 [main] INFO   - model folder is 
+2015-35-12 10:35:18.102 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-35-12 10:35:18.103 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-35-12 10:35:18.103 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-35-12 10:35:18.206 [main] TRACE  - parsing args
+2015-35-12 10:35:18.209 [main] INFO   - model set to overall
+2015-35-12 10:35:18.209 [main] INFO   - level set to 1
+2015-35-12 10:35:18.210 [main] INFO   - step set to 50
+2015-35-12 10:35:18.210 [main] INFO   - window set to 500
+2015-35-12 10:35:18.210 [main] INFO   - distance set to 60
+2015-35-12 10:35:18.210 [main] INFO   - test set to 1
+2015-35-12 10:35:18.210 [main] INFO   - input file set to src/main/test/demo.fas
+2015-35-12 10:35:18.211 [main] INFO   - output folder issrc/main/test/demo
+2015-35-12 10:35:18.211 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-35-12 10:35:18.211 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-35-12 10:35:18.211 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-35-12 10:35:18.211 [main] INFO   - Configuration file is 0.80
+2015-35-12 10:35:18.212 [main] FATAL  - IO error
+java.io.IOException: configuration file <0.80> does not exist
+	at no.uio.medisin.bag.jmirpara.JmiCMD.parseArguments(JmiCMD.java:215) [classes/:?]
+	at no.uio.medisin.bag.jmirpara.JmiCMD.main(JmiCMD.java:59) [classes/:?]
+2015-36-12 10:36:17.421 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-36-12 10:36:17.422 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-36-12 10:36:17.422 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-36-12 10:36:17.481 [main] TRACE  - parsing args
+2015-36-12 10:36:17.485 [main] INFO   - model set to overall
+2015-36-12 10:36:17.485 [main] INFO   - level set to 1
+2015-36-12 10:36:17.485 [main] INFO   - step set to 50
+2015-36-12 10:36:17.486 [main] INFO   - window set to 500
+2015-36-12 10:36:17.486 [main] INFO   - distance set to 60
+2015-36-12 10:36:17.486 [main] INFO   - test set to 1
+2015-36-12 10:36:17.486 [main] INFO   - input file set to src/main/test/demo.fas
+2015-36-12 10:36:17.486 [main] INFO   - output folder issrc/main/test/demo
+2015-36-12 10:36:17.487 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-36-12 10:36:17.487 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-36-12 10:36:17.487 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-36-12 10:36:17.487 [main] INFO   - Configuration file is 0.80
+2015-39-12 10:39:12.037 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-39-12 10:39:12.038 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-39-12 10:39:12.038 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-39-12 10:39:12.099 [main] TRACE  - parsing args
+2015-39-12 10:39:12.104 [main] INFO   - model set to overall
+2015-39-12 10:39:12.104 [main] INFO   - level set to 1
+2015-39-12 10:39:12.104 [main] INFO   - step set to 50
+2015-39-12 10:39:12.104 [main] INFO   - window set to 500
+2015-39-12 10:39:12.104 [main] INFO   - distance set to 60
+2015-39-12 10:39:12.105 [main] INFO   - baseline score set to 0.80
+2015-39-12 10:39:12.105 [main] INFO   - test set to 1
+2015-39-12 10:39:12.105 [main] INFO   - input file set to src/main/test/demo.fas
+2015-39-12 10:39:12.105 [main] INFO   - output folder issrc/main/test/demo
+2015-39-12 10:39:12.105 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-39-12 10:39:12.106 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-39-12 10:39:12.106 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-39-12 10:39:12.106 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-45-12 10:45:12.164 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-45-12 10:45:12.611 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-46-12 10:46:12.416 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-46-12 10:46:12.417 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-46-12 10:46:12.417 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-46-12 10:46:12.471 [main] TRACE  - parsing args
+2015-46-12 10:46:12.475 [main] INFO   - model set to overall
+2015-46-12 10:46:12.476 [main] INFO   - level set to 1
+2015-46-12 10:46:12.476 [main] INFO   - step set to 50
+2015-46-12 10:46:12.476 [main] INFO   - window set to 500
+2015-46-12 10:46:12.476 [main] INFO   - distance set to 60
+2015-46-12 10:46:12.476 [main] INFO   - baseline score set to 0.80
+2015-46-12 10:46:12.477 [main] INFO   - test set to 1
+2015-46-12 10:46:12.477 [main] INFO   - input file set to src/main/test/demo.fas
+2015-46-12 10:46:12.477 [main] INFO   - output folder issrc/main/test/demo
+2015-46-12 10:46:12.477 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-46-12 10:46:12.477 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-46-12 10:46:12.477 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-46-12 10:46:12.478 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-46-12 10:46:16.518 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-46-12 10:46:16.519 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-48-12 10:48:01.645 [main] INFO   - 
+
+
+    =======================================================================
+    |    JmiPara 4.0 performs microRNA prediction on input sequences      |
+    =======================================================================
+
+
+
+2015-48-12 10:48:01.646 [main] INFO   - The program can be run via a GUI or from the command line: 
+to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2
+to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]
+
+to view results
+start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer
+
+2015-48-12 10:48:01.646 [main] INFO   - *** report bugs to simon.rayner@medisin.uio.no
+
+2015-48-12 10:48:01.688 [main] TRACE  - parsing args
+2015-48-12 10:48:01.691 [main] INFO   - model set to overall
+2015-48-12 10:48:01.691 [main] INFO   - level set to 1
+2015-48-12 10:48:01.692 [main] INFO   - step set to 50
+2015-48-12 10:48:01.692 [main] INFO   - window set to 500
+2015-48-12 10:48:01.692 [main] INFO   - distance set to 60
+2015-48-12 10:48:01.692 [main] INFO   - baseline score set to 0.80
+2015-48-12 10:48:01.692 [main] INFO   - test set to 1
+2015-48-12 10:48:01.692 [main] INFO   - input file set to src/main/test/demo.fas
+2015-48-12 10:48:01.692 [main] INFO   - output folder issrc/main/test/demo
+2015-48-12 10:48:01.693 [main] INFO   - root folder is/home/sr/NetBeansProjects/MirPara4j
+2015-48-12 10:48:01.693 [main] INFO   - input file now set to src/main/test/demo.fas
+2015-48-12 10:48:01.693 [main] INFO   - output folder now set tosrc/main/test/demo
+2015-48-12 10:48:01.693 [main] INFO   - Configuration file is /home/sr/NetBeansProjects/MirPara4j/config.yaml
+2015-48-12 10:48:01.717 [main] INFO   - installation folder is /home/sr/NetBeansProjects/MirPara4j
+2015-48-12 10:48:01.717 [main] INFO   - model folder is /home/sr/NetBeansProjects/MirPara4j/models
+2015-48-12 10:48:01.718 [main] INFO   - loading model data file </home/sr/NetBeansProjects/MirPara4j/models/overall_1.model
+2015-48-12 10:48:01.900 [main] INFO   - loading miRBase data file </home/sr/NetBeansProjects/MirPara4j/models/overall_1.model

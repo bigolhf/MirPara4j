@@ -17,7 +17,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- *
+ * Seems to contain a set of miRNA predictions. 
+ * Could probably do with a better name
+ * 
  * @author weibo
  */
 public class Output {

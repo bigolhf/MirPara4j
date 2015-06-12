@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,8 +34,10 @@ public class PipeLine {
     private String configFilename;
 
         
-    private File filename;
-    private String outfile;
+    private String inputFilename;
+    private String outputFolder;
+    
+    
     private double version=3.0;
     private int window=500;
     private int step=250;
@@ -47,7 +50,8 @@ public class PipeLine {
     private String packageDir;
     private boolean append=false;
     private double progress;
-    private ArrayList<String> results=new ArrayList<String>();
+//    private ArrayList<String> results=new ArrayList<String>();
+    private ArrayList<String> results=new ArrayList<>();
     
 
 
@@ -60,18 +64,25 @@ public class PipeLine {
     
     private String test;
 
+    
+    /**
+     * constructor
+     * 
+     */
     public PipeLine() {  
         miRParaConfig = new MiRParaConfiguation();
     }
 
     /**
-     * the main program to predict the miRNAs of a input sequence
+     * predict the miRNAs in a set of input sequences
+     * 
      * @throws IOException
      */
-    public void run() throws IOException{
+    public void predictMiRNAsInInputSequences() throws IOException{
+        
         initialize();
 
-        loadData(filename);
+        loadData(new File(getInputFilename()));
 
         for(SimSeq seq : seqList){
 
@@ -109,10 +120,10 @@ public class PipeLine {
      */
     public void run2() throws IOException{
         initialize();
-        ReadFile rf=new ReadFile(filename);
+        ReadFile rf=new ReadFile(getInputFilename());
         while(rf.hasSeq()){
             SimSeq seq=rf.getOneSeq();  //each seq
-            setOutfileName(workingDir, filename, seq.getId());
+            setOutfileName(workingDir, new File(getInputFilename()), seq.getId());
             trueList=new ArrayList<HashMap>();
             last=new String[0];
             recordResults(seq);
@@ -171,6 +182,8 @@ public class PipeLine {
         print("Analysis complete. \n<Results are written to folder "+(workingDir.getCanonicalPath())+"\n");
     }
     
+    
+    
     private void noRepeat(ArrayList<PriMiRNA> pris){
         //remove repeat pri
         Iterator it=pris.iterator();
@@ -196,53 +209,69 @@ public class PipeLine {
     
 
     /**
-     * test whether given miRNAs are at given sequences
+     * processes the tab delimited output file (filename.tab) from an miRNA prediction run 
+     * and summarizes the prediction results
+     * 
+     * Note: this might be a different file - still trying to work this out (sr: 11/06/2015)
+     * 
+     * line has format:
+     *  pri_id pri_seq mi1_start, mi1_size, mi2_start, mi2_size
      * @throws IOException
      */
     public void testGivenMir() throws IOException{
-        initialize();
-        BufferedReader br=new BufferedReader(new FileReader(getFilename()));
-        String line;
-        int total=0;
-        int hit=0;
-        while((line = br.readLine()) != null){
-            if(line.equals("")) continue;
-            //pri_id,pri_seq,mi1_start,mi1_size,mi2_start,mi2_size,...
-            String[] entry=line.split("\t");
+        
+        
+        try{
+            
+            initialize();
+            
+            BufferedReader br=new BufferedReader(new FileReader(new File(getInputFilename())));
+            String line;
+            int total=0;
+            int hit=0;
+            
+            while((line = br.readLine()) != null){
+                if(line.equals("")) continue;
+                //pri_id, pri_seq, mi1_start, mi1_size, mi2_start, mi2_size,...
+                String[] entry=line.split("\t");
 
-            PriMiRNA pri=new PriMiRNA(entry[0],entry[1]);
-            if(SLScaner.hasTwoLoop(pri)){
-               logger.info("W1: "+entry[0]+" is not a hairpin structure!");
-                continue;
-            }
-            MiGenesis parser=new MiGenesis(pri);
-            parser.parsePrimiRNA();
-
-            int end5=pri.getSeq5().length();
-            int start3=end5+pri.getMidBase().length()+1;
-            for(int i=2;i<entry.length;i+=2){
-                int miStart=Integer.parseInt(entry[i]);
-                int miSize=Integer.parseInt(entry[i+1]);
-                if(miStart<=start3 && miStart+miSize-1>=end5){
-                        logger.info("W2: the given miRNA spans more than half the terminal loop of "+entry[0]+" , I cannot handle at present!");
-                        continue;
-                    }
-                parser.maturateMiRNA(miStart-1,miSize);
-                HashMap feat=parser.gatherFeatures();
-                //outputSV(feat);
-                SVMToolKit.judge(getModel(),feat,cutoff);
-                Boolean isMir=Boolean.parseBoolean(SVMToolKit.judgeResult());
-                if(isMir){
-                    logger.info("Y: miRNA was detected at site "+miStart+" of "+entry[0]);
-                    hit++;
+                PriMiRNA pri=new PriMiRNA(entry[0],entry[1]);
+                if(SLScaner.hasTwoLoop(pri)){
+                   logger.info("W1: "+entry[0]+" is not a hairpin structure!");
+                    continue;
                 }
-                else logger.info("N: miRNA was not detected at site "+miStart+" of "+entry[0]);
-                total++;
+                MiGenesis parser=new MiGenesis(pri);
+                parser.parsePrimiRNA();
+
+                int end5=pri.getSeq5().length();
+                int start3=end5+pri.getMidBase().length()+1;
+                for(int i=2;i<entry.length;i+=2){
+                    int miStart=Integer.parseInt(entry[i]);
+                    int miSize=Integer.parseInt(entry[i+1]);
+                    if(miStart<=start3 && miStart+miSize-1>=end5){
+                            logger.info("W2: the given miRNA spans more than half the terminal loop of "+entry[0]+" , I cannot handle at present!");
+                            continue;
+                        }
+                    parser.maturateMiRNA(miStart-1,miSize);
+                    HashMap feat=parser.gatherFeatures();
+                    //outputSV(feat);
+                    SVMToolKit.judge(getModel(),feat,cutoff);
+                    Boolean isMir=Boolean.parseBoolean(SVMToolKit.judgeResult());
+                    if(isMir){
+                        logger.info("Y: miRNA was detected at site "+miStart+" of "+entry[0]);
+                        hit++;
+                    }
+                    else logger.info("N: miRNA was not detected at site "+miStart+" of "+entry[0]);
+                    total++;
+                }
             }
+            br.close();
+            System.out.println("cutoff="+cutoff);
+            System.out.println("accuracy="+((double)hit/total));
         }
-        br.close();
-        System.out.println("cutoff="+cutoff);
-        System.out.println("accuracy="+((double)hit/total));
+        catch(IOException ex){
+            
+        }
     }
 
     /**
@@ -252,7 +281,7 @@ public class PipeLine {
      */
     public void testProgram() throws FileNotFoundException, IOException{
         initialize();
-        BufferedReader br=new BufferedReader(new FileReader(getFilename()));
+        BufferedReader br=new BufferedReader(new FileReader(new File(getInputFilename())));
         BufferedWriter bw=new BufferedWriter(new FileWriter("test.out"));
         bw.write("given_label\tpreditc_label\tsvm_value\tprobability\n");
         String line;
@@ -338,9 +367,9 @@ public class PipeLine {
         dir.mkdirs();
         String basename=infile.getName().replaceAll("\\.\\w+", "");
 //        if(dir.endsWith("/"))  dir=dir.substring(dir.length()-1);
-        outfile=dir+"/"+basename+"_"+seqname;
-        results.add(outfile);
-        Output.fname=outfile;
+        setOutputFolder(dir+"/"+basename+"_"+seqname);
+        results.add(getOutputFolder());
+        Output.fname=getOutputFolder();
     }
 
     /**
@@ -388,8 +417,8 @@ public class PipeLine {
 
         packageDir=PathSet.getPackageDir();
         
-        PathSet.setLibDir(packageDir+"/lib");
-        File mirbaseData=new File(miRParaConfig.getMirbaseDataFile());
+//        PathSet.setLibDir(packageDir+"/lib");
+        File mirbaseData=new File(miRParaConfig.getPathToModelData());
         
         //in NetBeans
 //        packageDir="/home/wb/Desktop/program/jmi2_v13";
@@ -399,39 +428,49 @@ public class PipeLine {
         //load SVM model
         String modelName=packageDir+"/models/"+getModel()+"_"+getLevel()+".model";
 
-//        System.out.println(modelName);
+        logger.info("loading model data file <" + miRParaConfig.getPathToModelData() + "");
         SVMToolKit.loadModel(miRParaConfig.getPathToModelData());
 
-        //load miRBase data
-        Output.loadMirBaseData(mirbaseData);       
+        logger.info("loading miRBase data file <" + miRParaConfig.getPathToModelData() + "");
+        Output.loadMirBaseData(new File(miRParaConfig.getPathToMirbaseData()));     
+        
     }
 
-    /*
-        parse out values from the configuration file
-        @param configFilename : configuration file in YAML format
-        @throws FileNotFoundException
-    */
     
-            
+    
+    
+    /**
+     * summarize run settings
+     * 
+     * @return String
+     * 
+     */
+    public String reportRunSettings()
+    {
+        String summary = 
+            StringUtils.repeat("*", 60) + "\n" 
+         +  "filein      :\t" + getInputFilename() + "\n"
+         +  "fileout     :\t" + getOutputFolder() + "\n\n"
+         +  StringUtils.repeat("*", 60) + "\n\n" 
+         +  miRParaConfig.reportParameters() + "\n\n"
+         +  StringUtils.repeat("*", 60) + "\n\n";
+
+        return summary;
+    }
+    
+    
+    
+    /**
+     * not sure what this is for
+     * 
+     * @param s 
+     */     
     public void print(String s){
         System.out.print(s);
         System.out.flush();
     }
 
-    /**
-     * @return the fname
-     */
-    public String getFilename() throws IOException {
-        return filename.getCanonicalPath();
-    }
-
-    /**
-     * @param fname the fname to set
-     */
-    public void setFilename(File filename) {
-        this.filename = filename;
-    }
-
+    
     /**
      * @return the window
      */
@@ -439,6 +478,7 @@ public class PipeLine {
         return window;
     }
 
+    
     /**
      * @param window the window to set
      * @throws IndexOutOfBoundsException if the window is less than zero
@@ -449,6 +489,7 @@ public class PipeLine {
         this.window = window;
     }
 
+    
     /**
      * @return the step
      */
@@ -610,6 +651,34 @@ public class PipeLine {
      */
     public void setConfigFilename(String configFilename) {
         this.configFilename = configFilename;
+    }
+
+    /**
+     * @return the inputFilename
+     */
+    public String getInputFilename() {
+        return inputFilename;
+    }
+
+    /**
+     * @param inputFilename the inputFilename to set
+     */
+    public void setInputFilename(String inputFilename) {
+        this.inputFilename = inputFilename;
+    }
+
+    /**
+     * @return the outputFolder
+     */
+    public String getOutputFolder() {
+        return outputFolder;
+    }
+
+    /**
+     * @param outputFolder the outputFolder to set
+     */
+    public void setOutputFolder(String outputFolder) {
+        this.outputFolder = outputFolder;
     }
 
 }
