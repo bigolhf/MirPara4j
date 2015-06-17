@@ -11,7 +11,9 @@ public class MfeFoldRNA {
     private static native void initIDs();
     
     static{
+        System.out.print(System.getProperty("java.library.path"));
         System.loadLibrary("RNAFold");
+        
 	initIDs();
     }
 
@@ -22,13 +24,13 @@ public class MfeFoldRNA {
 
     public static float foldSequence(String sequence){
         structure = "";
-        return MfeFoldRNA.fold(sequence,temperature);
+        return MfeFoldRNA.fold(sequence, temperature);
     }
     
     
-    public static float fold(String sequence,String str){
+    public static float fold(String sequence, String str){
         structure = str;
-        return MfeFoldRNA.fold(sequence,temperature);
+        return MfeFoldRNA.fold(sequence, temperature);
     }
 
     
