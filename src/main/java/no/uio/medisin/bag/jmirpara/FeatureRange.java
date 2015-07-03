@@ -10,7 +10,9 @@ import java.util.Iterator;
  */
 public class FeatureRange {
 
-    //Wu's range
+//
+//    Wu's range used in the Perl version of miRPara
+//
 //    private static final HashMap range=new HashMap();
 //    static{
 //        range.put("miRNA_size", new double[]{17,27});
@@ -73,10 +75,10 @@ public class FeatureRange {
 //
 //    }
 
-    private static final HashMap range_overall=new HashMap();
-    private static final HashMap range_animal=new HashMap();
-    private static final HashMap range_plant=new HashMap();
-    private static final HashMap range_virus=new HashMap();
+    private static final HashMap range_overall      = new HashMap();
+    private static final HashMap range_animal       = new HashMap();
+    private static final HashMap range_plant        = new HashMap();
+    private static final HashMap range_virus        = new HashMap();
 
     static{
 	range_animal.put("priRNA_size", new double[]{57,140});
@@ -312,30 +314,43 @@ public class FeatureRange {
     }
 
     /**
-     * judge whether the parameter in the range
+     * check whether the parameter is within the defined range for the 
+     * specified model
+     * 
      * @param String para: the name of a parameter
      * @param double value: value of the parameter
+     * @param model
+     * 
      * @return boolean
      */
-    private static boolean cover(String para, Object value, HashMap range){
-        if(range.containsKey(para)){
+    private static boolean parameterInRange(String para, Object value, HashMap model){
+        
+        if(model.containsKey(para)){
             double v=Double.parseDouble(value.toString());
-            double[] r=(double[])range.get(para);
+            double[] r=(double[])model.get(para);
             if(r[0]<=v && r[1]>=v)
                 return true;
             else return false;
         }
+        
         return true;
     }
 
-    public static boolean rangeFilter(HashMap feat, String taxo){
+    
+    /**
+     * Check whether 
+     * @param feat
+     * @param taxo
+     * @return 
+     */
+    public static boolean featureInRange(HashMap feat, String taxo){
         Iterator paras=feat.keySet().iterator();
         Iterator values=feat.values().iterator();
         while(paras.hasNext()){
             String para=paras.next().toString();
 //            double value=(Double)values.next();
             Object value=values.next();
-            if(!cover(para, value, getRange(taxo))){
+            if(!parameterInRange(para, value, getRange(taxo))){
                 return false;
             }
         }

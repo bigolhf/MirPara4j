@@ -24,7 +24,7 @@ public class foldMirbase {
         for(SimpleSeq seq:seqs){
             SimpleRNASequence rna=new SimpleRNASequence(seq);
             ParaToolKit.foldRNA(rna);
-            br.write(rna.getId()+"\n"+rna.getSeq()+"\n"+rna.getStr()+"\n"+rna.getEnergy()+"\n");
+            br.write(rna.getId()+"\n"+rna.getSeq()+"\n"+rna.getStructureStr()+"\n"+rna.getEnergy()+"\n");
         }
         br.close();
     }

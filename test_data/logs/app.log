@@ -1,0 +1,5 @@
+2015-26-30 15:26:48.370 [main] INFO   - generate miRPara datafile from mature.fa file in miRBase release
+2015-26-30 15:26:48.373 [main] INFO   - input file
+2015-26-30 15:26:48.374 [main] INFO   - --/home/sr/NetBeansProjects/MirPara4j/test_data/mature.fa
+2015-26-30 15:26:48.374 [main] INFO   - output file
+2015-26-30 15:26:48.374 [main] INFO   - --/home/sr/NetBeansProjects/MirPara4j/test_data/mirbase.dat

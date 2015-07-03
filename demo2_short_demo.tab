@@ -1,0 +1,18 @@
+short_demo
+480
+pri_id	pri_start	pri_end	pri_seq	pri_str	mir_id	mir_start	mir_size	mir_seq	mir_strand	hit
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_299-22	1	22	AUUCGGGCCAGGGUUCACCCCA	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_299-23	1	23	AUUCGGGCCAGGGUUCACCCCAC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_299-24	1	24	AUUCGGGCCAGGGUUCACCCCACC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_300-21	2	21	UUCGGGCCAGGGUUCACCCCA	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_300-22	2	22	UUCGGGCCAGGGUUCACCCCAC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_300-23	2	23	UUCGGGCCAGGGUUCACCCCACC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_300-24	2	24	UUCGGGCCAGGGUUCACCCCACCA	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_301-20	3	20	UCGGGCCAGGGUUCACCCCA	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_301-21	3	21	UCGGGCCAGGGUUCACCCCAC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_301-22	3	22	UCGGGCCAGGGUUCACCCCACC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_301-23	3	23	UCGGGCCAGGGUUCACCCCACCA	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_301-24	3	24	UCGGGCCAGGGUUCACCCCACCAC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_302-20	4	20	CGGGCCAGGGUUCACCCCAC	5	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_337-22	39	22	UGGGGUGGAGCCCUCAGGCUCA	3	
+short_demo_mir_299-359	299	359	AUUCGGGCCAGGGUUCACCCCACCACACGGCGGUCUUUUGGGGUGGAGCCCUCAGGCUCAG	....((((((((((((((((((....((....))....)))))).)))))))..)))))..	short_demo_MIR_339-20	41	20	GGGUGGAGCCCUCAGGCUCA	3	

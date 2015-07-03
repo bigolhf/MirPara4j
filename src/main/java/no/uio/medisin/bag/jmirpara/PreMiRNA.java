@@ -63,7 +63,7 @@ public class PreMiRNA extends SimpleRNASequence{
     public void setFeatureSet(){
         featureSet=new HashMap();
         featureSet.put("preRNA_sequence", this.getSeq());
-        featureSet.put("preRNA_structure", this.getStr());
+        featureSet.put("preRNA_structure", this.getStructureStr());
         featureSet.put("preRNA_energy", this.getEnergy());
         featureSet.put("preRNA_size", this.getLength());
         featureSet.put("preRNA_GC_content", this.getGC_content() );

@@ -42,7 +42,7 @@ public class MatMiRNA extends SimpleRNASequence{
         featureSet=new HashMap();
         featureSet.put("miRNA_id", this.getId());
         featureSet.put("miRNA_sequence", this.getSeq());
-        featureSet.put("miRNA_structure", this.getStr());
+        featureSet.put("miRNA_structure", this.getStructureStr());
         featureSet.put("miRNA_energy", this.getEnergy());
         featureSet.put("miRNA_size", this.getLength());
         featureSet.put("miRNA_GC_content", this.getGC_content() );

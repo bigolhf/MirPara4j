@@ -133,7 +133,7 @@ public class ReadFastaFile {
             }
             progress=readedSize*1.0/totalSize;
             if(progress>1) progress=1;
-            System.out.print(Output.decimal(progress*100)+"%"+Output.backspace(Output.decimal(progress*100)+"%"));
+            System.out.print(OutputMiRNAPredictions.decimal(progress*100)+"%"+OutputMiRNAPredictions.backspace(OutputMiRNAPredictions.decimal(progress*100)+"%"));
        }
        System.out.println();
        addSequence(title,seq.toString());

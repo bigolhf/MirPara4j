@@ -5,7 +5,7 @@ package no.uio.medisin.bag.jmirpara;
  * simple RNA class
  * stores basic information about an RNASequence
  * 
- * extended by PriMiRNA,PreMiRNA and MiRNA
+ * extended by PriMiRNA, PreMiRNA and MiRNA classes
  * extends SimSeq
  * @author weibo
  */
@@ -53,7 +53,7 @@ public class SimpleRNASequence extends SimpleSeq {
     
     
     
-    private String      str="";         // the structure string?
+    private String      structureString="";         // in Vienna Bracket Notation
     private float       energy=0;
     private float       GC_content=0;
     private int         GU_num=0;
@@ -64,19 +64,28 @@ public class SimpleRNASequence extends SimpleSeq {
     private float       C_content=0;
 
     
-    
+    @Override
+    public String toString(){
+        String str = "ID:" + this.getId() + "\t"
+                    + "Name::" + this.getName() + "\t"
+                    + "Start:" + this.getStart() + "\t"
+                    + "End:" + this.getEnd() + "\t"
+                    + "Len:" + this.getLength() + "\t"
+          + "\n";
+        return str;
+    }
     /**
      * @return str
      */
-    public String getStr() {
-        return str;
+    public String getStructureStr() {
+        return structureString;
     }
 
     /**
      * @param str 
      */
-    public void setStr(String str) {
-        this.str = str;
+    public void setStructureString(String str) {
+        this.structureString = str;
     }
 
     /**

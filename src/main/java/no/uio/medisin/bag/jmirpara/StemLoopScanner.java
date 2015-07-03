@@ -5,28 +5,48 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static no.uio.medisin.bag.jmirpara.PipeLine.logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * this class finds hairpins from a long sequence.
+ * this class finds hairpin structure from an input string in Vienna Bracket Notation.
+ * 
+ * @see <a href=http://rna.tbi.univie.ac.at/help.html#A6>  http://rna.tbi.univie.ac.at/help.html</a>
+ * 
+ * 
  * the order of calling methods after instantiated:
  * slidingWindow();
  * scanStemLoop();
  * noRepeat();
- * @author weibo
+ * @author weibo & simon rayner
  */
 public class StemLoopScanner {
+    static Logger logger = LogManager.getRootLogger();    
 
     private int window=500;
     private int step=250;
     private int start=1;
-    private int distance = 60;
+    private int minHairpinLength = 60;
 
-    private SimpleSeq sequence;
+    private SimpleSeq               simpleSeq;
     
-    private ArrayList<SimpleSeq> fragmentList;
-    private ArrayList<PriMiRNA> primiRNAList;
+    private ArrayList<SimpleSeq>    fragmentList;
+    private ArrayList<PriMiRNA>     primiRNAList;
 
-//    private static String regSL="([\\(\\.]*\\()(\\.+)(\\)[\\)\\.]*)";
+    /*
+      private static String regSL="([\\(\\.]*\\()(\\.+)(\\)[\\)\\.]*)";
+      
+      This can be broken down into
+     
+      {'('} + {zero or more '.' or '('} + {stem loop} + {zero or more '.' or ')'} + {')'}
+    
+      see 
+    
+    
+    */
+//  
+    
     private static String regSL="(\\.*\\([\\.\\(]*\\()(\\.+)(\\)[\\.\\)]*\\)\\.*)";
     private static Pattern pattern = Pattern.compile(regSL);
     private Matcher m;
@@ -47,13 +67,17 @@ public class StemLoopScanner {
      * @param seq 
      */
     public StemLoopScanner(SimpleSeq seq){
-        sequence = seq;
+        simpleSeq = seq;
     }
     
     
     
     /**
      * Class constructor from subsequence of input sequence
+     * Allows the user to instruct the class to break the sequence
+     * into smaller fragments Useful for long sequences which are 
+     * likely to return avoid complex full length structures
+     * 
      * 
      * @param seq
      * @param window
@@ -62,10 +86,11 @@ public class StemLoopScanner {
      */
     public StemLoopScanner(SimpleSeq seq, int window, int step, int distance){
         
-        this.sequence = seq;
-        this.window = window;
-        this.step = step;
-        this.distance = distance;
+        this.simpleSeq   = seq;
+        this.window     = window;
+        this.step       = step;
+        this.minHairpinLength   = distance;
+        
     }
     
 
@@ -73,26 +98,30 @@ public class StemLoopScanner {
      * 
      * slide window with given step size to generate a serial of segments for testing.
      * before calling, one may set the sliding window size, step increment and start position
+     * 
+     * It seems this should be removed as this is already implemented in the Pipeline class
+     * @author sr 
      */
-    public void slidingWindow(){
-        fragmentList=new ArrayList<SimpleSeq>();
-        int length=sequence.getLength();
+    public void breakQuerySeqIntoOverlappingFragments(){
+        
+        fragmentList = new ArrayList<SimpleSeq>();
+        int length=simpleSeq.getLength();
         int n=(length-window)/step;
         if(n<0) n=0;
         if(length-n*step+window>19) n+=1;
-        int end=0;start-=1;
+        int end=0;start=0;
         for(int i=0;i<=n;i++){
             
             if(start>=length) break;
             end = start + window;
             if(end>length) end=length;
-            String id = sequence.getName() + "_" + (start+1) + "-"+end;
-            String subseq = sequence.getSeq().substring(start,end);
+            String id = simpleSeq.getName() + "_" + (start+1) + "-"+end;
+            String subseq = simpleSeq.getSeq().substring(start,end);
 
             SimpleSeq frag = new SimpleSeq(id,subseq);
             frag.setStart(start+1);// count from 1
             frag.setEnd(end); //count from 1
-            frag.setName(sequence.getId());
+            frag.setName(simpleSeq.getId());
             fragmentList.add(frag);
             start+= step;
             
@@ -102,69 +131,131 @@ public class StemLoopScanner {
     
 
     /**
-     * generate candidate pri-miRNAs from all the segments
+     * 
+     * generate a list of candidate pri-miRNAs from all the fragments
+     * 
      */
-    public void scanStemLoop(){
-        primiRNAList=new ArrayList<PriMiRNA>();
+    public ArrayList<PriMiRNA> foldAndScanForStemloopByFragments(){
+        
+        fragmentList = new ArrayList<SimpleSeq>();
+
+        int length=simpleSeq.getLength();
+        int n=(length-window)/step+1;
+        if(n<1) n=1;
+        if(length-((n-1)*step+window)>19) n+=1;  // I think this must be to stop scanning fragments that are closer together than one miRNA
+
+        
+        int end=0; start=0;
+        for(int i=0;i<n;i++){
+            
+            if(start>=length) break;
+            end = start + window;
+            if(end>length) end=length;
+            String id = simpleSeq.getName() + "_" + (start+1) + "-"+end;
+            String subseq = simpleSeq.getSeq().substring(start,end);
+
+            SimpleSeq frag = new SimpleSeq(id,subseq);
+            frag.setStart(start+1);// count from 1
+            frag.setEnd(end); //count from 1
+            frag.setName(simpleSeq.getId());
+            fragmentList.add(frag);
+            start+= step;
+            
+        }
+        
+        primiRNAList = new ArrayList<PriMiRNA>();
         
         int i=1;
-        for(SimpleSeq seg : fragmentList){
-            primiRNAList.addAll(scanStemLoopFrom(seg));
-            System.out.print(Output.decimal(i*100.0/fragmentList.size())+"%"+Output.backspace(Output.decimal(i*100.0/fragmentList.size())+"%"));
+        for(SimpleSeq frag : fragmentList){
+            logger.info("SL: scan region " + (frag.getStart()) + "-" + frag.getEnd() + "...");
+            ArrayList<PriMiRNA> fragPriMiRNAList = foldAndScanSequenceForStemloop(frag);
+            String se= "AAGCUGGCAUUCUAUAUAAGAGAGAAACUACACGCAGCGCCUCAUUUUGUGGGUCA"
+              + "CCAUAUUCUUGGGAACAAGAGCUACAGCAUGGGGCAAAUCUUUCUGUUCCCAAUCCUCUGGGA"
+              + "UUCUUUCCCGAUCACCAGUUGGACCCUGCGUUUGGAGCCAACUCAAACAAUCCAGAUUGGGAC"
+              + "UUCAACCCCAACAAGGAUCACUGGCCAGAGGCAAAUCAGGUAGGAGCGGGAGCAUUCGGGCCA"
+              + "GGGUUCACCCC";
+            logger.info("SLEE:" + MfeFoldRNA.foldSequence(se));
+            logger.info("   " + fragPriMiRNAList.size() + " pri-miRNA were found");
+            primiRNAList.addAll(fragPriMiRNAList);
+//            System.out.print(OutputMiRNAPredictions.decimal(i*100.0/fragmentList.size())+"%"+OutputMiRNAPredictions.backspace(OutputMiRNAPredictions.decimal(i*100.0/fragmentList.size())+"%"));
             i++;
         }
-//        segList=null; // release seglist space
+
+        return primiRNAList;
     }
     
-    
-    public ArrayList<PriMiRNA> scanStemLoopFrom(SimpleSeq seq){
+    /**
+     * Fold query sequence and scan resulting structure for hairpin structure
+     * @param seq
+     * @return 
+     */
+    public ArrayList<PriMiRNA> foldAndScanSequenceForStemloop(SimpleSeq seq){
         SimpleRNASequence rna = new SimpleRNASequence(seq);
-        foldRNA(rna);
-        return extractHairpin(rna);
+
+        foldRNASequence(rna);
+
+        return extractHairpinsFromBracketNotation(rna);
     }
 
+    
+    
+    
     /**
-     * fold a rna sequence
-     * @param rna
+     * 
+     * fold an RNA sequence using RNAFold and return predicted structure
+     * in Vienna Bracket Notation
+     * 
+     * @param rnaSequence : the sequence to be folded
      */
-    public static void foldRNA(SimpleRNASequence rna){
-        rna.setEnergy(MfeFoldRNA.fold(rna.getSeq(), rna.getStr()));
-        rna.setStr(MfeFoldRNA.getStructure());
+    public static void foldRNASequence(SimpleRNASequence rnaSequence){
+                
+        rnaSequence.setEnergy(MfeFoldRNA.foldSequence(rnaSequence.getSeq()));
+        rnaSequence.setStructureString(MfeFoldRNA.getStructure());
+        logger.info("Energy" + rnaSequence.getEnergy());
 
-//        jmipara.MfeFold mf=new jmipara.MfeFold();
-//        mf.setSequence(rna.getSeq());
-//        mf.setStructure("");
-//        mf.cal();
-//        rna.setEnergy(mf.getEnergy());
-//        rna.setStr(mf.getStructure());
     }
 
+    
+    
+    
     /**
-     * extract hairpins from a rna secondary structure.
-     * setCutOff() can change the minimal length of the hairpin
-     * @param rna
+     * 
+     * extract hairpins from a rna secondary structure defined using the 
+     * Vienna Bracket Notation
+     * 
+     * @param rnaStructure - SimpleRNASequence (with predicted secondary structure) 
+     * 
+     * @return ArrayList<@link{PriMiRNA}> list of PrimiRNA sequences
+     * 
      */
-    public ArrayList<PriMiRNA> extractHairpin(SimpleRNASequence rna){
+    public ArrayList<PriMiRNA> extractHairpinsFromBracketNotation(SimpleRNASequence rnaStructure){
         
-        ArrayList<PriMiRNA> pris=new ArrayList<PriMiRNA>();
+        ArrayList<PriMiRNA> primiRNAList=new ArrayList<PriMiRNA>();
         
-        String str=rna.getStr(); 
-        m=pattern.matcher(str);
+        String str = rnaStructure.getStructureStr(); 
+        m = pattern.matcher(str);
 
         while(m.find()){
 
-            int start1=str.lastIndexOf(")", m.start(1))+1;//replace m.start(1)
-            String left=str.substring(start1, m.end(1));//the 5' side of the stemloop
-            String right=m.group(3);//the 3' side of the stemloop
-            int n=b2Num(left)+b2Num(right);//compare the two sides of the stem
-            int slStart=0,slEnd=0,l=0,r=0;
+            // strip off the hanging ends from the structure
+            // ..(((..((((...)))).)))... 
+            //          becomes
+            //   (((..((((...)))).)))   
+            int start1      = str.lastIndexOf(")", m.start(1)) + 1; //replace m.start(1)
+            String left     = str.substring(start1, m.end(1));//the 5' side of the stemloop
+            String right    = m.group(3);//the 3' side of the stemloop
+            
+            int n = b2Num(left)+b2Num(right);//compare the two sides of the stem
+            int slStart=0, slEnd=0, l=0, r=0;
+            
             //if str is like (..((...)).. return ..((...))..
             if(n>0){
                 l=bIndex(left,"(",n)+1; //new start of left
-                left=left.substring(l); //new leftht
+                left=left.substring(l); //new left
                 slStart=start1+l; //start of stemloop, count from 0
                 slEnd=m.end(3);//count from 1
             }
+            
             //if str is like ..((...))..) return ..((...))..
             else if(n<0){
                 r=bIndex(right,")",n)-1;
@@ -172,50 +263,59 @@ public class StemLoopScanner {
                 slStart=start1;
                 slEnd=m.start(3)+r+1;//count from 1
             }
+            
             //if str is like ..((...)).. return ..((...))..
             else{
                 slStart=start1;
                 slEnd=m.end(3);//count from 1
             }
-            String subId=rna.getName()+"_mir_"; //the id of the stemloop
-            String subSeq=rna.getSeq().substring(slStart, slEnd); //seq of the stemloop
-            String subStr=left+m.group(2)+right; //structure of the stemloop
+            
+            String subId    = rnaStructure.getName()+"_mir_"; //the id of the stemloop
+            String subSeq   = rnaStructure.getSeq().substring(slStart, slEnd); //seq of the stemloop
+            String subStr   = left + m.group(2) + right; //structure of the stemloop
 
-            //filter the SL less than the threshold
-            if(subStr.length()<distance)
+
+            if(subStr.length() < minHairpinLength)
                 continue;
 
-            //create a new primiRNA
-            PriMiRNA pri=new PriMiRNA(subId,subSeq);
+            //create a new pri-miRNA
+            PriMiRNA pri = new PriMiRNA(subId, subSeq);
 
-            //if the stemloop has two or more loop
-            if(hasTwoLoop(pri)) continue;
-            if(pattern.matcher(pri.getStr()).matches() ==false) continue;
+            //if the stemloop has two or more loops
+            if(hasMultipleLoops(pri)) continue;
+            if(pattern.matcher(pri.getStructureStr()).matches() == false) continue;
             
-            pri.setName(rna.getName());
-            pri.setStart(slStart+rna.getStart());
-            pri.setEnd(slEnd-1+rna.getStart());
+            pri.setName(rnaStructure.getName());
+            pri.setStart(slStart+rnaStructure.getStart());
+            pri.setEnd(slEnd-1+rnaStructure.getStart());
             pri.setId(pri.getId()+pri.getStart()+"-"+pri.getEnd());
             
-            pris.add(pri);
+            primiRNAList.add(pri);
 
-//            priList.add(pri);          
             
         }
-        return pris;
+        return primiRNAList;
     }
 
+    
+    
+    
     /**
-     * remove the repeat hairpin caused by the overlap region during sliding window
+     * 
+     * remove repeat hairpins caused by overlapping fragments
+     * 
      */
-    public void noRepeat(){
+    public void removeDuplicatePrimiRNAs(){
         HashMap map=new HashMap();
         for(PriMiRNA pri:primiRNAList)
             map.put(pri.getId(), pri);
 
-        primiRNAList=new ArrayList<PriMiRNA>(map.values());
+        primiRNAList = new ArrayList<PriMiRNA>(map.values());
     }
 
+    
+    
+    
     /**
      * transform bracket-dot string to number and return the sum
      * @param String str: structure with bracket-dot notation string
@@ -232,6 +332,10 @@ public class StemLoopScanner {
         }
         return num;
     }
+    
+    
+    
+    
     /**
      * find the index of the nth '(' or ')'
      * @param String p: the structure string
@@ -259,15 +363,21 @@ public class StemLoopScanner {
         return c;
     }
 
+    
+    
+    
     /**
-     * judge whether the structure of a sequence has two or more loops
-     * @param String seq: sequence to be tested
+     * check if the structure of a sequence has two or more loops
+     * 
+     * @param  rna SimpleRNASequence seq: sequence to be tested
      * @return boolean; if have two or more return true, or false
+     * 
      */
-    public static boolean hasTwoLoop(SimpleRNASequence rna){
-        foldRNA(rna);
-        int end5=rna.getStr().lastIndexOf("(");
-        int start3=rna.getStr().indexOf(")");
+    public static boolean hasMultipleLoops(SimpleRNASequence rna){
+        
+        foldRNASequence(rna);
+        int end5=rna.getStructureStr().lastIndexOf("(");
+        int start3=rna.getStructureStr().indexOf(")");
         if(end5>=start3){
             return true;
         }
@@ -320,28 +430,28 @@ public class StemLoopScanner {
      * @return the sequence
      */
     public SimpleSeq getSequence() {
-        return sequence;
+        return simpleSeq;
     }
 
     /**
      * @param sequence the sequence to set
      */
     public void setSequence(SimpleSeq sequence) {
-        this.sequence = sequence;
+        this.simpleSeq = sequence;
     }
 
     /**
      * @return the cutoff
      */
     public int getDistance() {
-        return distance;
+        return minHairpinLength;
     }
 
     /**
      * @param cutoff the cutoff to set
      */
     public void setDistance(int distance) {
-        this.distance = distance;
+        this.minHairpinLength = distance;
     }
 
     /**

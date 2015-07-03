@@ -7,6 +7,7 @@ package no.uio.medisin.bag.jmirpara;
 
 import java.io.File;
 import java.io.IOException;
+import static no.uio.medisin.bag.jmirpara.PipeLine.logger;
 import org.apache.logging.log4j.Logger;
 
 import org.apache.commons.cli.BasicParser;
@@ -73,8 +74,17 @@ public class JmiCMD {
             System.exit(0);
             
         }
+            String se= "AAGCUGGCAUUCUAUAUAAGAGAGAAACUACACGCAGCGCCUCAUUUUGUGGGUCA"
+              + "CCAUAUUCUUGGGAACAAGAGCUACAGCAUGGGGCAAAUCUUUCUGUUCCCAAUCCUCUGGGA"
+              + "UUCUUUCCCGAUCACCAGUUGGACCCUGCGUUUGGAGCCAACUCAAACAAUCCAGAUUGGGAC"
+              + "UUCAACCCCAACAAGGAUCACUGGCCAGAGGCAAAUCAGGUAGGAGCGGGAGCAUUCGGGCCA"
+              + "GGGUUCACCCC";
+            logger.info("MLEE:" + MfeFoldRNA.foldSequence(se));
         
-        pl.predictMiRNAsInInputSequences();
+//      logger.info("STEM");
+//      pl.predictMiRNAsInQuerySequences();
+        logger.info("PIPE");
+        pl.predictMiRNAsInQuerySequencesWithSplit();
         
         long end = System.currentTimeMillis();
         long time = end - start;
@@ -191,7 +201,7 @@ public class JmiCMD {
                     p.setInputFilename(cmd.getOptionValue("r") + FileSeparator + cmd.getOptionValue("i"));	
                     p.setOutputFolder(cmd.getOptionValue("r") + FileSeparator + cmd.getOptionValue("o"));
                     logger.info("input file now set to " + cmd.getOptionValue("i"));
-                    logger.info("output folder now set to" + cmd.getOptionValue("o"));                    
+                    logger.info("output folder now set to " + cmd.getOptionValue("o"));                    
                 }                    
                 
                 if (cmd.hasOption("c")){

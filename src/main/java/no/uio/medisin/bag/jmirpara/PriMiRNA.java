@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
+ * Contains additional parameters which serve to characterize the pri-miRNA
+ * and which can be later used in miRNA prediction
+ * 
  * @author weibo
  */
 public class PriMiRNA extends SimpleRNASequence{
@@ -18,29 +20,30 @@ public class PriMiRNA extends SimpleRNASequence{
         super(id, seq);
     }
 
-    private int basalSegEnd = 0;//count from 1
-    private int basalSegSize = 0;
-    private String terminalLoopSeq;
-    private int terminalLoopStart = 0;//count from 1
-    private int terminalLoopEnd = 0;//count from 1
-    private int terminalLoopSize = 0;
-    private int internalLoopSize = 0;
-    private int internalLoop_num = 0;
-    private int unpairedBase_num = 0;
-    private double unpairedBase_rate = 0;
-    private String seq5; //5' seq of pri
-    private String str5; //5' structure of pri
-    private String seq3; //3' seq of pri
-    private String str3; //3' structure of pri
-    private String midBase; //mid-base of terminal loop
-    private String priLine1;
-    private String priLine2;
-    private String priLine3;
-    private String priLine4;
-    private String priPlot;
-    private int basalBaseNum = 0;
-    private int[] strIndex;
-    private HashMap featureSet;
+    // positions count from 1
+    private int         basalSegEnd = 0;
+    private int         basalSegSize = 0;
+    private String      terminalLoopSeq;
+    private int         terminalLoopStart = 0;
+    private int         terminalLoopEnd = 0;
+    private int         terminalLoopSize = 0;
+    private int         internalLoopSize = 0;
+    private int         internalLoop_num = 0;
+    private int         unpairedBase_num = 0;
+    private double      unpairedBase_rate = 0;
+    private String      seq5; //5' seq of pri
+    private String      str5; //5' structure of pri
+    private String      seq3; //3' seq of pri
+    private String      str3; //3' structure of pri
+    private String      midBase; //mid-base of terminal loop
+    private String      priLine1;
+    private String      priLine2;
+    private String      priLine3;
+    private String      priLine4;
+    private String      priPlot;
+    private int         basalBaseNum = 0;
+    private int[]       strIndex;
+    private HashMap     featureSet;
 
 
     private ArrayList<PreMiRNA> pres=new ArrayList<PreMiRNA>();
@@ -66,10 +69,10 @@ public class PriMiRNA extends SimpleRNASequence{
         featureSet.put("priRNA_start", this.getStart());
         featureSet.put("priRNA_end", this.getEnd());
         featureSet.put("priRNA_sequence", this.getSeq());
-        featureSet.put("priRNA_structure", this.getStr());
+        featureSet.put("priRNA_structure", this.getStructureStr());
         featureSet.put("priRNA_energy", this.getEnergy());
         featureSet.put("priRNA_size", this.getLength());
-        featureSet.put("priRNA_plot", MiGenesis.setStrPlot(this));
+        featureSet.put("priRNA_plot", CharacterizedPriMiRNA.setStrPlot(this));
         featureSet.put("priRNA_GC_content", this.getGC_content() );
         featureSet.put("priRNA_A_content", this.getA_content());
         featureSet.put("priRNA_U_content", this.getU_content());

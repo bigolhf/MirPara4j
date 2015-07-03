@@ -1,13 +1,15 @@
 
 package no.uio.medisin.bag.jmirpara;
 
+import static no.uio.medisin.bag.jmirpara.PipeLine.logger;
+
 /**
  * Performs RNA sequence folding using the RNAFold library
  * @author weibo
  */
 public class MfeFoldRNA {
 
-    private static native float fold(String seq,float t);
+    private static native float fold(String seq, float t);
     private static native void initIDs();
     
     static{
@@ -15,6 +17,7 @@ public class MfeFoldRNA {
         System.loadLibrary("RNAFold");
         
 	initIDs();
+        
     }
 
     private static final float temperature=37;
@@ -28,7 +31,8 @@ public class MfeFoldRNA {
     }
     
     
-    public static float fold(String sequence, String str){
+    
+    public static float foldSequence(String sequence, String str){
         structure = str;
         return MfeFoldRNA.fold(sequence, temperature);
     }
