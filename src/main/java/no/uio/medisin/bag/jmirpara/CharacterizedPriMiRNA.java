@@ -93,7 +93,7 @@ public class CharacterizedPriMiRNA {
      * @param start--miRNA start, count from 0
      * @param size--miRNA length
      */
-    public void maturateMiRNA(int start, int size){
+    public void defineAndCharacterizePreMiPair(int start, int size){
 
         preRNA = new PreMiRNA();
         miRNA = new MatMiRNA();
@@ -815,21 +815,25 @@ public class CharacterizedPriMiRNA {
     /**
      * gather all the features of a pri-miRNA and its pre-miRNA and miRNA 
      * to store in a HashMap
-     * @return
+     * before calling, the miRNA, pre-miRNA and pri-miRNA need to be defined,
+     * so this cannot be called on, for example, the pre-miRNA only
+     * 
+     * @return HashMap of features
+     * 
      */
-    public HashMap gatherFeatures(){
+    public HashMap characterizePriPreMiTriplet(){
 
-        HashMap features=new HashMap();
+        HashMap tripletFeatures=new HashMap();
 
-        features.putAll(priRNA.getFeatureSet());
-        features.put("plot", priRNA.getPriPlot());
+        tripletFeatures.putAll(priRNA.getFeatureSet());
+        tripletFeatures.put("plot", priRNA.getPriPlot());
 
-        features.putAll(preRNA.getFeatureSet());
+        tripletFeatures.putAll(preRNA.getFeatureSet());
 
-        features.putAll(miRNA.getFeatureSet());
+        tripletFeatures.putAll(miRNA.getFeatureSet());
 
 
-        return features;
+        return tripletFeatures;
     }
 
 

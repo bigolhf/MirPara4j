@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/Users/simonray/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -l 11 -s 150 -w 500 -d 60 -b 0.80 -m overall  -c /Users/simonray/NetBeansProjects/MirPara4j/config.mac.yaml -i src/main/test/lettie.fas -o src/main/test/demo -r /Users/simonray/NetBeansProjects/MirPara4j</exec.args>
+                <exec.executable>java</exec.executable>
+                <exec.workingdir>/Users/simonray/NetBeansProjects/MirPara4j</exec.workingdir>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/Users/simonray/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -l 11 -s 150 -w 500 -d 60 -b 0.80 -m overall  -c /Users/simonray/NetBeansProjects/MirPara4j/config.mac.yaml -i src/main/test/lettie.fas -o src/main/test/demo -r /Users/simonray/NetBeansProjects/MirPara4j</exec.args>
+                <exec.executable>java</exec.executable>
+                <jpda.listen>true</jpda.listen>
+                <exec.workingdir>/Users/simonray/NetBeansProjects/MirPara4j</exec.workingdir>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/Users/simonray/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -l 11 -s 150 -w 500 -d 60 -b 0.80 -m overall  -c /Users/simonray/NetBeansProjects/MirPara4j/config.mac.yaml -i src/main/test/lettie.fas -o src/main/test/demo -r /Users/simonray/NetBeansProjects/MirPara4j</exec.args>
+                <exec.executable>java</exec.executable>
+                <exec.workingdir>/Users/simonray/NetBeansProjects/MirPara4j</exec.workingdir>
+            </properties>
+        </action>
+    </actions>

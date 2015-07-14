@@ -117,6 +117,7 @@ public class SVMToolKit {
 
     public static void loadModel(String model) throws IOException{
         svmmodel=svm.svm_load_model(model);
+        svmmodel= svm.svm_load_model("/Users/simonray/NetBeansProjects/MirPara4j/models/aqu_1.model");
     }
 
     /**

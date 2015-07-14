@@ -265,18 +265,22 @@ public class PipeLine {
             
         }
         
+        /*
+        This cycles through all possible miRNAs in the hairpin loop
+        and calculates their properties
+        */
         for(int w=20;w<25;w++){//miRNA size
             int i; //i refer to the start of miRNA, count from 0
            
             //5' strand
             for(i=0;i<priRNA.getTerminalLoopStart()-w;i++){//miRNA start point
-                mg.maturateMiRNA(i,w);
-                classifyFeature(mg.gatherFeatures());
+                mg.defineAndCharacterizePreMiPair(i,w);
+                classifyPriPreMiRTriplet(mg.characterizePriPreMiTriplet());
             }
             //3' strand
             for(i=priRNA.getTerminalLoopEnd()+1;i<priRNA.getLength()-w;i++){//miRNA start point
-                mg.maturateMiRNA(i,w);
-                classifyFeature(mg.gatherFeatures());
+                mg.defineAndCharacterizePreMiPair(i,w);
+                classifyPriPreMiRTriplet(mg.characterizePriPreMiTriplet());
             }
 
         }
@@ -290,24 +294,26 @@ public class PipeLine {
     /**
      * classify the input sequence using the specified model
      * 
-     * @param feat
-     * @return
+     * @param HashMap of features characterizing the pri-miRNA, pre-miRNA, miRNA triplet
+     * 
+     * @return boolean of classification outcome
+     * 
      * @throws IOException 
      */
-    private Boolean classifyFeature(HashMap feat) throws IOException{
+    private Boolean classifyPriPreMiRTriplet(HashMap tripletFeatures) throws IOException{
         
-        String result;  
+        String classficationResult;  
         
-        if(FeatureRange.featureInRange(feat, getModel())){
-            SVMToolKit.judge(getModel(),feat, cutoff);
-            result = SVMToolKit.judgeResult();
-            if(result.equals("TRUE"))
-                predictionList.add(feat);
+        if(FeatureRange.featureInRange(tripletFeatures, getModel())){
+            SVMToolKit.judge(getModel(),tripletFeatures, cutoff);
+            classficationResult = SVMToolKit.judgeResult();
+            if(classficationResult.equals("TRUE"))
+                predictionList.add(tripletFeatures);
         }
         else
-           result="FALSE";
+           classficationResult="FALSE";
 
-        return Boolean.parseBoolean(result);
+        return Boolean.parseBoolean(classficationResult);
     }
     
     
@@ -392,8 +398,17 @@ public class PipeLine {
         logger.info("loading miRBase data file <" + miRParaConfig.getPathToModelData() + "");
         OutputMiRNAPredictions.loadMirBaseData(new File(miRParaConfig.getPathToMirbaseData()));     
         
+        
+        
     }
 
+    
+    
+    public String reportAnalysisSettings(){
+        return "cutoff:\t" + cutoff;
+    }
+            
+    
     
     
     
@@ -834,8 +849,8 @@ public class PipeLine {
                             logger.info("W2: the given miRNA spans more than half the terminal loop of "+entry[0]+" , I cannot handle at present!");
                             continue;
                         }
-                    parser.maturateMiRNA(miStart-1,miSize);
-                    HashMap feat=parser.gatherFeatures();
+                    parser.defineAndCharacterizePreMiPair(miStart-1,miSize);
+                    HashMap feat=parser.characterizePriPreMiTriplet();
                     //outputSV(feat);
                     SVMToolKit.judge(getModel(),feat,cutoff);
                     Boolean isMir=Boolean.parseBoolean(SVMToolKit.judgeResult());
