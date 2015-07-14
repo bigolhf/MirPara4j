@@ -1,7 +1,7 @@
 
 package no.uio.medisin.bag.jmirpara;
 
-import static no.uio.medisin.bag.jmirpara.PipeLine.logger;
+import static no.uio.medisin.bag.jmirpara.MiRNAPredictionPipeLine.logger;
 
 /**
  * Performs RNA sequence folding using the RNAFold library

@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/home/sr/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -l 11 -s 150 -w 500 -d 60 -b 0.80 -m overall  -c /home/sr/NetBeansProjects/MirPara4j/config.yaml -i src/main/test/lettie.fas -o src/main/test/demo -r /home/sr/NetBeansProjects/MirPara4j</exec.args>
+                <exec.args>-Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/home/sr/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -c /home/sr/NetBeansProjects/MirPara4j/config.yaml -i src/main/test/lettie.fas -o src/main/test/demo</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.workingdir></exec.workingdir>
             </properties>
@@ -25,7 +25,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/home/sr/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -l 11 -s 150 -w 500 -d 60 -b 0.80 -m overall  -c /home/sr/NetBeansProjects/MirPara4j/config.yaml -i src/main/test/lettie.fas -o src/main/test/demo -r /home/sr/NetBeansProjects/MirPara4j</exec.args>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/home/sr/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -c /home/sr/NetBeansProjects/MirPara4j/config.yaml -i src/main/test/lettie.fas -o src/main/test/demo</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
                 <exec.workingdir></exec.workingdir>
@@ -41,7 +41,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/home/sr/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -l 11 -s 150 -w 500 -d 60 -b 0.80 -m overall  -c /home/sr/NetBeansProjects/MirPara4j/config.yaml -i src/main/test/lettie.fas -o src/main/test/demo -r /home/sr/NetBeansProjects/MirPara4j</exec.args>
+                <exec.args>-Dlog4j.configurationFile=file:log4j2.xml -Djava.library.path=/home/sr/NetBeansProjects/MirPara4j -classpath %classpath no.uio.medisin.bag.jmirpara.JmiCMD -c /home/sr/NetBeansProjects/MirPara4j/config.yaml -i src/main/test/lettie.fas -o src/main/test/demo</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.workingdir></exec.workingdir>
             </properties>

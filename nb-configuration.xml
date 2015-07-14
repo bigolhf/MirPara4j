@@ -8,8 +8,8 @@ Without this configuration present, some functionality in the IDE may be limited
 -->
     <config-data xmlns="http://www.netbeans.org/ns/maven-config-data/1">
         <configurations>
-            <configuration id="miRBaseProcessing" profiles=""/>
             <configuration id="mac_predict" profiles=""/>
+            <configuration id="miRBaseProcessing" profiles=""/>
         </configurations>
     </config-data>
 </project-shared-configuration>

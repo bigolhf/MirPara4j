@@ -7,7 +7,6 @@ package no.uio.medisin.bag.jmirpara;
 
 import java.io.File;
 import java.io.IOException;
-import static no.uio.medisin.bag.jmirpara.PipeLine.logger;
 import org.apache.logging.log4j.Logger;
 
 import org.apache.commons.cli.BasicParser;
@@ -55,7 +54,7 @@ public class JmiCMD {
         
         printBanner();
         
-        PipeLine pl = new PipeLine();
+        MiRNAPredictionPipeLine pl = new MiRNAPredictionPipeLine();
         parseArguments(args, pl);
 
         if(test.equals("svm")){
@@ -128,7 +127,7 @@ public class JmiCMD {
      * @param p
      * @throws IOException 
      */
-    private static void parseArguments(String[] args, PipeLine p) throws IOException{
+    private static void parseArguments(String[] args, MiRNAPredictionPipeLine p) throws IOException{
         options.addOption("m", "model",         true, "model type: Animal (A), Plant (P), Virus (V) or Overall (O)");
         options.addOption("l", "level",         true, "level: the ratio of negative_data:positive_data (1 to 20: default 1)");
         options.addOption("s", "step",          true, "step size when splitting long sequences");
@@ -188,7 +187,7 @@ public class JmiCMD {
                 
                 if (cmd.hasOption("i")) {
                     logger.info("input file set to " + cmd.getOptionValue("i"));
-                    p.setInputFilename(cmd.getOptionValue("l"));	
+                    p.setInputFilename(cmd.getOptionValue("i"));	
                 }                    
 
                 if (cmd.hasOption("o")){

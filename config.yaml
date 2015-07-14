@@ -12,4 +12,12 @@ data:
   folder: data
   data_file: mirbase.dat
   
+prediction_params:
+  window: 500
+  step: 250
+  start: 1
+  distance: 60
+  cutoff: 0.8
+  model: "overall"
+  level: 1
 
