@@ -29,20 +29,20 @@ public class PriMiRNA extends SimpleRNASequence{
     private int         terminalLoopSize = 0;
     private int         internalLoopSize = 0;
     private int         internalLoop_num = 0;
-    private int         unpairedBase_num = 0;
-    private double      unpairedBase_rate = 0;
-    private String      seq5; //5' seq of pri
-    private String      str5; //5' structure of pri
-    private String      seq3; //3' seq of pri
-    private String      str3; //3' structure of pri
-    private String      midBase; //mid-base of terminal loop
-    private String      priLine1;
-    private String      priLine2;
-    private String      priLine3;
-    private String      priLine4;
-    private String      priPlot;
+    private int         numberOfUnpairedBasesInStem = 0;
+    private double      unpairedBaseRate = 0;
+    private String      seq5;                       // 5' seq of pri
+    private String      str5;                       // 5' structure of pri
+    private String      seq3;                       // 3' seq of pri
+    private String      str3;                       // 3' structure of pri
+    private String      midBase;                    // mid-base of terminal loop (can be empty)
+    private String      priLine1;                   // unpaired nt on 5' arm in the pretty plot
+    private String      priLine2;                   // paired nt on 5' arm in the pretty plot
+    private String      priLine3;                   // unpaired nt on 3' arm in the pretty plot
+    private String      priLine4;                   // paired nt on 3' arm in the pretty plot
+    private String      priPlot;                    // <-- is this used ?
     private int         basalBaseNum = 0;
-    private int[]       strIndex;
+    private int[]       strIndex;                   // this tells us which nt in the 5' arm maps to which nt in the 3' arm
     private HashMap     featureSet;
 
 
@@ -63,7 +63,7 @@ public class PriMiRNA extends SimpleRNASequence{
         return pres.get(index);
     }
 
-    public void setFeatureSet(){
+    public void buildFeatureSet(){
         featureSet=new HashMap();
         featureSet.put("priRNA_id", this.getId());
         featureSet.put("priRNA_start", this.getStart());
@@ -78,10 +78,10 @@ public class PriMiRNA extends SimpleRNASequence{
         featureSet.put("priRNA_U_content", this.getU_content());
         featureSet.put("priRNA_G_content", this.getG_content());
         featureSet.put("priRNA_C_content", this.getC_content());
-        featureSet.put("priRNA_pair_number", this.getPair_num());
+        featureSet.put("priRNA_pair_number", this.getNumberOfPairs());
         featureSet.put("priRNA_G-U_number", this.getGU_num());
-        featureSet.put("priRNA_unpair_number", this.getUnpairedBase_num());
-        featureSet.put("priRNA_unpair_rate", this.getUnpairedBase_rate());
+        featureSet.put("priRNA_unpair_number", this.getNumberOfUnpairedBasesInStem());
+        featureSet.put("priRNA_unpair_rate", this.getunpairedBaseRate());
         featureSet.put("priRNA_internalLoop_number", this.getInternalLoop_num());
         featureSet.put("priRNA_internalLoop_size", this.getInternalLoopSize());
         featureSet.put("basalSegment_size", this.getBasalSegSize());
@@ -208,29 +208,29 @@ public class PriMiRNA extends SimpleRNASequence{
     /**
      * @return the unpairedBase_num
      */
-    public int getUnpairedBase_num() {
-        return unpairedBase_num;
+    public int getNumberOfUnpairedBasesInStem() {
+        return numberOfUnpairedBasesInStem;
     }
 
     /**
      * @param unpairedBase_num the unpairedBase_num to set
      */
-    public void setUnpairedBase_num(int unpairedBase_num) {
-        this.unpairedBase_num = unpairedBase_num;
+    public void setNumberOfUnpairedBasesInStem(int unpairedBase_num) {
+        this.numberOfUnpairedBasesInStem = unpairedBase_num;
     }
 
     /**
      * @return the unpairedBase_rate
      */
-    public double getUnpairedBase_rate() {
-        return unpairedBase_rate;
+    public double getunpairedBaseRate() {
+        return unpairedBaseRate;
     }
 
     /**
      * @param unpairedBase_rate the unpairedBase_rate to set
      */
-    public void setUnpairedBase_rate(double unpairedBase_rate) {
-        this.unpairedBase_rate = unpairedBase_rate;
+    public void setunpairedBaseRate(double unpairedBase_rate) {
+        this.unpairedBaseRate = unpairedBase_rate;
     }
 
     /**
@@ -299,7 +299,7 @@ public class PriMiRNA extends SimpleRNASequence{
     /**
      * @param midBase the midBase to set
      */
-    public void setMidBase(String midBase) {
+    public void setMiddleBase(String midBase) {
         this.midBase = midBase;
     }
 

@@ -52,7 +52,7 @@ public class SimpleSeq {
     /**
      * @param id 
      */
-    public void setId(String id) {
+    public void setID(String id) {
         this.id = id;
     }
 
@@ -94,7 +94,7 @@ public class SimpleSeq {
     /**
      * @param start
      */
-    public void setStart(int start) {
+    public void setAbsStartInQuerySeq(int start) {
         this.start = start;
     }
 
@@ -108,7 +108,7 @@ public class SimpleSeq {
     /**
      * @param end
      */
-    public void setEnd(int end) {
+    public void setAbsEndInQuerySeq(int end) {
         this.end = end;
     }
 

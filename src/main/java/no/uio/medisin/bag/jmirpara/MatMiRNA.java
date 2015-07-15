@@ -50,7 +50,7 @@ public class MatMiRNA extends SimpleRNASequence{
         featureSet.put("miRNA_U_content", this.getU_content());
         featureSet.put("miRNA_G_content", this.getG_content());
         featureSet.put("miRNA_C_content", this.getC_content());
-        featureSet.put("miRNA_pair_number", this.getPair_num());
+        featureSet.put("miRNA_pair_number", this.getNumberOfPairs());
         featureSet.put("miRNA_G-U_number", this.getGU_num());
         featureSet.put("miRNA_unpair_number", this.getUnpairedBase_num());
         featureSet.put("miRNA_unpair_rate", this.getUnpairedBase_rate());
@@ -82,7 +82,7 @@ public class MatMiRNA extends SimpleRNASequence{
     /**
      * @param maxInternalLoopSize the maxInternalLoopSize to set
      */
-    public void setInternalLoopSize(int maxInternalLoopSize) {
+    public void setLargestInternalLoop(int maxInternalLoopSize) {
         this.maxInternalLoopSize = maxInternalLoopSize;
     }
 
@@ -96,7 +96,7 @@ public class MatMiRNA extends SimpleRNASequence{
     /**
      * @param internalLoop_num the internalLoop_num to set
      */
-    public void setInternalLoop_num(int internalLoop_num) {
+    public void setNumOfInternalLoops(int internalLoop_num) {
         this.internalLoop_num = internalLoop_num;
     }
 
@@ -110,7 +110,7 @@ public class MatMiRNA extends SimpleRNASequence{
     /**
      * @param unpairedBase_num the unpairedBase_num to set
      */
-    public void setUnpairedBase_num(int unpairedBase_num) {
+    public void setNumberOfUnpairedBases(int unpairedBase_num) {
         this.unpairedBase_num = unpairedBase_num;
     }
 
@@ -124,7 +124,7 @@ public class MatMiRNA extends SimpleRNASequence{
     /**
      * @param unpairedBase_rate the unpairedBase_rate to set
      */
-    public void setUnpairedBase_rate(double unpairedBase_rate) {
+    public void setFractOfUnpairedBases(double unpairedBase_rate) {
         this.unpairedBase_rate = unpairedBase_rate;
     }
 
@@ -208,7 +208,7 @@ public class MatMiRNA extends SimpleRNASequence{
     /**
      * @param miEnd the miEnd to set
      */
-    public void setMiEnd(int miEnd) {
+    public void setMiRNAEndPos(int miEnd) {
         this.miEnd = miEnd;
     }
 
@@ -222,7 +222,7 @@ public class MatMiRNA extends SimpleRNASequence{
     /**
      * @param miStart the miStart to set
      */
-    public void setMiStart(int miStart) {
+    public void setMiRNAStartPos(int miStart) {
         this.miStart = miStart;
     }
 

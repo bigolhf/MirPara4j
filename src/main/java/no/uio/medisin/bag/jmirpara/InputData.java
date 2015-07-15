@@ -90,8 +90,8 @@ public class InputData {
             String subseq=seq.getSeq().substring(start,end);
 
             SimpleRNASequence frag=new SimpleRNASequence(id,subseq);
-            frag.setStart(start+1);// count from 1
-            frag.setEnd(end); //count from 1
+            frag.setAbsStartInQuerySeq(start+1);// count from 1
+            frag.setAbsEndInQuerySeq(end); //count from 1
             frag.setName(seq.getName());
             segs.add(frag);
         }

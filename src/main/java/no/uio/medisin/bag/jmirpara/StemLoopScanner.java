@@ -119,8 +119,8 @@ public class StemLoopScanner {
             String subseq = simpleSeq.getSeq().substring(start,end);
 
             SimpleSeq frag = new SimpleSeq(id,subseq);
-            frag.setStart(start+1);// count from 1
-            frag.setEnd(end); //count from 1
+            frag.setAbsStartInQuerySeq(start+1);// count from 1
+            frag.setAbsEndInQuerySeq(end); //count from 1
             frag.setName(simpleSeq.getId());
             fragmentList.add(frag);
             start+= step;
@@ -155,8 +155,8 @@ public class StemLoopScanner {
             String subseq = simpleSeq.getSeq().substring(start,end);
 
             SimpleSeq frag = new SimpleSeq(id,subseq);
-            frag.setStart(start+1);// count from 1
-            frag.setEnd(end); //count from 1
+            frag.setAbsStartInQuerySeq(start+1);// count from 1
+            frag.setAbsEndInQuerySeq(end); //count from 1
             frag.setName(simpleSeq.getId());
             fragmentList.add(frag);
             start+= step;
@@ -286,9 +286,9 @@ public class StemLoopScanner {
             if(pattern.matcher(pri.getStructureStr()).matches() == false) continue;
             
             pri.setName(rnaStructure.getName());
-            pri.setStart(slStart+rnaStructure.getStart());
-            pri.setEnd(slEnd-1+rnaStructure.getStart());
-            pri.setId(pri.getId()+pri.getStart()+"-"+pri.getEnd());
+            pri.setAbsStartInQuerySeq(slStart+rnaStructure.getStart());
+            pri.setAbsEndInQuerySeq(slEnd-1+rnaStructure.getStart());
+            pri.setID(pri.getId()+pri.getStart()+"-"+pri.getEnd());
             
             primiRNAList.add(pri);
 

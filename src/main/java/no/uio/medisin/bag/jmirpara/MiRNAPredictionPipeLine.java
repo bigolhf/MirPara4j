@@ -34,6 +34,8 @@ public class MiRNAPredictionPipeLine {
               + "UUCAACCCCAACAAGGAUCACUGGCCAGAGGCAAAUCAGGUAGGAGCGGGAGCAUUCGGGCCA"
               + "GGGUUCACCCC";
 
+    private static final int MIN_MIRNA_LEN = 20;
+    private static final int MAX_MIRNA_LEN = 25;
     
     private static final String[] knownModels = new String[] {"m", "p", "v", "o", "animal", "plant", "virus", "overall" };
     private static final String[] knownTests = new String[] {"svm", "hairpin", };
@@ -268,11 +270,11 @@ public class MiRNAPredictionPipeLine {
      * @throws IOException 
      */
     private void findMiRNAsInPrimiRNA(PriMiRNA priRNA) throws IOException{ 
-        CharacterizedPriMiRNA mg = new CharacterizedPriMiRNA(priRNA);
+        CharacterizedPriMiRNA characterizedPrimiRNA = new CharacterizedPriMiRNA(priRNA);
         
         try{
             
-            mg.parsePrimiRNA();
+            characterizedPrimiRNA.parsePrimiRNA();
             
         }catch(Exception e){
             
@@ -285,21 +287,22 @@ public class MiRNAPredictionPipeLine {
         }
         
         /*
-        This cycles through all possible miRNAs in the hairpin loop
-        and calculates their properties
+          cycle through all possible miRNAs in the hairpin loop,
+          characterize, and use as input to SVM for classification
         */
-        for(int w=20;w<25;w++){//miRNA size
-            int i; //i refer to the start of miRNA, count from 0
+        for(int mirLen=MIN_MIRNA_LEN;mirLen<MAX_MIRNA_LEN;mirLen++){//miRNA size
+            int miRStart; // count from 0
            
             //5' strand
-            for(i=0;i<priRNA.getTerminalLoopStart()-w;i++){//miRNA start point
-                mg.defineAndCharacterizePreMiPair(i,w);
-                classifyPriPreMiRTriplet(mg.characterizePriPreMiTriplet());
+            for(miRStart=0;miRStart<priRNA.getTerminalLoopStart()-mirLen;miRStart++){  //miRNA start point
+                characterizedPrimiRNA.defineAndCharacterizePreMiPair(miRStart, mirLen);
+                classifyPriPreMiRTriplet(characterizedPrimiRNA.characterizePriPreMiTriplet());
             }
+            
             //3' strand
-            for(i=priRNA.getTerminalLoopEnd()+1;i<priRNA.getLength()-w;i++){//miRNA start point
-                mg.defineAndCharacterizePreMiPair(i,w);
-                classifyPriPreMiRTriplet(mg.characterizePriPreMiTriplet());
+            for(miRStart=priRNA.getTerminalLoopEnd()+1;miRStart<priRNA.getLength()-mirLen;miRStart++){//miRNA start point
+                characterizedPrimiRNA.defineAndCharacterizePreMiPair(miRStart,mirLen);
+                classifyPriPreMiRTriplet(characterizedPrimiRNA.characterizePriPreMiTriplet());
             }
 
         }
@@ -712,8 +715,8 @@ public class MiRNAPredictionPipeLine {
                 logger.info("P5EE:" + MfeFoldRNA.foldSequence(se, ""));
 
                 SimpleSeq frag = new SimpleSeq(id,subseq);  //each frag
-                frag.setStart(start+1); // we count from 1
-                frag.setEnd(end); 
+                frag.setAbsStartInQuerySeq(start+1); // we count from 1
+                frag.setAbsEndInQuerySeq(end); 
                 frag.setName(querySeq.getId());
                 StemLoopScanner sl = new StemLoopScanner();
 

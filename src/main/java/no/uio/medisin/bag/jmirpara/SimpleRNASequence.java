@@ -43,11 +43,11 @@ public class SimpleRNASequence extends SimpleSeq {
      * @param seq 
      */
     public SimpleRNASequence(SimpleSeq seq){
-        this.setId(seq.getId());
+        this.setID(seq.getId());
         this.setName(seq.getName());
         this.setSeq(seq.getSeq());
-        this.setStart(seq.getStart());
-        this.setEnd(seq.getEnd());
+        this.setAbsStartInQuerySeq(seq.getStart());
+        this.setAbsEndInQuerySeq(seq.getEnd());
         this.setLength(seq.getLength());
     }
     
@@ -126,21 +126,21 @@ public class SimpleRNASequence extends SimpleSeq {
     /**
      * @param GU_num 
      */
-    public void setGU_num(int GU_num) {
+    public void setNumberOfGUPairs(int GU_num) {
         this.GU_num = GU_num;
     }
 
     /**
      * @return pair_num
      */
-    public int getPair_num() {
+    public int getNumberOfPairs() {
         return pair_num;
     }
 
     /**
      * @param pair_num 
      */
-    public void setPair_num(int pair_num) {
+    public void setNumberOfPairedBases(int pair_num) {
         this.pair_num = pair_num;
     }
 

@@ -22,45 +22,45 @@ public class PreMiRNA extends SimpleRNASequence{
     }
 
     private int maxInternalLoopSize=0;
-    private int internalLoop_num=0;
-    private int unpairedBase_num=0;
-    private double unpairedBase_rate=0;
+    private int numOfInternalLoops=0;
+    private int numOfUnpairedBases=0;
+    private double fractOfUnpairedBases=0;
 
     private int lowerStemSize=0;
     private int upperStemSize=0;
     private int topStemSize=0;
     private int upperStart=0;
     private int upperEnd=0;
-    private int lowerStemInternalLoopSize=0;
-    private int topStemInternalLoopSize=0;
-    private int lowerStemInternalLoop_num=0;
-    private int topStemInternalLoop_num=0;
-    private int lowerStemUnpairedBase_num=0;
-    private int topStemUnpairedBase_num=0;
-    private double lowerStemUnpairedBase_rate=0;
-    private double topStemUnpairedBase_rate=0;
+    private int largestInternalLoopInLowerStem=0;
+    private int largestInternalLoopInTopStem=0;
+    private int numOfInternalLoopsInLowerStem=0;
+    private int numOfInternalLoopsInTopStem=0;
+    private int numOfUnpairedBasesInLowerStem=0;
+    private int numOfUnpairedBasesInTopStem=0;
+    private double fractOfUnpairedBasesInLowerStem=0;
+    private double fractOfUnpairedBasesInTopStem=0;
 
     private HashMap featureSet;
 
-    private ArrayList<MatMiRNA> mis=new ArrayList<MatMiRNA>();
+    private ArrayList<MatMiRNA> miRNAList=new ArrayList<MatMiRNA>();
     private int index=0;
 
     public void addProduct(MatMiRNA miRNA){
-        mis.add(miRNA);
+        miRNAList.add(miRNA);
         index+=1;
     }
 
 
     public int SizeOfProduct(){
-        return mis.size();
+        return miRNAList.size();
     }
 
     public MatMiRNA NextMiRNA(){
         index-=1;
-        return mis.get(index);
+        return miRNAList.get(index);
     }
 
-    public void setFeatureSet(){
+    public void buildFeatureSet(){
         featureSet=new HashMap();
         featureSet.put("preRNA_sequence", this.getSeq());
         featureSet.put("preRNA_structure", this.getStructureStr());
@@ -71,7 +71,7 @@ public class PreMiRNA extends SimpleRNASequence{
         featureSet.put("preRNA_U_content", this.getU_content());
         featureSet.put("preRNA_G_content", this.getG_content());
         featureSet.put("preRNA_C_content", this.getC_content());
-        featureSet.put("preRNA_pair_number", this.getPair_num());
+        featureSet.put("preRNA_pair_number", this.getNumberOfPairs());
         featureSet.put("preRNA_G-U_number", this.getGU_num());
         featureSet.put("preRNA_unpair_number", this.getUnpairedBase_num());
         featureSet.put("preRNA_unpair_rate", this.getUnpairedBase_rate());
@@ -106,7 +106,7 @@ public class PreMiRNA extends SimpleRNASequence{
     /**
      * @param maxInternalLoopSize the maxInternalLoopSize to set
      */
-    public void setInternalLoopSize(int maxInternalLoopSize) {
+    public void setBiggestInternalLoop(int maxInternalLoopSize) {
         this.maxInternalLoopSize = maxInternalLoopSize;
     }
 
@@ -114,42 +114,42 @@ public class PreMiRNA extends SimpleRNASequence{
      * @return the internalLoop_num
      */
     public int getInternalLoop_num() {
-        return internalLoop_num;
+        return numOfInternalLoops;
     }
 
     /**
      * @param internalLoop_num the internalLoop_num to set
      */
-    public void setInternalLoop_num(int internalLoop_num) {
-        this.internalLoop_num = internalLoop_num;
+    public void setNumberOfInternalLoops(int internalLoop_num) {
+        this.numOfInternalLoops = internalLoop_num;
     }
 
     /**
      * @return the unpairedBase_num
      */
     public int getUnpairedBase_num() {
-        return unpairedBase_num;
+        return numOfUnpairedBases;
     }
 
     /**
      * @param unpairedBase_num the unpairedBase_num to set
      */
-    public void setUnpairedBase_num(int unpairedBase_num) {
-        this.unpairedBase_num = unpairedBase_num;
+    public void setNumberOfUnpairedBases(int unpairedBase_num) {
+        this.numOfUnpairedBases = unpairedBase_num;
     }
 
     /**
      * @return the unpairedBase_rate
      */
     public double getUnpairedBase_rate() {
-        return unpairedBase_rate;
+        return fractOfUnpairedBases;
     }
 
     /**
      * @param unpairedBase_rate the unpairedBase_rate to set
      */
-    public void setUnpairedBase_rate(double unpairedBase_rate) {
-        this.unpairedBase_rate = unpairedBase_rate;
+    public void setUnpairedBaseRate(double unpairedBase_rate) {
+        this.fractOfUnpairedBases = unpairedBase_rate;
     }
 
      /**
@@ -162,7 +162,7 @@ public class PreMiRNA extends SimpleRNASequence{
     /**
      * @param lowerStemSize the lowerStemSize to set
      */
-    public void setLowerStemSize(int lowerStemSize) {
+    public void setLowerStemLength(int lowerStemSize) {
         this.lowerStemSize = lowerStemSize;
     }
 
@@ -198,112 +198,112 @@ public class PreMiRNA extends SimpleRNASequence{
      * @return the lowerStemInternalLoopSize
      */
     public int getLowerStemInternalLoopSize() {
-        return lowerStemInternalLoopSize;
+        return largestInternalLoopInLowerStem;
     }
 
     /**
      * @param lowerStemInternalLoopSize the lowerStemInternalLoopSize to set
      */
-    public void setLowerStemInternalLoopSize(int lowerStemInternalLoopSize) {
-        this.lowerStemInternalLoopSize = lowerStemInternalLoopSize;
+    public void SetLargestInternalLoopInLowerStem(int lowerStemInternalLoopSize) {
+        this.largestInternalLoopInLowerStem = lowerStemInternalLoopSize;
     }
 
     /**
      * @return the topStemInternalLoopSize
      */
     public int getTopStemInternalLoopSize() {
-        return topStemInternalLoopSize;
+        return largestInternalLoopInTopStem;
     }
 
     /**
      * @param topStemInternalLoopSize the topStemInternalLoopSize to set
      */
     public void setTopStemInternalLoopSize(int topStemInternalLoopSize) {
-        this.topStemInternalLoopSize = topStemInternalLoopSize;
+        this.largestInternalLoopInTopStem = topStemInternalLoopSize;
     }
 
     /**
      * @return the lowerStemInternalLoop_num
      */
     public int getLowerStemInternalLoop_num() {
-        return lowerStemInternalLoop_num;
+        return numOfInternalLoopsInLowerStem;
     }
 
     /**
      * @param lowerStemInternalLoop_num the lowerStemInternalLoop_num to set
      */
-    public void setLowerStemInternalLoop_num(int lowerStemInternalLoop_num) {
-        this.lowerStemInternalLoop_num = lowerStemInternalLoop_num;
+    public void getNumOfInternalLoopsInLowerStem(int lowerStemInternalLoop_num) {
+        this.numOfInternalLoopsInLowerStem = lowerStemInternalLoop_num;
     }
 
     /**
      * @return the topStemInternalLoop_num
      */
     public int getTopStemInternalLoop_num() {
-        return topStemInternalLoop_num;
+        return numOfInternalLoopsInTopStem;
     }
 
     /**
      * @param topStemInternalLoop_num the topStemInternalLoop_num to set
      */
-    public void setTopStemInternalLoop_num(int topStemInternalLoop_num) {
-        this.topStemInternalLoop_num = topStemInternalLoop_num;
+    public void setNumOfInternalLoopsInTopStem(int topStemInternalLoop_num) {
+        this.numOfInternalLoopsInTopStem = topStemInternalLoop_num;
     }
 
     /**
      * @return the lowerStemUnpairedBase_num
      */
     public int getLowerStemUnpairedBase_num() {
-        return lowerStemUnpairedBase_num;
+        return numOfUnpairedBasesInLowerStem;
     }
 
     /**
      * @param lowerStemUnpairedBase_num the lowerStemUnpairedBase_num to set
      */
-    public void setLowerStemUnpairedBase_num(int lowerStemUnpairedBase_num) {
-        this.lowerStemUnpairedBase_num = lowerStemUnpairedBase_num;
+    public void setNumOfUnpairedBasesInLowerStem(int lowerStemUnpairedBase_num) {
+        this.numOfUnpairedBasesInLowerStem = lowerStemUnpairedBase_num;
     }
 
     /**
      * @return the topStemUnpairedBase_num
      */
     public int getTopStemUnpairedBase_num() {
-        return topStemUnpairedBase_num;
+        return numOfUnpairedBasesInTopStem;
     }
 
     /**
      * @param topStemUnpairedBase_num the topStemUnpairedBase_num to set
      */
-    public void setTopStemUnpairedBase_num(int topStemUnpairedBase_num) {
-        this.topStemUnpairedBase_num = topStemUnpairedBase_num;
+    public void setNumOfUnpairedBasesInTopStem(int topStemUnpairedBase_num) {
+        this.numOfUnpairedBasesInTopStem = topStemUnpairedBase_num;
     }
 
     /**
      * @return the lowerStemUnpairedBase_rate
      */
     public double getLowerStemUnpairedBase_rate() {
-        return lowerStemUnpairedBase_rate;
+        return fractOfUnpairedBasesInLowerStem;
     }
 
     /**
      * @param lowerStemUnpairedBase_rate the lowerStemUnpairedBase_rate to set
      */
-    public void setLowerStemUnpairedBase_rate(double lowerStemUnpairedBase_rate) {
-        this.lowerStemUnpairedBase_rate = lowerStemUnpairedBase_rate;
+    public void setFractOfUnpairedBasesInLowerStem(double lowerStemUnpairedBase_rate) {
+        this.fractOfUnpairedBasesInLowerStem = lowerStemUnpairedBase_rate;
     }
 
     /**
      * @return the topStemUnpairedBase_rate
      */
     public double getTopStemUnpairedBase_rate() {
-        return topStemUnpairedBase_rate;
+        return fractOfUnpairedBasesInTopStem;
     }
 
     /**
      * @param topStemUnpairedBase_rate the topStemUnpairedBase_rate to set
      */
-    public void setTopStemUnpairedBase_rate(double topStemUnpairedBase_rate) {
-        this.topStemUnpairedBase_rate = topStemUnpairedBase_rate;
+    public void setFractOfUnpairedBasesInTopStem(double topStemUnpairedBase_rate) {
+        this.fractOfUnpairedBasesInTopStem = topStemUnpairedBase_rate;
     }
 
     public void setUpperStart(int upperStart) {
