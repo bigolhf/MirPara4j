@@ -11,6 +11,9 @@ rnafold:
 data:
   folder: data
   data_file: mirbase.dat
+
+program_params:
+  prediction_list_size: 100  
   
 prediction_params:
   window: 500

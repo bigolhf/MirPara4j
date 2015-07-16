@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,44 +27,40 @@ public class MiRNAPredictionPipeLine {
     
     static Logger logger = LogManager.getRootLogger();    
     
-            String se= "AAGCUGGCAUUCUAUAUAAGAGAGAAACUACACGCAGCGCCUCAUUUUGUGGGUCA"
-              + "CCAUAUUCUUGGGAACAAGAGCUACAGCAUGGGGCAAAUCUUUCUGUUCCCAAUCCUCUGGGA"
-              + "UUCUUUCCCGAUCACCAGUUGGACCCUGCGUUUGGAGCCAACUCAAACAAUCCAGAUUGGGAC"
-              + "UUCAACCCCAACAAGGAUCACUGGCCAGAGGCAAAUCAGGUAGGAGCGGGAGCAUUCGGGCCA"
-              + "GGGUUCACCCC";
 
-    private static final int MIN_MIRNA_LEN = 20;
-    private static final int MAX_MIRNA_LEN = 25;
+    private static final int        MIN_MIRNA_LEN = 20;
+    private static final int        MAX_MIRNA_LEN = 25;
     
-    private static final String[] knownModels = new String[] {"m", "p", "v", "o", "animal", "plant", "virus", "overall" };
-    private static final String[] knownTests = new String[] {"svm", "hairpin", };
+    private static final String[]   knownModels = new String[] {"m", "p", "v", "o", "animal", "plant", "virus", "overall" };
+    private static final String[]   knownTests = new String[] {"svm", "hairpin", };
 
-    private MiRParaConfiguation miRParaConfig;
-    private String configFilename;
+    private MiRParaConfiguation     miRParaConfig;
+    private String                  configFilename;
 
         
-    private String      inputFilename;
-    private String      outputFolder;
+    private String                  inputFilename;
+    private String                  outputFolder;
+    private String                  outfilePrefix;
 
-    static Yaml yaml = new Yaml();
-    static String FileSeparator = System.getProperty("file.separator");
+    static  Yaml                    yaml = new Yaml();
+    static  String                  FileSeparator = System.getProperty("file.separator");
     
-    private String configurationFile="";
+    private String                  configurationFile="";
     
-    private String installationFolder="";
-    private String modelFolder="";
-    private String rnaFoldFolder="";
-    private String dataFolder="";
+    private String                  installationFolder="";
+    private String                  modelFolder="";
+    private String                  rnaFoldFolder="";
+    private String                  dataFolder="";
     
-    private String rnaFoldDll="";
-    private String mirbaseDataFile="";
+    private String                  rnaFoldDll="";
+    private String                  mirbaseDataFile="";
     
-    private String pathToLibrary = "";
-    private String pathToMirbaseData = "";
+    private String                  pathToLibrary = "";
+    private String                  pathToMirbaseData = "";
     
-    private String pathToModelData = "";
+    private String                  pathToModelData = "";
     
-    
+    private int                     maxNumOfPredictionListEntries = 100;
     //
     // to add:
     //
@@ -74,36 +69,31 @@ public class MiRNAPredictionPipeLine {
     //  max miRNA length
     //
     
-    private int         window      = 500;
-    private int         step        = 250;
-    private int         start       = 1;
-    private int         distance    = 60;
-    private double      cutoff      = 0.8;
-    private String      model       = "overall";
-    private int         level       = 1;
-    private File        workingDir  = new File(".");
-    private String      packageDir;
-    private boolean     append      = false;
-    private double      progress;
+    private int                     window      = 500;
+    private int                     step        = 250;
+    private int                     start       = 1;
+    private int                     distance    = 60;
+    private double                  cutoff      = 0.8;
+    private String                  model       = "overall";
+    private int                     level       = 1;
+    private File                    workingDir  = new File(".");
+    private String                  packageDir;
+    private boolean                 append      = false;
+    private double                  progress;
 //    private ArrayList<String> results=new ArrayList<String>();
-    private ArrayList<String> results=new ArrayList<>();
+    private ArrayList<String>       results     = new ArrayList<>(); // <- is this necessary ?
     
 
 
-    private ArrayList<SimpleSeq> seqList;
-    private ArrayList<SimpleSeq> segList;
-    private ArrayList<PriMiRNA> priList;
-    private String[] last;
-    private ArrayList<HashMap> featureList;
-    private ArrayList<HashMap> predictionList=new ArrayList<HashMap>();
+    private ArrayList<SimpleSeq>    seqList;
+    private ArrayList<SimpleSeq>    segList;
+    private ArrayList<PriMiRNA>     priList;
+    private String[]                last;
+    private ArrayList<HashMap>      featureList;
+    private ArrayList<HashMap>      predictionList=new ArrayList<HashMap>();
     
     private String test;
 
-    
-    /**
-     * class constructor
-     * 
-     */
     public MiRNAPredictionPipeLine() {  
         miRParaConfig = new MiRParaConfiguation();
     }
@@ -112,28 +102,28 @@ public class MiRNAPredictionPipeLine {
     
     /**
      * 
-     * This pipeline performs miRNA prediction on an input list of Fasta query sequences.
+     * This pipeline performs miRNA prediction on an input list of FASTA query sequences.
      * 
-     * Oversize sequences are split into smaller overlapping fragments to
+     * long sequences can be split into smaller overlapping fragments to
      * reduce run time and prevent prediction of long range secondary structures
      * which are irrelevant here since we assume miRNAs are located in short
      * hairpin structures
      * 
-     * 
+     * run parameters can be specified in the YAML file that is required as input
      * 
      * @throws IOException 
+     * 
      */
     public void predictMiRNAsInQuerySequences() throws IOException{
         
-        initializePipeline();
+        this.initializePipeline();
         
         ReadFastaFile rf = new ReadFastaFile(new File(getInputFilename()));
         
         while(rf.hasSeq()){
             
             SimpleSeq querySeq = rf.getOneSeq();  //each seq
-            setOutfileName(workingDir, new File(getInputFilename()), querySeq.getId());
-            
+            setOutfileName(workingDir, new File(getInputFilename()), querySeq.getId());            
 
             predictionList = new ArrayList<>();
             last = new String[0];
@@ -141,6 +131,7 @@ public class MiRNAPredictionPipeLine {
             
             this.append = true;
             int totalNumOfMiRNA=0;
+            
             logger.info("analyzing sequence " + querySeq.getId() + "...\n");
             int length = querySeq.getLength();
             int n=(length-window)/step+1; //num of window, num of step = n-1
@@ -350,14 +341,17 @@ public class MiRNAPredictionPipeLine {
     public void setOutfileName(File dir, File infile, String seqname){
 
         String basename = infile.getName().replaceAll("\\.\\w+", "");
-//        if(dir.endsWith("/"))  dir=dir.substring(dir.length()-1);
-        setOutputFolder(dir+"/"+basename+"_"+seqname);
+
+        //setOutputFolder(dir+"/"+basename+"_"+seqname);
         results.add(getOutputFolder());
-        OutputMiRNAPredictions.fname=getOutputFolder();
+        OutputMiRNAPredictions.outputFilePrefix = getOutputFolder();
     }
 
     
         
+    public void SetOutfilePrefix(String seqName){
+        OutputMiRNAPredictions.outputFilePrefix = this.outputFolder + FileSeparator + seqName;
+    }
     
     /**
      * output prediction results for specified sequence
@@ -369,6 +363,7 @@ public class MiRNAPredictionPipeLine {
         
         OutputMiRNAPredictions.serializePredictionDetails(predictionList, seq, append);
         OutputMiRNAPredictions.serializePredictionSummary(predictionList, seq, append);
+        OutputMiRNAPredictions.serializePredictionsAsHTML(predictionList, seq);
         
     }
 
@@ -393,24 +388,18 @@ public class MiRNAPredictionPipeLine {
      */
     private void initializePipeline() throws IOException{
 
-        this.ReadConfigurationFile(configFilename);
-        System.out.print(this.reportConfiguration() + "\n");
-        System.out.print(this.reportParameters() + "\n");
-        System.out.print(this.reportRunSettings() + "\n");
+        logger.info("reading configuration file");
+        this.readConfigurationFile(configFilename);
+        logger.info(this.reportConfiguration() + "\n");
+        logger.info(this.reportParameters() + "\n");
+        logger.info(this.reportRunSettings() + "\n");
         
         
-//        logger.info("installation folder is " + miRParaConfig.getInstallationFolder());
-//        logger.info("model folder is " + Paths.get(miRParaConfig.getInstallationFolder(), miRParaConfig.getModelFolder()));
-
-//        packageDir=PathSet.getPackageDir();
-
         logger.info("loading model data file <" + this.getPathToModelData() + "");
         SVMToolKit.loadModel(this.getPathToModelData());
 
         logger.info("loading miRBase data file <" + this.getPathToModelData() + "");
         OutputMiRNAPredictions.loadMirBaseData(new File(this.getPathToMirbaseData()));     
-        
-        
         
     }
 
@@ -669,27 +658,20 @@ public class MiRNAPredictionPipeLine {
      */
     public void predictMiRNAsInQuerySequencesWithSplit() throws IOException{
   
-            String se= "AAGCUGGCAUUCUAUAUAAGAGAGAAACUACACGCAGCGCCUCAUUUUGUGGGUCA"
-              + "CCAUAUUCUUGGGAACAAGAGCUACAGCAUGGGGCAAAUCUUUCUGUUCCCAAUCCUCUGGGA"
-              + "UUCUUUCCCGAUCACCAGUUGGACCCUGCGUUUGGAGCCAACUCAAACAAUCCAGAUUGGGAC"
-              + "UUCAACCCCAACAAGGAUCACUGGCCAGAGGCAAAUCAGGUAGGAGCGGGAGCAUUCGGGCCA"
-              + "GGGUUCACCCC";
-            logger.info("P1EE:" + MfeFoldRNA.foldSequence(se, ""));
         
         initializePipeline();
-            logger.info("P2EE:" + MfeFoldRNA.foldSequence(se, ""));
         
         ReadFastaFile rf = new ReadFastaFile(new File(getInputFilename()));
         while(rf.hasSeq()){
             
             SimpleSeq querySeq = rf.getOneSeq();  //each seq
-            setOutfileName(workingDir, new File(getInputFilename()), querySeq.getId());
             
-//            trueList=new ArrayList<HashMap>();
+            setOutfileName(workingDir, new File(getInputFilename()), querySeq.getId());
+            this.SetOutfilePrefix(querySeq.getId());
+
             predictionList = new ArrayList<>();
             last = new String[0];
             serializeResults(querySeq);
-            logger.info("P3EE:" + MfeFoldRNA.foldSequence(se, ""));
             
             this.append = true;
             int totalNumOfMiRNA=0;
@@ -702,7 +684,6 @@ public class MiRNAPredictionPipeLine {
             
             logger.info("-- sequence is " + length + " nt");
             logger.info("-- will break into " + n + " fragments");
-            logger.info("P4EE:" + MfeFoldRNA.foldSequence(se, ""));
             for(int i=0; i<n; i++){
                 
                 if(start>=length) break;
@@ -712,7 +693,6 @@ public class MiRNAPredictionPipeLine {
                 String subseq=querySeq.getSeq().substring(start,end);
                 
                 logger.info("PL: scan region " + (start+1) + "-" + end + "...");
-                logger.info("P5EE:" + MfeFoldRNA.foldSequence(se, ""));
 
                 SimpleSeq frag = new SimpleSeq(id,subseq);  //each frag
                 frag.setAbsStartInQuerySeq(start+1); // we count from 1
@@ -728,7 +708,6 @@ public class MiRNAPredictionPipeLine {
                 for(PriMiRNA pri : pris){
                     findMiRNAsInPrimiRNA(pri);                
                 }
-            logger.info("PL9EE:" + MfeFoldRNA.foldSequence(se));
                 
                 int add = predictionList.size() - before;
                 if (add == 0)
@@ -740,7 +719,7 @@ public class MiRNAPredictionPipeLine {
                         logger.info(".. found " + add + " miRNAs...");
                     
                 //output the results in time to avoid memory leak
-                if(predictionList.size()>100){
+                if(predictionList.size()> getMaxNumOfPredictionListEntries()){
                     totalNumOfMiRNA+=predictionList.size();
                     serializeResults(querySeq);
                     predictionList=new ArrayList<HashMap>();
@@ -899,8 +878,17 @@ public class MiRNAPredictionPipeLine {
         bw.close();
         br.close();
     }
-
-    public void ReadConfigurationFile(String configFile){
+    
+    
+    
+    /**
+     * load run parameters and general program settings from configuration file
+     * in YAML format
+     * 
+     * @param configFile : absolute path to configuration file
+     * 
+     */
+    public void readConfigurationFile(String configFile){
         try{            
             setConfigurationFile(configFile);
             HashMap mirparaOptions = (HashMap) yaml.load(new FileInputStream(new File(getConfigurationFile())));
@@ -924,13 +912,16 @@ public class MiRNAPredictionPipeLine {
               + this.getModel() + "_" + this.getLevel() + ".model";
             
             
-           HashMap predictionOptions = (HashMap) mirparaOptions.get("prediction_params");
-           this.setWindow((Integer) predictionOptions.get("window"));
-           this.setStep((Integer) predictionOptions.get("step"));
-           this.setStart((Integer) predictionOptions.get("start"));
-           this.setDistance((Integer) predictionOptions.get("distance"));
-           this.setCutoff((Double) predictionOptions.get("cutoff"));
-           this.setLevel((Integer) predictionOptions.get("level"));
+            HashMap programParams = (HashMap) mirparaOptions.get("program_params");
+            this.setMaxNumOfPredictionListEntries((Integer) programParams.get("prediction_list_size"));
+            
+            HashMap predictionOptions = (HashMap) mirparaOptions.get("prediction_params");
+            this.setWindow((Integer) predictionOptions.get("window"));
+            this.setStep((Integer) predictionOptions.get("step"));
+            this.setStart((Integer) predictionOptions.get("start"));
+            this.setDistance((Integer) predictionOptions.get("distance"));
+            this.setCutoff((Double) predictionOptions.get("cutoff"));
+            this.setLevel((Integer) predictionOptions.get("level"));
                        
         }
         catch(FileNotFoundException e){
@@ -976,6 +967,7 @@ public class MiRNAPredictionPipeLine {
           + "path to library           :\t"  + pathToLibrary + "\n"
           + "path to miRBase data      :\t"  + pathToMirbaseData + "\n"
           + "path to model data        :\t"  + pathToModelData + "\n"
+          + "prediction list size      :\t"  + maxNumOfPredictionListEntries + "\n"
           + "\n";
 
     
@@ -1121,6 +1113,20 @@ public class MiRNAPredictionPipeLine {
      */
     public void setStart(int start) {
         this.start = start;
+    }
+
+    /**
+     * @return the maxNumOfPredictionListEntries
+     */
+    public int getMaxNumOfPredictionListEntries() {
+        return maxNumOfPredictionListEntries;
+    }
+
+    /**
+     * @param maxNumOfPredictionListEntries the maxNumOfPredictionListEntries to set
+     */
+    public void setMaxNumOfPredictionListEntries(int maxNumOfPredictionListEntries) {
+        this.maxNumOfPredictionListEntries = maxNumOfPredictionListEntries;
     }
 
 }

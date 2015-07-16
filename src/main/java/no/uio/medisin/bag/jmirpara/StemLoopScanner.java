@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static no.uio.medisin.bag.jmirpara.MiRNAPredictionPipeLine.logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * this class finds hairpin structure from an input string in Vienna Bracket Notation.
+ * this class finds hairpin structures within an input string in Vienna Bracket Notation.
  * 
  * @see <a href=http://rna.tbi.univie.ac.at/help.html#A6>  http://rna.tbi.univie.ac.at/help.html</a>
  * 
@@ -22,12 +21,14 @@ import org.apache.logging.log4j.Logger;
  * @author weibo & simon rayner
  */
 public class StemLoopScanner {
+    
     static Logger logger = LogManager.getRootLogger();    
 
     private int window=500;
     private int step=250;
     private int start=1;
     private int minHairpinLength = 60;
+    private Boolean defaultParams = true;
 
     private SimpleSeq               simpleSeq;
     
@@ -45,7 +46,7 @@ public class StemLoopScanner {
     
     
     */
-//  
+
     
     private static String regSL="(\\.*\\([\\.\\(]*\\()(\\.+)(\\)[\\.\\)]*\\)\\.*)";
     private static Pattern pattern = Pattern.compile(regSL);
@@ -54,9 +55,10 @@ public class StemLoopScanner {
     
     /**
      * Empty Class Constructor
+     * 
      */
     public StemLoopScanner(){
-
+        
     }
     
     
@@ -86,11 +88,11 @@ public class StemLoopScanner {
      */
     public StemLoopScanner(SimpleSeq seq, int window, int step, int distance){
         
-        this.simpleSeq   = seq;
-        this.window     = window;
-        this.step       = step;
+        this.simpleSeq          = seq;
+        this.window             = window;
+        this.step               = step;
         this.minHairpinLength   = distance;
-        
+        this.defaultParams      = false;
     }
     
 
@@ -104,6 +106,9 @@ public class StemLoopScanner {
      */
     public void breakQuerySeqIntoOverlappingFragments(){
         
+        if(defaultParams)
+            logger.info("no parameters specified in constructor: using default values");
+     
         fragmentList = new ArrayList<SimpleSeq>();
         int length=simpleSeq.getLength();
         int n=(length-window)/step;

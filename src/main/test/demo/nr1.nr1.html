@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>JmiPara 2.0 miRNA results</title>
+<style type="text/css">
+.seq{width:1500px;height:10px;background:#069;position:absolute;}
+.mir{height:5px;position:absolute;}
+</style>
+<script type=text/javascript>
+document.write("<style type='text/css'>#Tag {display:block;font:12px Tahoma,Verdana;background-color:#FFC;border:1px #000 solid;padding:3px;position:absolute;z-index:1000;visibility:hidden}</style>");
+document.write("<tt id='Tag' style='filter:blendtrans(duration=.2) revealTrans(duration=.1,transition=12) alpha(opacity=90,enabled=1);-moz-opacity:0.9'></tt>");
+document.onmouseover=ShowTag;
+function ShowTag(e){
+	e=e || window.event;
+	var sPop = null;
+	if(e){
+		o=e.target;
+		MouseX=e.pageX?e.pageX:clientX + document.body.scrollLeft - document.body.clientLeft;
+		MouseY=e.pageY?e.pageY:clientY + document.body.scrollTop  - document.body.clientTop;
+	}
+ 	else{
+		o=event.srcElement;
+		MouseX=event.x;
+		MouseY=event.y;
+	}	 	if(o.title){
+		o.pop=o.title;
+		o.title="";
+	}
+ 	if(o.pop){
+		o.pop=o.pop.replace(/\n/g,"<br>");
+	}
+	if(o.pop!=sPop){
+		sPop=o.pop;
+		if(sPop){
+			obj=(document.all)? Tag : document.getElementById("Tag");
+			obj.innerHTML=o.pop;
+			iebody=document.body;
+			objWidth=obj.offsetWidth;objHeight=obj.offsetHeight;
+			popLeftAdjust=(MouseX+12+objWidth>iebody.clientWidth)?(-objWidth-24):0;
+			popTopAdjust=(MouseY+12+objHeight>iebody.clientHeight)?(-objHeight-24):0;
+			obj.style.left=MouseX+12+iebody.scrollLeft+popLeftAdjust;
+			obj.style.top=MouseY+12+iebody.scrollTop+popTopAdjust;
+			if(obj.filters && obj.filters.length!=0){
+				obj.filters[1].apply();
+				obj.style.visibility="visible";
+				obj.filters[1].play();
+			}
+ 			else obj.style.visibility="visible";
+		}
+		else{
+			if(obj.filters && obj.filters.length!=0){
+				obj.filters[0].apply();
+				obj.style.visibility="hidden";
+				obj.filters[0].play();
+			}
+ 			else obj.style.visibility="hidden";
+		}	}}
+</script>
+</head>
+</body>
+<h2>Distribution of miRNAs on sequence nr1</h2>
+<div class="seq" style="top:50px;left:5px"></div>
+</body></html>

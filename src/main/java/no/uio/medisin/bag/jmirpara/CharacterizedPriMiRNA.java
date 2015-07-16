@@ -30,7 +30,7 @@ public class CharacterizedPriMiRNA {
 
     private PriMiRNA priRNA;
     private PreMiRNA preRNA;
-    private MatMiRNA miRNA;
+    private MiRNA miRNA;
 
     private String priStructLine1;
     private String priStructLine2;
@@ -113,7 +113,7 @@ public class CharacterizedPriMiRNA {
     public void defineAndCharacterizePreMiPair(int miRStartPos, int miRLength){
 
         preRNA = new PreMiRNA();
-        miRNA = new MatMiRNA();
+        miRNA = new MiRNA();
 
         int strand=findStrand(priRNA, miRStartPos, miRLength);
         int upperStart=0, upperEnd=0;
@@ -126,17 +126,17 @@ public class CharacterizedPriMiRNA {
         priStructLine2=priRNA.getPriLine2();
         priStructLine3=priRNA.getPriLine3();
         priStructLine4=priRNA.getPriLine4();
-        String preLine1;
-        String preLine2;
-        String preLine3;
-        String preLine4;
+        String preMiRNAStructLine1;
+        String preMiRNAStructLine2;
+        String preMiRNAStructLine3;
+        String preMiRNAStructLine4;
         String miRStructLine1;
         String miRStructLine2;
         String miRStructLine3;
         String miRStructLine4;
         String lowerStemStructLine1;
         String lowerStemStructLine2;
-        String lowerLine3;
+        String lowerStemStructLine3;
         String lowerStemStructLine4;
         String topStemStructLine1;
         String topStemStructLine2;
@@ -159,17 +159,17 @@ public class CharacterizedPriMiRNA {
 
         priRNA.setPriPlot(generatePrettyPlotShowingMiRNA(priRNA,upperStart,upperEnd, strand));
 
-        // set pre-miRNA parameters
-        preLine1 = priStructLine1.substring(upperStart);
-        preLine2 = priStructLine2.substring(upperStart);
-        preLine3 = priStructLine3.substring(upperStart);
-        preLine4 = priStructLine4.substring(upperStart);
+        // set candidate pre-miRNA parameters
+        preMiRNAStructLine1 = priStructLine1.substring(upperStart);
+        preMiRNAStructLine2 = priStructLine2.substring(upperStart);
+        preMiRNAStructLine3 = priStructLine3.substring(upperStart);
+        preMiRNAStructLine4 = priStructLine4.substring(upperStart);
         preRNA.setUpperStart(upperStart + 1);
         preRNA.setUpperEnd(upperEnd + 1);
-        preRNA.setSeq(PrettyPlot2Seq(preLine1, preLine2) + midBase + reverse(PrettyPlot2Seq(preLine4, preLine3)));
+        preRNA.setSeq(PrettyPlot2Seq(preMiRNAStructLine1, preMiRNAStructLine2) + midBase + reverse(PrettyPlot2Seq(preMiRNAStructLine4, preMiRNAStructLine3)));
         preRNA.setLength(preRNA.getSeq().length());
         preRNA.setAbsStartInQuerySeq(PrettyPlot2Seq(priStructLine1.substring(0, upperStart), priStructLine2.substring(0, upperStart)).length());
-        preRNA.setEnergy(preMFE(priRNA.getStructureStr(), preRNA.getSeq(), preRNA.getStart()));
+        preRNA.setEnergy(calculatePreMFE(priRNA.getStructureStr(), preRNA.getSeq(), preRNA.getStart()));
         
         preRNA.setGC_content(GCcontent(preRNA.getSeq()));
         preRNA.setA_content(NTcontent(preRNA.getSeq(),'A')+NTcontent(preRNA.getSeq(),'a'));
@@ -177,17 +177,17 @@ public class CharacterizedPriMiRNA {
         preRNA.setG_content(NTcontent(preRNA.getSeq(),'G')+NTcontent(preRNA.getSeq(),'g'));
         preRNA.setC_content(NTcontent(preRNA.getSeq(),'C')+NTcontent(preRNA.getSeq(),'c'));
 
-        preRNA.setNumberOfGUPairs(CountRNAFoldGUpairs(preLine2, preLine3));
+        preRNA.setNumberOfGUPairs(CountRNAFoldGUpairs(preMiRNAStructLine2, preMiRNAStructLine3));
 
-        preRNA.setNumberOfPairedBases(pairCount(preLine2));
+        preRNA.setNumberOfPairedBases(pairCount(preMiRNAStructLine2));
         
         //preRNA unpaired bases, do not include terminal loop bases
-        preRNA.setNumberOfUnpairedBases(unpairedCount(preLine1, preLine4) - (priRNA.getTerminalLoopSize() - midBase.length()));
+        preRNA.setNumberOfUnpairedBases(unpairedCount(preMiRNAStructLine1, preMiRNAStructLine4) - (priRNA.getTerminalLoopSize() - midBase.length()));
         preRNA.setUnpairedBaseRate(calcUnpairedRate(preRNA.getUnpairedBase_num(), preRNA.getNumberOfPairs()));
         
         //preRNA internal loop, do not include terminal loop
-        preRNA.setNumberOfInternalLoops(internalLoopCount(preLine2));
-        preRNA.setBiggestInternalLoop(findLargestInternalLoopOnStem(preLine1, preLine4));
+        preRNA.setNumberOfInternalLoops(internalLoopCount(preMiRNAStructLine2));
+        preRNA.setBiggestInternalLoop(findLargestInternalLoopOnStem(preMiRNAStructLine1, preMiRNAStructLine4));
 
         
         
@@ -195,7 +195,7 @@ public class CharacterizedPriMiRNA {
         if (basalEnd < upperStart) {
             lowerStemStructLine1 = priStructLine1.substring(basalEnd, upperStart);
             lowerStemStructLine2 = priStructLine2.substring(basalEnd, upperStart);
-            lowerLine3 = priStructLine3.substring(basalEnd, upperStart);
+            lowerStemStructLine3 = priStructLine3.substring(basalEnd, upperStart);
             lowerStemStructLine4 = priStructLine4.substring(basalEnd, upperStart);
             
             preRNA.setLowerStemLength(upperStart-basalEnd);
@@ -230,7 +230,7 @@ public class CharacterizedPriMiRNA {
         preRNA.buildFeatureSet();
 
 
-        //-----------------set miRNA
+        //set candidate miRNA parameters
         miRStructLine1 = priStructLine1.substring(upperStart, upperEnd + 1);
         miRStructLine2 = priStructLine2.substring(upperStart, upperEnd + 1);
         miRStructLine3 = priStructLine3.substring(upperStart, upperEnd + 1);
@@ -263,7 +263,7 @@ public class CharacterizedPriMiRNA {
         miRNA.setLength(miRLength);
         miRNA.setStrand(strand);
         
-        //miRNA dangle (I think this can only be up to 2 nt
+        //miRNA dangle (SR: I think this can only be up to 2 nt)
         if (strand == 5) {
             dangle = findDangleSeq(priStructLine3.length()-upperStart-1, reverse(priStructLine4), reverse(priStructLine3));
         } else {
@@ -272,14 +272,14 @@ public class CharacterizedPriMiRNA {
 
         miRNA.setDangleBaseOne(dangle.charAt(0));
         miRNA.setDangleBaseTwo(dangle.charAt(1));
-        //stability
+
         miRNA.setStability(stability(miRStructLine2, miRStructLine3, strand));
-        //miRNA id
+
         miRNA.setName(priRNA.getName());
         miRNA.setID(miRNA.getName() + "_MIR_" + miRNA.getStart()
                 + "-" + miRNA.getLength());
 
-        miRNA.setFeatureSet();
+        miRNA.buildFeatureSet();
 
         //store product in priRNA
 //        preRNA.addProduct(miRNA);
@@ -783,15 +783,23 @@ public class CharacterizedPriMiRNA {
     
     
     /**
-     * calculate pre-miRNA energy
-     * @param priSeq
-     * @param priStr
-     * @param preSeq
-     * @return
+     * calculate energy of pre-miRNA defined by the start position
+     * and pre-miRNA sequence.
+     * Because we are trying to predict miRNAs, there may be many pre-miRNAs
+     * associated with different miRNA candidates.
+     *  
+     * @param priStructStr : String - structure of parent pri-miRNA
+     * @param preSeq       : String - sequence of this pre-miRNA candidate
+     * @param start        : int    - start position of pre-miRNA candidate
+     *                                within the parent pri-miRNA
+     * @return             : float  - MFE of the pre-miRNA candidate
+     * 
      */
-    public float preMFE(String priStr, String preSeq, int start) {
+    public float calculatePreMFE(String priStructStr, String preSeq, int start) {
+        
         int end = start + preSeq.length();
-        String preStr = priStr.substring(start, end);
+        String preStr = priStructStr.substring(start, end);
+        
         return MfeFoldRNA.foldSequence(preSeq, preStr);
     }
 

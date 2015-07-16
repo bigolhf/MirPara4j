@@ -42,10 +42,10 @@ public class PreMiRNA extends SimpleRNASequence{
 
     private HashMap featureSet;
 
-    private ArrayList<MatMiRNA> miRNAList=new ArrayList<MatMiRNA>();
+    private ArrayList<MiRNA> miRNAList=new ArrayList<MiRNA>();
     private int index=0;
 
-    public void addProduct(MatMiRNA miRNA){
+    public void addProduct(MiRNA miRNA){
         miRNAList.add(miRNA);
         index+=1;
     }
@@ -55,7 +55,7 @@ public class PreMiRNA extends SimpleRNASequence{
         return miRNAList.size();
     }
 
-    public MatMiRNA NextMiRNA(){
+    public MiRNA NextMiRNA(){
         index-=1;
         return miRNAList.get(index);
     }

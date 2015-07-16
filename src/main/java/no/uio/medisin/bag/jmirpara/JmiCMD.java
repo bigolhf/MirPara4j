@@ -31,14 +31,9 @@ public class JmiCMD {
     
 
     private static String test="";
-    //private static double version=4.0;
     private static String configFile;
-    
 
     static Logger logger = LogManager.getRootLogger();    
-    
-    
-    
     
     public JmiCMD() {
         
@@ -73,12 +68,6 @@ public class JmiCMD {
             System.exit(0);
             
         }
-            String se= "AAGCUGGCAUUCUAUAUAAGAGAGAAACUACACGCAGCGCCUCAUUUUGUGGGUCA"
-              + "CCAUAUUCUUGGGAACAAGAGCUACAGCAUGGGGCAAAUCUUUCUGUUCCCAAUCCUCUGGGA"
-              + "UUCUUUCCCGAUCACCAGUUGGACCCUGCGUUUGGAGCCAACUCAAACAAUCCAGAUUGGGAC"
-              + "UUCAACCCCAACAAGGAUCACUGGCCAGAGGCAAAUCAGGUAGGAGCGGGAGCAUUCGGGCCA"
-              + "GGGUUCACCCC";
-            logger.info("MLEE:" + MfeFoldRNA.foldSequence(se));
         
 //      logger.info("STEM");
 //      pl.predictMiRNAsInQuerySequences();
@@ -154,31 +143,6 @@ public class JmiCMD {
                     logger.info("model set to " + cmd.getOptionValue("m"));
                     p.setModel(cmd.getOptionValue("m"));	
                 }                    
-
-                if (cmd.hasOption("l")) {
-                    logger.info("level set to " + cmd.getOptionValue("l"));
-                    p.setLevel(Integer.parseInt(cmd.getOptionValue("l")));	
-                }                    
-
-                if (cmd.hasOption("s")){
-                    logger.info("step set to " + cmd.getOptionValue("s"));
-                    p.setStep(Integer.parseInt(cmd.getOptionValue("s")));
-                }
-
-                if (cmd.hasOption("w")){
-                    logger.info("window set to " + cmd.getOptionValue("w"));
-                    p.setWindow(Integer.parseInt(cmd.getOptionValue("w")));
-                }
-
-                if (cmd.hasOption("d")){
-                    logger.info("distance set to " + cmd.getOptionValue("d"));
-                    p.setDistance(Integer.parseInt(cmd.getOptionValue("d")));
-                }
-
-                if (cmd.hasOption("b")){
-                    logger.info("baseline score set to " + cmd.getOptionValue("b"));
-                    p.setCutoff(Double.parseDouble(cmd.getOptionValue("b")));
-                }
 
                 if (cmd.hasOption("t")){                    
                     logger.info("test set to " + cmd.getOptionValue("l"));

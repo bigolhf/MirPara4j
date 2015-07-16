@@ -29,7 +29,7 @@ public class OutputMiRNAPredictions {
     static Logger logger = LogManager.getRootLogger();    
 
     private static HashMap<String,String> mirbase;
-    public static String fname;
+    public static String outputFilePrefix;
     public static int fpos;
     public static int lpos;
 
@@ -48,7 +48,7 @@ public class OutputMiRNAPredictions {
         
         if(appendData==false){
             
-            bwOverallTabbedData=new BufferedWriter(new FileWriter(fname + ".tab"));
+            bwOverallTabbedData=new BufferedWriter(new FileWriter(outputFilePrefix + ".tab"));
             bwOverallTabbedData.write(seq.getId() + "\n");
             bwOverallTabbedData.write(seq.getLength() + "\n");
             bwOverallTabbedData.write("pri_id\tpri_start\tpri_end\tpri_seq\tpri_str\tmir_id\tmir_start\tmir_size\tmir_seq\tmir_strand\thit\n");
@@ -56,7 +56,7 @@ public class OutputMiRNAPredictions {
         }
         else{
             
-            bwOverallTabbedData = new BufferedWriter(new FileWriter(fname + ".tab", true));
+            bwOverallTabbedData = new BufferedWriter(new FileWriter(outputFilePrefix + ".tab", true));
             
         }
         
@@ -87,7 +87,7 @@ public class OutputMiRNAPredictions {
         logger.info("serialize prediction details as HTML");
         
         int seqW=1500, seqH=10, x0=5, y0=50, mirH=5;
-        BufferedWriter bwLocationDataHtml = new BufferedWriter(new FileWriter(fname + ".html"));
+        BufferedWriter bwLocationDataHtml = new BufferedWriter(new FileWriter(outputFilePrefix + "." + seq.getId() + ".html"));
 
         bwLocationDataHtml.write("<html>\n"
                 + "<head>\n"
@@ -197,7 +197,7 @@ public class OutputMiRNAPredictions {
         
         BufferedWriter bwTxtReportFile;
         BufferedWriter bwIndReportFile;
-        File txtReportFile = new File(fname + ".txt");
+        File txtReportFile = new File(outputFilePrefix + ".txt");
         String str = "";
         
         if(appendRecord == false){
@@ -205,15 +205,15 @@ public class OutputMiRNAPredictions {
             bwTxtReportFile = new BufferedWriter(new FileWriter(txtReportFile, appendRecord));
             str = "miRPara4j Scan Report\n\n";
             bwTxtReportFile.write(str);
-            bwIndReportFile = new BufferedWriter(new FileWriter(fname + ".ind", appendRecord));
+            bwIndReportFile = new BufferedWriter(new FileWriter(outputFilePrefix + ".ind", appendRecord));
             fpos = str.length();
             lpos = 0;
             
         }
         else{
             
-            bwTxtReportFile = new BufferedWriter(new FileWriter(fname + ".txt", appendRecord));
-            bwIndReportFile = new BufferedWriter(new FileWriter(fname + ".ind", appendRecord));
+            bwTxtReportFile = new BufferedWriter(new FileWriter(outputFilePrefix + ".txt", appendRecord));
+            bwIndReportFile = new BufferedWriter(new FileWriter(outputFilePrefix + ".ind", appendRecord));
             
         }
         
