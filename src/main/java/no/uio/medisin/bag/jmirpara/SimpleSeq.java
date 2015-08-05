@@ -43,6 +43,78 @@ public class SimpleSeq {
     }
 
     /**
+     * Reverse complement RNA/DNA sequence
+     * if sequence contains 'U' or 'u' it is assumed the sequence is RNA
+     * 
+     * @param seqIn
+     * @return 
+     */
+    public static String Complement(String seqIn){
+        
+        StringBuilder Complement = new StringBuilder();
+        char [] strReversed = new StringBuilder(seqIn).reverse().toString().toCharArray();
+
+        for (char nt: strReversed) {
+            switch (nt){
+                case 'a':
+                    if(seqIn.toLowerCase().contains("u"))
+                        Complement.append("t");
+                    else
+                        Complement.append("u");
+                    break;
+                    
+                case 'A':
+                    if(seqIn.toLowerCase().contains("u"))
+                        Complement.append("T");
+                    else
+                        Complement.append("U");
+                    break;
+                    
+                case 'c':
+                    Complement.append("g");
+                    break;
+                    
+                case 'C':
+                    Complement.append("G");
+                    break;
+                    
+                case 'g':
+                    Complement.append("c");
+                    break;
+                    
+                case 'G':
+                    Complement.append("C");
+                    break;
+                    
+                case 't':
+                    Complement.append("a");
+                    break;
+                    
+                case 'T':
+                    Complement.append("A");
+                    break;
+                    
+                case 'u':
+                    Complement.append("a");
+                    break;
+                    
+                case 'U':
+                    Complement.append("A");
+                    break;
+                    
+                default:
+                    Complement.append("N");
+                    break;
+                    
+            }
+
+        }
+        return Complement.toString();
+    }
+
+
+
+    /**
      * @return the id
      */
     public String getId() {
@@ -126,7 +198,7 @@ public class SimpleSeq {
         this.name = name;
     }
 
-
+    
 
 
 }

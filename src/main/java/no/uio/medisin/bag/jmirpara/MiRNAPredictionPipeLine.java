@@ -34,13 +34,11 @@ public class MiRNAPredictionPipeLine {
     private static final String[]   knownModels = new String[] {"m", "p", "v", "o", "animal", "plant", "virus", "overall" };
     private static final String[]   knownTests = new String[] {"svm", "hairpin", };
 
-    private MiRParaConfiguation     miRParaConfig;
     private String                  configFilename;
 
         
     private String                  inputFilename;
     private String                  outputFolder;
-    private String                  outfilePrefix;
 
     static  Yaml                    yaml = new Yaml();
     static  String                  FileSeparator = System.getProperty("file.separator");
@@ -77,25 +75,22 @@ public class MiRNAPredictionPipeLine {
     private String                  model       = "overall";
     private int                     level       = 1;
     private File                    workingDir  = new File(".");
-    private String                  packageDir;
     private boolean                 append      = false;
     private double                  progress;
-//    private ArrayList<String> results=new ArrayList<String>();
+
     private ArrayList<String>       results     = new ArrayList<>(); // <- is this necessary ?
     
 
 
     private ArrayList<SimpleSeq>    seqList;
-    private ArrayList<SimpleSeq>    segList;
     private ArrayList<PriMiRNA>     priList;
     private String[]                last;
-    private ArrayList<HashMap>      featureList;
     private ArrayList<HashMap>      predictionList=new ArrayList<HashMap>();
     
     private String test;
 
     public MiRNAPredictionPipeLine() {  
-        miRParaConfig = new MiRParaConfiguation();
+
     }
 
     
@@ -420,7 +415,7 @@ public class MiRNAPredictionPipeLine {
          +  "filein      :\t" + getInputFilename() + "\n"
          +  "fileout     :\t" + getOutputFolder() + "\n\n"
          +  StringUtils.repeat("*", 60) + "\n\n" 
-         +  miRParaConfig.reportParameters() + "\n\n"
+         +  this.reportParameters() + "\n\n"
          +  StringUtils.repeat("*", 60) + "\n\n";
 
         return summary;
@@ -893,27 +888,32 @@ public class MiRNAPredictionPipeLine {
             setConfigurationFile(configFile);
             HashMap mirparaOptions = (HashMap) yaml.load(new FileInputStream(new File(getConfigurationFile())));
             
+            
             HashMap modelsOptions = (HashMap) mirparaOptions.get("model");
             this.setModelFolder((String) modelsOptions.get("folder"));
 
+            
             HashMap pathsOptions = (HashMap) mirparaOptions.get("paths");
             this.setInstallationFolder((String) pathsOptions.get("installation_folder"));
+            
             
             HashMap rnafoldOptions = (HashMap) mirparaOptions.get("rnafold");
             this.setRnaFoldFolder((String) rnafoldOptions.get("folder"));
             this.setRnaFoldDll((String) rnafoldOptions.get("dll"));
             
+            
             HashMap dataOptions = (HashMap) mirparaOptions.get("data");
             this.setDataFolder((String) dataOptions.get("folder"));
             this.setMirbaseDataFile((String) dataOptions.get("data_file"));
             
-            pathToMirbaseData = installationFolder + FileSeparator + this.getDataFolder() + FileSeparator + this.getMirbaseDataFile();
-            pathToModelData = installationFolder + FileSeparator + this.getModelFolder() + FileSeparator 
+            pathToMirbaseData   = installationFolder + FileSeparator + this.getDataFolder()  + FileSeparator + this.getMirbaseDataFile();
+            pathToModelData     = installationFolder + FileSeparator + this.getModelFolder() + FileSeparator 
               + this.getModel() + "_" + this.getLevel() + ".model";
             
             
             HashMap programParams = (HashMap) mirparaOptions.get("program_params");
             this.setMaxNumOfPredictionListEntries((Integer) programParams.get("prediction_list_size"));
+            
             
             HashMap predictionOptions = (HashMap) mirparaOptions.get("prediction_params");
             this.setWindow((Integer) predictionOptions.get("window"));
@@ -928,6 +928,8 @@ public class MiRNAPredictionPipeLine {
             logger.fatal("Configuration file " + this.getConfigurationFile() + " not found");
         }
     }
+    
+    
     
     /**
      * summarize run parameters

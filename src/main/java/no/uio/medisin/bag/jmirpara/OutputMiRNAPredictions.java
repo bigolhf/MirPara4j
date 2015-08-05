@@ -182,8 +182,10 @@ public class OutputMiRNAPredictions {
         bwLocationDataHtml.close();
     }
 
+    
+    
    /**
-    * detail feature values of miRNAs
+    * detailed report showing feature values of each predicted miRNA
     * 
     * @param miRNAPredictionResults
     * @param seq : current Query Sequence
@@ -203,7 +205,7 @@ public class OutputMiRNAPredictions {
         if(appendRecord == false){
             
             bwTxtReportFile = new BufferedWriter(new FileWriter(txtReportFile, appendRecord));
-            str = "miRPara4j Scan Report\n\n";
+            str = "miRPara4j Prediction Report\n\n";
             bwTxtReportFile.write(str);
             bwIndReportFile = new BufferedWriter(new FileWriter(outputFilePrefix + ".ind", appendRecord));
             fpos = str.length();
@@ -233,7 +235,7 @@ public class OutputMiRNAPredictions {
             fpos+= str.length();
             for(String para : paraList){
                 if(result.containsKey(para)){
-                    str = flush(para,30)+"\t\t"+result.get(para)+"\n";
+                    str = padStringWithSpaces(para,30)+"\t\t"+result.get(para)+"\n";
                     bwTxtReportFile.write(str);
                     fpos+= str.length();
                 }
@@ -324,12 +326,12 @@ public class OutputMiRNAPredictions {
 
     
     /**
-     * make the string the same length
+     * make the string the same length by padding with spaces
      * @param str
      * @param size
      * @return
      */
-    public static String flush(String str, int size){
+    public static String padStringWithSpaces(String str, int size){
         String strf=str;
         int num=size-strf.length();
         if(num>0)
@@ -338,6 +340,9 @@ public class OutputMiRNAPredictions {
         return strf;
     }
 
+    
+    
+    
     /**
      * repeat a string
      * @param str

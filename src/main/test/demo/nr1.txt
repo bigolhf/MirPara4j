@@ -1,2 +1,2 @@
-miRPara4j Scan Report
+miRPara4j Prediction Report
 

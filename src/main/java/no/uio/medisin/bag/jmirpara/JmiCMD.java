@@ -21,8 +21,14 @@ import org.apache.logging.log4j.LogManager;
 
 
 /**
- *
- * @author weibo
+ * main class for performing miRNA prediction
+ * user needs to provide 
+ *   input file containing query sequence in fasta format
+ *   destination folder for results
+ *   configuration file in YAML format specifying program and run parameters 
+ * 
+ * @author Wei Bo and Simon Rayner
+ * 
  */
 public class JmiCMD {
 
