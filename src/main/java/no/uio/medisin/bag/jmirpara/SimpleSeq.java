@@ -41,6 +41,23 @@ public class SimpleSeq {
         this.length=seq.length();
         
     }
+    
+    
+    
+    
+    /**
+     * return subsequence at specified position
+     * 
+     * @param start
+     * @param stop
+     * @return 
+     */
+    public String getSequence(int start, int stop){
+        if(start>=0 && stop < seq.length())
+            return seq.substring(start, stop+1);
+
+        return null;
+    }
 
     /**
      * Reverse complement RNA/DNA sequence
@@ -49,7 +66,7 @@ public class SimpleSeq {
      * @param seqIn
      * @return 
      */
-    public static String Complement(String seqIn){
+    public static String complement(String seqIn){
         
         StringBuilder Complement = new StringBuilder();
         char [] strReversed = new StringBuilder(seqIn).reverse().toString().toCharArray();

@@ -23,8 +23,9 @@ public class TrainingData {
     
     private ArrayList<TrainingEntry> inData;
     private PriMiRNA pri;
+    /*
     private ParaSummary ps;
-    private MySVM svxm=new MySVM();
+    private MySVM svxm=new MySVM();*/
     private int level=1;
 
     private svm_problem trainSet_p;
@@ -60,12 +61,12 @@ public class TrainingData {
      * @param in
      */
     private svm_problem parsePara(ArrayList<TrainingEntry> in, String taxo){
-   
         int num=0;
         for(TrainingEntry t:in) num+=t.NumOfMi();
 
         svm_node[][] data=new svm_node[num][];
         int i=0;
+        /*
         for(TrainingEntry mi:in){
             pri=mi.getPriRNA();
             pri.setPriPara();
@@ -76,6 +77,8 @@ public class TrainingData {
             }
         }
         return svm.trainMatrix(data);
+        */
+        return new svm_problem();
     }
 
     public ArrayList<TrainingEntry> positiveData(ArrayList<MiRBaseEntry> milist, int subnum){
@@ -93,6 +96,7 @@ public class TrainingData {
 
         int positive=0; //number of positive mirna
         int n=0;
+/*        
         for(Integer m : rmis){
 
             if(subnum>0 && positive>=subnum) break; //get subnum mirans
@@ -144,6 +148,7 @@ public class TrainingData {
             n++;
             System.out.print(n+":"+mi.getPriID()+backspace(n+":"+mi.getPriID()));
         }
+*/        
         System.out.println();
         //report
         System.out.println("Loads "+(evNum+uevNum)+" Entries");
