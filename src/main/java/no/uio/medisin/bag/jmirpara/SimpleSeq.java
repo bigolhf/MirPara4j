@@ -59,6 +59,9 @@ public class SimpleSeq {
         return null;
     }
 
+    
+    
+    
     /**
      * Reverse complement RNA/DNA sequence
      * if sequence contains 'U' or 'u' it is assumed the sequence is RNA
