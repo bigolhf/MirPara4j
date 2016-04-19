@@ -6,7 +6,7 @@
 package no.uio.medisin.bag.jmirpara;
 
 /**
- *
+ * 
  * @author weibo
  */
 public class ModelSet {

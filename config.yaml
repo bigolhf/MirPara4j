@@ -1,26 +1,35 @@
-paths:
-  installation_folder: /home/sr/NetBeansProjects/MirPara4j
+modelParameters:
+  modelFolder: models
 
-model:
-  folder: models
+filePaths:
+  installationFolder: /home/sr/NetBeansProjects/MirPara4j
 
-rnafold:
-  folder: lib
-  dll: RNAFold.dll
+rnafoldParameters:
+  rnafoldFolder: lib
+  rnafoldLibraryFile: RNAFold.dll
+
+refdataParameters:
+  pathToReferenceData: /data/mirbase/20/
+  mirbaseDataFile: mirna.dat
 
 data:
   folder: data
   data_file: mirbase.dat
 
-program_params:
-  prediction_list_size: 100  
+programParameters:
+  predictionListSize: 100  
   
-prediction_params:
-  window: 500
-  step: 250
-  start: 1
-  distance: 60
-  cutoff: 0.8
+predictionParameters:
+  minMirnaLength: 20
+  maxMirnaLength: 25
+  windowSize: 500
+  stepSize: 250
+  startPosition: 1
+  minHairpinLength: 60
+  predictionScoreCutoff: 0.8
   model: "overall"
-  level: 1
+  modelLevel: 1
+
+mirbaseParameters:
+  hosts: hsa, mmu
 

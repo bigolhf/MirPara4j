@@ -5,6 +5,7 @@
 
 package no.uio.medisin.bag.jmirpara;
 
+import no.uio.medisin.bag.core.SimpleRNASequence;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
  *
  * @author weibo
  */
+@Deprecated
 public class InputData {
 
     private ArrayList<SimpleRNASequence> seqs;

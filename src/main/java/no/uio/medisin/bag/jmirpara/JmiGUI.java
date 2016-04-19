@@ -70,7 +70,7 @@ public class JmiGUI extends JFrame implements ActionListener{
     private double cutoff;
     private int window;
     private int step;
-    private MiRNAPredictionPipeLine pl;
+    private MiRNAProcessingPipeLine pl;
     
     public JmiGUI(){
         
@@ -208,8 +208,8 @@ public class JmiGUI extends JFrame implements ActionListener{
         System.setOut(new PrintStream(new TextAreaOutputStream(logArea),true));
         System.setErr(new PrintStream(new TextAreaOutputStream(logArea),true));
         
-        JmiCMD.printBanner();
-        JmiCMD.print_help();
+        MirParaCmd.printBanner();
+        MirParaCmd.print_help();
 
     }
     
@@ -242,7 +242,7 @@ public class JmiGUI extends JFrame implements ActionListener{
             stepF.setText("250");           
         }
         else if(ae.getSource()==scanButton){
-            pl=new MiRNAPredictionPipeLine();
+            pl=new MiRNAProcessingPipeLine();
             
             if(infile==null){
                 infileF.setBackground(Color.red);
@@ -316,10 +316,11 @@ public class JmiGUI extends JFrame implements ActionListener{
             this.logArea.append("\nCommand: java -cp JmiPara2.jar jmipara2.JmiPara2CMD -m "
                     +model+" -l "+level+" -d "+length+" -c "+cutoff+" -w "+window
                     +" -s "+step+" "+infileF.getText()+" "+outdirF.getText()+"\n");
-            this.logArea.append("\nStart runing...\n");            
+            this.logArea.append("\nrunning...\n");            
 
                     
             final Thread scanT=new Thread(){
+                @Override
                 public void run(){                  
                     try {
                         pl.predictMiRNAsInQuerySequences();
@@ -331,31 +332,30 @@ public class JmiGUI extends JFrame implements ActionListener{
             scanT.start();
                 
             final Thread processT=new Thread(){
+                @Override
                 public void run(){
                     double progress=0;
                     processF.setForeground(Color.blue);
                     while(progress<100){
-                        JmiGUI.this.processF.setText("has scaned "+progress+"%");
-                        progress=pl.getProgress();
+                        JmiGUI.this.processF.setText("scanned "+progress+"%");
                     }
                     progress=100;
-                    JmiGUI.this.processF.setText("has scaned "+progress+"%");
+                    JmiGUI.this.processF.setText("scanned "+progress+"%");
                     while(scanT.isAlive()){
-                        progress=pl.getProgress();
                         while(progress<100){
-                            JmiGUI.this.processF.setText("has scaned "+progress+"%");
-                            progress=pl.getProgress();
+                            JmiGUI.this.processF.setText("scanned "+progress+"%");
                         }
                         progress=100;
-                        JmiGUI.this.processF.setText("has scaned "+progress+"%");
+                        JmiGUI.this.processF.setText("scanned "+progress+"%");
                     }
                     progress=100;
-                    JmiGUI.this.processF.setText("has scaned "+progress+"%");
+                    JmiGUI.this.processF.setText("scanned "+progress+"%");
                 }
             };
             processT.start();
             
             Thread resultT=new Thread(){
+                @Override
                 public void run(){
                     try {
                         scanT.join();
@@ -374,8 +374,8 @@ public class JmiGUI extends JFrame implements ActionListener{
             
         }
         else if(ae.getSource()==helpButton){
-            JmiCMD.printBanner();
-            JmiCMD.print_help();
+            MirParaCmd.printBanner();
+            MirParaCmd.print_help();
         }
         else if(ae.getSource()==clearButton){
             logArea.setText("");

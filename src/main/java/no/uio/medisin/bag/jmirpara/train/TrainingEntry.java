@@ -6,7 +6,7 @@
 package no.uio.medisin.bag.jmirpara.train;
 
 import java.util.ArrayList;
-import no.uio.medisin.bag.jmirpara.PriMiRNA;
+import no.uio.medisin.bag.core.PriMiRNA;
 
 /**
  *

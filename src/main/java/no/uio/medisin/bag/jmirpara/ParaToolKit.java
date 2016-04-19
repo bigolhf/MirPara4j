@@ -5,6 +5,8 @@
 
 package no.uio.medisin.bag.jmirpara;
 
+import no.uio.medisin.bag.core.MfeFoldRNA;
+import no.uio.medisin.bag.core.SimpleRNASequence;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;

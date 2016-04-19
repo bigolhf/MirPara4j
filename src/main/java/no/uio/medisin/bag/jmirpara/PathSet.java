@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
- *
+ * SR: 2016.04.09: I think this is only used with the miRPara result viewer 
  * @author weibo
  */
 public class PathSet {

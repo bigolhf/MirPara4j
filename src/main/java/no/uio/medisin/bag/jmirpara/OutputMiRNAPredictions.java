@@ -2,6 +2,7 @@
 
 package no.uio.medisin.bag.jmirpara;
 
+import no.uio.medisin.bag.core.SimpleSeq;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

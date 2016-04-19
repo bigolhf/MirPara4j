@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import no.uio.medisin.bag.jmirpara.MfeFoldRNA;
+import no.uio.medisin.bag.core.MfeFoldRNA;
 //import no.uio.medisin.bag.jmirpara.train.MySVM;
 //import no.uio.medisin.bag.jmirpara.train.ParaSummary;
 //import no.uio.medisin.bag.jmirpara.train.PriMiRNA;
 import libsvm.svm_node;
 import libsvm.svm_problem;
-import no.uio.medisin.bag.jmirpara.PriMiRNA;
+import no.uio.medisin.bag.core.PriMiRNA;
 
 /**
  * this class prepare the training data of svm
