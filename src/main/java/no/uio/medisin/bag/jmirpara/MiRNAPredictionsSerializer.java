@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
  * 
  * @author Wei Bo & Simon Rayner
  */
-public class OutputMiRNAPredictions {
+public class MiRNAPredictionsSerializer {
     
     static Logger logger = LogManager.getRootLogger();    
 

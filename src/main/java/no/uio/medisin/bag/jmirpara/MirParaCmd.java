@@ -49,16 +49,16 @@ public class MirParaCmd {
     
     
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, Exception {
         
         long start = System.currentTimeMillis();
         
         printBanner();
         
-        MiRNAProcessingPipeLine pl = new MiRNAProcessingPipeLine();
+        MiParaPipeLine pl = new MiParaPipeLine();
         parseArguments(args, pl);
         switch(pl.getAction()){
-            case MiRNAProcessingPipeLine.ACTION_TEST_SVM:
+            case MiParaPipeLine.ACTION_TEST_SVM:
                 logger.info("\n\n\nSVM TEST");
                 logger.info(new String(new char[80]).replace("\0", "x"));
                 logger.info("\n\n\nSVM TEST");
@@ -66,7 +66,7 @@ public class MirParaCmd {
                 pl.testProgram();
                 break;
 
-            case MiRNAProcessingPipeLine.ACTION_TEST_PREDICTION:
+            case MiParaPipeLine.ACTION_TEST_PREDICTION:
                 logger.info("\n\n\n");
                 logger.info(new String(new char[80]).replace("\0", "x"));
                 logger.info("\n\n\ntest miRNA prediction");
@@ -74,7 +74,7 @@ public class MirParaCmd {
                 pl.testGivenMir();
                 break;
                         
-            case MiRNAProcessingPipeLine.ACTION_PREDICT_MIRNAS:
+            case MiParaPipeLine.ACTION_PREDICT_MIRNAS:
                 logger.info("\n\n\n");
                 logger.info(new String(new char[80]).replace("\0", "x"));
                 logger.info("\n\n\nPredict miRNAs from input sequences");
@@ -82,21 +82,22 @@ public class MirParaCmd {
                 pl.predictMiRNAsInQuerySequencesWithSplit();
                 break;
             
-            case MiRNAProcessingPipeLine.ACTION_PREDICT_HAIRPINS:
+            case MiParaPipeLine.ACTION_PREDICT_HAIRPINS:
                 logger.info("\n\n\n");
                 logger.info(new String(new char[80]).replace("\0", "x"));
                 logger.info("\n\n\nPredict hairpins from input sequences");
                 logger.info(new String(new char[80]).replace("\0", "x"));
+                pl.predictHairpins();
                 break;
             
-            case MiRNAProcessingPipeLine.ACTION_PERFORM_TRAINING:
+            case MiParaPipeLine.ACTION_PERFORM_TRAINING:
                 logger.info("\n\n\n");
                 logger.info(new String(new char[80]).replace("\0", "x"));
                 logger.info("\n\n\ntrain models from input data");
                 logger.info(new String(new char[80]).replace("\0", "x"));
                 break;
             
-            case MiRNAProcessingPipeLine.ACTION_CHARACTERIZE_MIRBASE:
+            case MiParaPipeLine.ACTION_CHARACTERIZE_MIRBASE:
                 logger.info("\n\n\n");
                 logger.info(new String(new char[80]).replace("\0", "x"));
                 logger.info("       train models from input data");
@@ -135,9 +136,13 @@ public class MirParaCmd {
                 + "to start GUI: java -jar JmiPara2.jar or double click the package JmiPara2\n"
                 + "to start CMD: java -cp JmiPara2.jar jmipara2.JmiCMD [options] input_file [output_directory]\n\n"
                 + "to view results\n"
-                + "start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer\n");
+                + "start MirViewer: java -cp JmiPara2.jar jmipara2.MirViewer\n")
+                ;
+        logger.info("OS NAME      is <" + System.getProperty("os.name") + ">\n");
+        logger.info("LIBRARY_PATH is <" + System.getProperty("java.library.path") + ">\n");
+ 
         
-        logger.info("*** report bugs to simon.rayner@medisin.uio.no\n");
+        logger.info("\n\n*** report bugs to simon.rayner@medisin.uio.no\n");
     }
     
     
@@ -155,7 +160,7 @@ public class MirParaCmd {
      * @param p
      * @throws IOException 
      */
-    private static void parseArguments(String[] args, MiRNAProcessingPipeLine p) throws IOException{
+    private static void parseArguments(String[] args, MiParaPipeLine p) throws IOException{
         options.addOption("i", "input-file",    true,  "FASTA input file for query sequences");
         options.addOption("o", "output-folder", true,  "output folder for prediction results");
         options.addOption("t", "test",          true,  "run test example ");
@@ -170,8 +175,10 @@ public class MirParaCmd {
         
         try {
                 cmd = parser.parse(options, args);
-                if (cmd.hasOption("h"))
+                if (cmd.hasOption("h")){
                     print_help();
+                    System.out.print(p.reportAvailableActions());
+                }
 
                 if (cmd.hasOption("t")){                    
                     logger.info("test set to " + cmd.getOptionValue("l"));

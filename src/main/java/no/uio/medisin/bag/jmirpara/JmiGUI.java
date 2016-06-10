@@ -70,7 +70,7 @@ public class JmiGUI extends JFrame implements ActionListener{
     private double cutoff;
     private int window;
     private int step;
-    private MiRNAProcessingPipeLine pl;
+    private MiParaPipeLine pl;
     
     public JmiGUI(){
         
@@ -242,7 +242,7 @@ public class JmiGUI extends JFrame implements ActionListener{
             stepF.setText("250");           
         }
         else if(ae.getSource()==scanButton){
-            pl=new MiRNAProcessingPipeLine();
+            pl=new MiParaPipeLine();
             
             if(infile==null){
                 infileF.setBackground(Color.red);

@@ -1,10 +1,10 @@
 
 package no.uio.medisin.bag.jmirpara;
 
-import no.uio.medisin.bag.core.StemLoopScanner;
+import no.uio.medisin.bag.core.FoldableRNASequence;
 import no.uio.medisin.bag.core.PriMiRNA;
 import no.uio.medisin.bag.core.FeatureRange;
-import no.uio.medisin.bag.core.CharacterizedPriMiRNA;
+import no.uio.medisin.bag.core.CharPriMiRNA;
 import no.uio.medisin.bag.core.SimpleSequenceSet;
 import no.uio.medisin.bag.core.SimpleSeq;
 import java.io.BufferedReader;
@@ -24,15 +24,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
-
+import org.apache.commons.io.FilenameUtils;
 
 /**
- * this class various types of processing against different datatypes
+ * this class performs various types of processing against different datatypes
  * related to miRNAs
  * 
  * @author simon rayner
  */
-public class MiRNAProcessingPipeLine {
+public class MiParaPipeLine {
     
     static Logger                   logger                          = LogManager.getRootLogger();    
     
@@ -116,8 +116,8 @@ public class MiRNAProcessingPipeLine {
 
     
     miRParaPredParams               miRParaPredParams;
-    private int                     window              = 500;
-    private int                     step                = 250;
+    private int                     window              = 120;
+    private int                     step                = 5000;
     private int                     start               = 1;
     private int                     distance            = 60;
     private double                  cutoff              = 0.8;
@@ -138,15 +138,102 @@ public class MiRNAProcessingPipeLine {
 
     private ArrayList<SimpleSeq>    seqList;
     private ArrayList<PriMiRNA>     priList;
-    private String[]                last;
+    private String[]                uniquePriMiRNAIDs;
     private ArrayList<HashMap>      predictionList = new ArrayList<>();
     
     private String test;
 
-    public MiRNAProcessingPipeLine() {  
+    public MiParaPipeLine() {  
 
     }
 
+    
+    
+    /**
+     * parse out and characterize pre-miRNA/miRNAs specified in an EMBL file from 
+     * miRBase.
+     * input can be filtered by host and whether feature is supported by experimental data
+     * 
+     * @throws IOException 
+     */
+    public void parseMiRBaseEMBLData() throws IOException, Exception{
+        MiRBaseEMBLDataFileParser miRBaseEMBLParser = new MiRBaseEMBLDataFileParser();
+        miRBaseEMBLParser.setEmblFileName(inputFilename);
+        miRBaseEMBLParser.parseEMBLFile();
+    }
+    
+    
+    
+    
+    
+    /**
+     * predict secondary structures for a set of input sequences.
+     * It is assumed they represent pre-miRNA/miRNA candidates and will
+     * form a hairpin structure.
+     * 
+     * @throws IOException
+     * @throws Exception 
+     */
+    public void predictHairpins() throws IOException, Exception{
+        
+        uniquePriMiRNAIDs = new String[0]; // not quite sure what this for. something to do with tracking duplicates....
+        logger.info("predict hairpins for input sequence set");
+        initializePipeline();
+        verifyData();
+        
+        logger.info("input file is <" + this.getInputFilename() + ">");
+        SimpleSequenceSet querySeqSet = new SimpleSequenceSet(new File(getInputFilename()));
+        querySeqSet.readFromFastaFile();
+        logger.info("read " + querySeqSet.getSeqs().size() + " sequences");
+        
+        String hairpinTSVFile = this.cleanPath(this.getOutputFolder() 
+                + FILE_SEPARATOR + FilenameUtils.getBaseName(this.getInputFilename()) 
+                + ".hairpins.tsv");
+        String currSeqName = "";
+        try{
+            BufferedWriter bwPri = new BufferedWriter(new FileWriter(new File(hairpinTSVFile )));
+
+
+            Boolean firstPriMiRNA = true;
+            for(SimpleSeq querySeq: querySeqSet.getSeqs()){
+
+                this.SetOutfilePrefix(querySeq.getId());
+                logger.info("-- processing sequence <" + querySeq.getName() + "> : " + querySeq.getLength() + " nt");
+                ArrayList<SimpleSeq> fragmentList = querySeq.splitSequence(step, window);
+                logger.info("-- broken into " + fragmentList.size() + " fragments");
+                for(SimpleSeq fragment:fragmentList){
+                    currSeqName = fragment.getName();
+                    logger.info("folding fragment <" + fragment + ">");
+                    FoldableRNASequence foldableRNASeq = new FoldableRNASequence(fragment);
+                    ArrayList<PriMiRNA> pris = foldableRNASeq.foldAndScanSequence();
+
+                    removeDuplicatePrimiRNAs(pris);
+
+
+                    for(PriMiRNA priMiRNA: pris){
+                        CharPriMiRNA charPriMiRNA = new CharPriMiRNA(priMiRNA);
+                        charPriMiRNA.characterize();
+                        if(firstPriMiRNA){
+                            bwPri.write(charPriMiRNA.getPriRNA().printFeatureSetKeysAsTSV() + "\n");
+                            firstPriMiRNA=false;
+                        }
+                        bwPri.write(charPriMiRNA.getPriRNA().printFeatureSetValuesAsTSV().replace("\n", "") + "\n");
+                    }
+                }
+
+            }   
+            bwPri.close();
+            
+        }
+        catch(IOException exIO){
+            logger.info("IO error while predicting hairpins for sequence <" + currSeqName + ">");
+            logger.error("IO error while predicting hairpins for sequence <" + currSeqName + ">");
+            throw new IOException("IO error while predicting hairpins for sequence <" + currSeqName + ">\n"  + exIO);
+        }
+    }
+    
+    
+    
     
     
     /**
@@ -165,19 +252,25 @@ public class MiRNAProcessingPipeLine {
      */
     public void predictMiRNAsInQuerySequences() throws IOException{
         
-        this.initializePipeline();
+        initializePipeline();
+        verifyData();
+        verifyPredictionData();
+
+        logger.info("loading model data file <" + this.getPathToModelData() + "");
+        SVMToolKit.loadModel(this.getPathToModelData());
+
+        logger.info("loading miRBase data file <" + this.getPathToModelData() + "");
+        MiRNAPredictionsSerializer.loadMirBaseData(new File(this.getPathToMirbaseData()));     
         
         SimpleSequenceSet querySeqSet = new SimpleSequenceSet(new File(getInputFilename()));
         
         for(SimpleSeq querySeq: querySeqSet.getSeqs()){
-        //while(querySeqSet.hasSeq()){
             
-            //SimpleSeq querySeq = querySeqSet.getOneSeq();  //each seq
             setOutfileName(workingDir, new File(getInputFilename()), querySeq.getId());            
 
             predictionList = new ArrayList<>();
-            last = new String[0];
-            serializeResults(querySeq);
+            uniquePriMiRNAIDs = new String[0];
+            serializeResults(querySeq); // this will just write out header information
             
             this.append = true;
             int totalNumOfMiRNA=0;
@@ -192,8 +285,8 @@ public class MiRNAProcessingPipeLine {
             logger.info("-- sequence is " + length + " nt");
             logger.info("-- will break into " + n + " fragments");
             
-            StemLoopScanner sl = new StemLoopScanner(querySeq, window, step, distance);
-            ArrayList<PriMiRNA> priMiRNAsInFrag = sl.foldAndScanForStemloopByFragments();
+            FoldableRNASequence foldableRNASeq = new FoldableRNASequence(querySeq);
+            ArrayList<PriMiRNA> priMiRNAsInFrag = foldableRNASeq.foldAndScanSequence(); //this.getWindow(), this.getStep(), this.getDistance()
             
             removeDuplicatePrimiRNAs(priMiRNAsInFrag);
             logger.info(priMiRNAsInFrag.size() + " pri-miRNAs were found in the query sequence...");
@@ -206,13 +299,18 @@ public class MiRNAProcessingPipeLine {
                 findMiRNAsInPrimiRNA(primiRNA);                
             }
                 
-            if (totalNumOfMiRNA == 0)
-                logger.info("didn't find any miRNAs");
-            else
-                if(totalNumOfMiRNA == 1)
+            switch(totalNumOfMiRNA){
+                case 0:
+                    logger.info("didn't find any miRNAs");
+                    break;
+                    
+                case 1:
                     logger.info("found a total of 1 miRNA candidate ...");
-                else
+                    break;
+                    
+                default:
                     logger.info("found a total of " + totalNumOfMiRNA + " miRNAs candidates...");
+            }
             
             //output the results now to avoid memory leak
             if(predictionList.size()>100){
@@ -221,7 +319,7 @@ public class MiRNAProcessingPipeLine {
                 logger.info(" ");
                 totalNumOfMiRNA += predictionList.size();
                 serializeResults(querySeq);
-                predictionList = new ArrayList<HashMap>();
+                predictionList = new ArrayList<>();
             }
 //                progress = Double.parseDouble(OutputMiRNAPredictions.decimal((i+1)*100.0/n));
 //                print(Output.decimal((i+1)*100.0/n)+"%"+Output.backspace(Output.decimal((i+1)*100.0/n)+"%"));
@@ -242,12 +340,20 @@ public class MiRNAProcessingPipeLine {
     
     
     
+    
+    /**
+     * Looks for identical pri-miRNA ids. These IDs are based on position, so this will
+     * identify identical entries.
+     * 
+     * @param primiRNAList 
+     */
     private void removeDuplicatePrimiRNAs(ArrayList<PriMiRNA> primiRNAList){
-
+        logger.info("removing duplicate structures");
+        
         Iterator itPriList = primiRNAList.iterator();
         while(itPriList.hasNext()){
             PriMiRNA pri=(PriMiRNA)(itPriList.next());
-            for(String id:last){
+            for(String id:uniquePriMiRNAIDs){
                 if(pri.getId().equals(id)){
                     itPriList.remove();
                     break;
@@ -255,12 +361,12 @@ public class MiRNAProcessingPipeLine {
             }
         }
         
-        //update last array;
+        //update unique ID array;
         int n = primiRNAList.size();
-        last = new String[n];
+        uniquePriMiRNAIDs = new String[n];
         int i=0;
         for(PriMiRNA pri:primiRNAList){
-            last[i++] = pri.getId();
+            uniquePriMiRNAIDs[i++] = pri.getId();
         }     
     }
     
@@ -311,11 +417,11 @@ public class MiRNAProcessingPipeLine {
      * @throws IOException 
      */
     private void findMiRNAsInPrimiRNA(PriMiRNA priRNA) throws IOException{ 
-        CharacterizedPriMiRNA characterizedPrimiRNA = new CharacterizedPriMiRNA(priRNA);
+        CharPriMiRNA characterizedPrimiRNA = new CharPriMiRNA(priRNA);
         
         try{
             
-            characterizedPrimiRNA.parsePrimiRNA();
+            characterizedPrimiRNA.characterize();
             
         }catch(Exception e){
             
@@ -394,13 +500,13 @@ public class MiRNAProcessingPipeLine {
 
         //setOutputFolder(dir+"/"+basename+"_"+seqname);
         results.add(getOutputFolder());
-        OutputMiRNAPredictions.outputFilePrefix = getOutputFolder();
+        MiRNAPredictionsSerializer.outputFilePrefix = getOutputFolder();
     }
 
     
         
     public void SetOutfilePrefix(String seqName){
-        OutputMiRNAPredictions.outputFilePrefix = this.outputFolder + FILE_SEPARATOR + seqName;
+        MiRNAPredictionsSerializer.outputFilePrefix = this.outputFolder + FILE_SEPARATOR + seqName;
     }
     
     /**
@@ -411,9 +517,9 @@ public class MiRNAProcessingPipeLine {
      */
     public void serializeResults(SimpleSeq seq) throws IOException {
         
-        OutputMiRNAPredictions.serializePredictionDetails(predictionList, seq, append);
-        OutputMiRNAPredictions.serializePredictionSummary(predictionList, seq, append);
-        OutputMiRNAPredictions.serializePredictionsAsHTML(predictionList, seq);
+        MiRNAPredictionsSerializer.serializePredictionDetails(predictionList, seq, append);
+        MiRNAPredictionsSerializer.serializePredictionSummary(predictionList, seq, append);
+        MiRNAPredictionsSerializer.serializePredictionsAsHTML(predictionList, seq);
         
     }
 
@@ -450,11 +556,6 @@ public class MiRNAProcessingPipeLine {
             
         }
         
-        logger.info("loading model data file <" + this.getPathToModelData() + "");
-        SVMToolKit.loadModel(this.getPathToModelData());
-
-        logger.info("loading miRBase data file <" + this.getPathToModelData() + "");
-        OutputMiRNAPredictions.loadMirBaseData(new File(this.getPathToMirbaseData()));     
         
     }
 
@@ -482,6 +583,27 @@ public class MiRNAProcessingPipeLine {
     }
     
     
+    
+    
+    public String reportAvailableActions(){
+/*
+    public static final String      ACTION_TEST_SVM                 = "S";
+    public static final String      ACTION_TEST_PREDICTION          = "P";
+    public static final String      ACTION_PREDICT_MIRNAS           = "M";
+    public static final String      ACTION_PREDICT_HAIRPINS         = "H";
+    public static final String      ACTION_PERFORM_TRAINING         = "T";
+    public static final String      ACTION_CHARACTERIZE_MIRBASE     = "C";
+        
+        */        
+
+        return    "known actions are:" + "\n"
+                + "  ACTION_TEST_SVM             (S)" + "\n"
+                + "  ACTION_TEST_PREDICTION      (P)" + "\n"
+                + "  ACTION_PREDICT_MIRNAS       (M)" + "\n"
+                + "  ACTION_PREDICT_HAIRPINS     (H)" + "\n"
+                + "  ACTION_PERFORM_TRAINING     (T)" + "\n"
+                + "  ACTION_CHARACTERIZE_MIRBASE (C)" + "\n";
+    }
     
     /**
      * not sure what this is for
@@ -702,18 +824,24 @@ public class MiRNAProcessingPipeLine {
         
         initializePipeline();
         verifyData();
+        verifyPredictionData();
+        
+        logger.info("loading model data file <" + this.getPathToModelData() + "");
+        SVMToolKit.loadModel(this.getPathToModelData());
+
+        logger.info("loading miRBase data file <" + this.getPathToModelData() + "");
+        MiRNAPredictionsSerializer.loadMirBaseData(new File(this.getPathToMirbaseData()));     
         
         SimpleSequenceSet querySeqSet = new SimpleSequenceSet(new File(getInputFilename()));
         for(SimpleSeq querySeq: querySeqSet.getSeqs()){
         //while(querySeqSet.hasSeq()){
             
             //SimpleSeq querySeq = querySeqSet.getOneSeq();  //each seq
-            
             setOutfileName(workingDir, new File(getInputFilename()), querySeq.getId());
             this.SetOutfilePrefix(querySeq.getId());
 
             predictionList = new ArrayList<>();
-            last = new String[0];
+            uniquePriMiRNAIDs = new String[0];
             serializeResults(querySeq);
             
             this.append = true;
@@ -726,7 +854,14 @@ public class MiRNAProcessingPipeLine {
             int end=0, start=this.start-1;
             
             logger.info("-- sequence is " + length + " nt");
-            logger.info("-- will break into " + n + " fragments");
+            logger.info("-- will break into " + (length-window)/step+1 + " fragments");
+            ArrayList<SimpleSeq> fragmentList = querySeq.splitSequence(step, window);
+            for(SimpleSeq fragment:fragmentList){
+                FoldableRNASequence sl = new FoldableRNASequence(fragment);
+
+                ArrayList<PriMiRNA> pris = sl.foldAndScanSequence();
+                
+            }
             for(int i=0; i<n; i++){
                 
                 if(start>=length) break;
@@ -741,9 +876,9 @@ public class MiRNAProcessingPipeLine {
                 frag.setAbsStartInQuerySeq(start+1); // we count from 1
                 frag.setAbsEndInQuerySeq(end); 
                 frag.setName(querySeq.getId());
-                StemLoopScanner sl = new StemLoopScanner();
+                FoldableRNASequence sl = new FoldableRNASequence(frag);
 
-                ArrayList<PriMiRNA> pris = sl.foldAndScanSequenceForStemloop(frag);
+                ArrayList<PriMiRNA> pris = sl.foldAndScanSequence();
                 removeDuplicatePrimiRNAs(pris);
 
                 logger.info(pris.size() + ".. pri-miRNA were found...");
@@ -769,7 +904,7 @@ public class MiRNAProcessingPipeLine {
                 }
 //                progress = Double.parseDouble(OutputMiRNAPredictions.decimal((i+1)*100.0/n));
 //                print(Output.decimal((i+1)*100.0/n)+"%"+Output.backspace(Output.decimal((i+1)*100.0/n)+"%"));
-                print(OutputMiRNAPredictions.decimal((i+1)*100.0/n)+"%\n");
+                print(MiRNAPredictionsSerializer.decimal((i+1)*100.0/n)+"%\n");
                 start+= step;
             }
             logger.info("\n");
@@ -821,7 +956,7 @@ public class MiRNAProcessingPipeLine {
                 findMiRNAsInPrimiRNA(pri);
                 priList.set(i, null); //free space
                 i++;
-                logger.info(OutputMiRNAPredictions.decimal(i*100.0/priList.size())+"%"+OutputMiRNAPredictions.backspace(OutputMiRNAPredictions.decimal(i*100.0/priList.size())+"%"));                
+                logger.info(MiRNAPredictionsSerializer.decimal(i*100.0/priList.size())+"%"+MiRNAPredictionsSerializer.backspace(MiRNAPredictionsSerializer.decimal(i*100.0/priList.size())+"%"));                
             }
             logger.info("\n"+predictionList.size()+" miRNA candidates are found\n");
 
@@ -861,12 +996,12 @@ public class MiRNAProcessingPipeLine {
                 String[] entry=line.split("\t");
 
                 PriMiRNA pri=new PriMiRNA(entry[0],entry[1]);
-                if(StemLoopScanner.hasMultipleLoops(pri)){
+                if(FoldableRNASequence.hasMultipleLoops(pri)){
                    logger.info("W1: "+entry[0]+" is not a hairpin structure!");
                     continue;
                 }
-                CharacterizedPriMiRNA parser=new CharacterizedPriMiRNA(pri);
-                parser.parsePrimiRNA();
+                CharPriMiRNA parser=new CharPriMiRNA(pri);
+                parser.characterize();
 
                 int end5=pri.getSeq5().length();
                 int start3=end5+pri.getMidBase().length()+1;
@@ -1042,7 +1177,7 @@ public class MiRNAProcessingPipeLine {
     
     
     /**
-     * verify the data before we begin
+     * verify general data files before we begin
      * this requires checking file paths (input/output folders) and required files exist
      * 
      * @return
@@ -1050,25 +1185,38 @@ public class MiRNAProcessingPipeLine {
      */
     private Boolean verifyData() throws IOException{
         
-        pathToMirbaseData   = installationFolder + FILE_SEPARATOR + this.getDataFolder()  + FILE_SEPARATOR + this.getMirbaseDataFile();
+        pathToMirbaseData   = cleanPath(this.getDataFolder()  + FILE_SEPARATOR + this.getMirbaseDataFile());
         if(new File(pathToMirbaseData).exists() == false){
             logger.error("path to miRBase data < " + pathToMirbaseData +"> not found");
             logger.info("path to miRBase data < " + pathToMirbaseData +"> not found");
             throw new IOException("path to miRBase data < " + pathToMirbaseData +"> not found");
         }
 
-        pathToModelData     = installationFolder + FILE_SEPARATOR + this.getModelFolder() + FILE_SEPARATOR 
-          + this.getModel() + "_" + this.getLevel() + ".model";
-        if(new File(pathToModelData).exists() == false){
-            logger.error("path to model data < " + pathToModelData +"> not found");
-            logger.info("path to model data < " + pathToModelData +"> not found");
-            throw new IOException("path to model data < " + pathToModelData +"> not found");
-        }
            
         
         return true;
     }
     
+    
+    
+    
+    /**
+     * verifies prediction specific datafiles before we begin
+     * 
+     * @return
+     * @throws IOException 
+     */
+    private Boolean verifyPredictionData() throws IOException{
+        
+        pathToModelData     = cleanPath(this.getDataFolder() + FILE_SEPARATOR + this.getModelFolder() + FILE_SEPARATOR
+          + this.getModel() + "_" + this.getLevel() + ".model");
+        if(new File(pathToModelData).exists() == false){
+            logger.error("path to model data < " + pathToModelData +"> not found");
+            logger.info("path to model data < " + pathToModelData +"> not found");
+            throw new IOException("path to model data < " + pathToModelData +"> not found");
+        }
+        return true;
+    }
     
     /**
      * check whether this parameter has been defined
@@ -1083,21 +1231,6 @@ public class MiRNAProcessingPipeLine {
             throw new RuntimeException("<" + parameter + "> has not been defined");            
         }
     }
-    
-    
-    /**
-     * 
-     * @throws IOException 
-     */
-    public void parseMiRBaseEMBLData() throws IOException, Exception{
-        MiRBaseEMBLDataFileParser miRBaseEMBLParser = new MiRBaseEMBLDataFileParser();
-        miRBaseEMBLParser.setEmblFileName(inputFilename);
-        miRBaseEMBLParser.parseEMBLFile();
-    }
-    
-    
-    
-    
     
     
     /**
@@ -1395,6 +1528,18 @@ public class MiRNAProcessingPipeLine {
         
         }
         return action;
+    }
+    
+    
+    
+    /**
+     * strip out duplicate folder delimiter from a file path
+     * 
+     * @param path
+     * @return 
+     */
+    final String cleanPath(String path){
+        return path.replace(FILE_SEPARATOR + FILE_SEPARATOR, FILE_SEPARATOR);
     }
     
     
